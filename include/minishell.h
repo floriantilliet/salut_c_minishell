@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/05/08 12:41:21 by florian          ###   ########.fr       */
+/*   Updated: 2024/05/20 20:04:34 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,12 @@ typedef struct s_token
 	struct s_token	*prev;
 }					t_token;
 
+typedef struct s_cmd
+{
+	char	*path;
+	int		free_path;
+	char	**cmd;
+}					t_cmd;
 // env.c
 
 t_env				*create_env_node(char *env_str);
@@ -85,5 +91,9 @@ void				sigint_handler(int code);
 // builtins
 
 int					ft_pwd(void);
+
+// execute.c
+
+void	access_cmd(t_token **tokens, t_env **env);
 
 #endif
