@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/05/20 20:04:47 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/05/23 18:25:54 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ int	main(int ac, char **av, char **envp)
 				{
 					tokens = (strings_to_tokens(line_to_strings(line)));
 					expand_token_list(tokens, env);
-					access_cmd(tokens, env);
+					if (*tokens)
+						access_cmd(tokens, env);
 					print_token_list(tokens);
 					free_token_list(tokens);
 				}
@@ -69,3 +70,4 @@ int	main(int ac, char **av, char **envp)
 	free_env(env);
 	return (0);
 }
+

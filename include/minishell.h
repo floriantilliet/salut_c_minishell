@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/05/20 20:04:34 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/05/23 18:14:53 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 # include "../libft/libft.h"
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <errno.h>
+# include <sys/wait.h>
+# include <fcntl.h>
+# include <sys/stat.h>
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -28,6 +32,10 @@
 # define IN 4
 # define APPEND 5
 # define HEREDOC 6
+
+// booleens
+# define FALSE 0
+# define TRUE 1
 
 typedef struct s_env
 {
@@ -49,7 +57,9 @@ typedef struct s_cmd
 {
 	char	*path;
 	int		free_path;
+	int		len;
 	char	**cmd;
+	char	**env;
 }					t_cmd;
 // env.c
 
@@ -94,6 +104,6 @@ int					ft_pwd(void);
 
 // execute.c
 
-void	access_cmd(t_token **tokens, t_env **env);
+int	access_cmd(t_token **tokens, t_env **env);
 
 #endif
