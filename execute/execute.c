@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:46:29 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/05/23 18:28:22 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/05/24 17:30:14 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,57 +82,6 @@ char	**initialise_cmd_env(t_env **env)
 	return (tab);
 }
 
-int		ft_redirect(int type, t_token *lst)
-{
-	int	fd;
-
-	if (!lst || lst->type != ARG)
-		return (FALSE);
-	else if (type == IN)
-	{
-		fd = open(lst->value, O_RDONLY);
-		if (fd == -1)
-			return (printf("Erreur open\n"), FALSE);
-		if (dup2(fd, 0) == -1)
-			return (printf("Erreur dup2"), FALSE);
-		printf("%s\n", lst->value);
-		return (TRUE);
-	}
-	return (TRUE);
-}
-
-int		count_len(t_token **tokens, t_cmd *cmd)
-{
-	t_token *lst;
-
-	lst = *tokens;
-	cmd->len = 0;
-	while (lst)
-	{
-		if (lst->type == CMD)
-			cmd->len = 0;
-		else if (lst->type == ARG)
-			cmd->len++;
-		else if (lst->type == PIPE )
-			return (TRUE);
-		else if (lst->type == OUT || lst->type == APPEND || lst->type == IN)
-		{
-			if (!ft_redirect(lst->type, lst->next))
-				return (FALSE);
-			lst = lst->next;
-		}
-		else if (lst->type == HEREDOC)
-		{
-			// if (!ft_heredoc(lst->type, lst->next))
-			// 	return (FALSE);
-			lst = lst->next;
-		}
-		printf("%d\n", cmd->len);
-		lst = lst->next;
-	}
-	return (TRUE);
-}
-
 t_cmd		*initialise_cmd(t_token **tokens, t_env **env)
 {
 	t_cmd	*cmd;
@@ -143,11 +92,13 @@ t_cmd		*initialise_cmd(t_token **tokens, t_env **env)
 	cmd->free_path = 0;
 	cmd->path = NULL;
 	cmd->len = 0;
-	printf("test\n");
 	if (!count_len(tokens, cmd))
 		return (free(cmd), NULL);
-	printf("test\n");
-	cmd->cmd = initialise_cmd_cmd(*tokens, cmd, cmd->len);
+	printf("%d\n", cmd->len);
+	if (cmd->len != 0)
+		cmd->cmd = initialise_cmd_cmd(*tokens, cmd, cmd->len);
+	else
+		cmd->cmd = NULL;
 	cmd->env = initialise_cmd_env(env);
 	if (!cmd->cmd || !cmd->env)
 		return (free(cmd), NULL);
@@ -188,7 +139,6 @@ int	access_cmd(t_token **tokens, t_env **env)
 
 	lst_env = *env;
 	lst_tok = *tokens;
-	printf("test\n");
 	cmd = initialise_cmd(tokens, env);
 	if (!cmd)
 		return (0);

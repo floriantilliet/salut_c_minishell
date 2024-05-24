@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/05/23 18:14:53 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:48:36 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,6 @@ int					ft_pwd(void);
 // execute.c
 
 int	access_cmd(t_token **tokens, t_env **env);
+int		count_len(t_token **tokens, t_cmd *cmd);
 
 #endif
