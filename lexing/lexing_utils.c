@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexing_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 18:16:32 by florian           #+#    #+#             */
-/*   Updated: 2024/05/22 16:50:12 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/02 11:37:55 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,29 +17,6 @@ int	is_space(char c)
 	if (c == ' ' || (c >= 9 && c <= 13))
 		return (1);
 	return (0);
-}
-
-int	check_quote_problems(char *line)
-{
-	int	i;
-	int	current_quote;
-
-	i = 0;
-	current_quote = 0;
-	while (line[i])
-	{
-		if (line[i] == '\'' || line[i] == '"')
-		{
-			if (current_quote == '\0')
-				current_quote = line[i];
-			else if (current_quote == line[i])
-				current_quote = '\0';
-		}
-		i++;
-	}
-	if (current_quote != '\0')
-		return (0);
-	return (1);
 }
 
 void	print_strings(char **tokens)
@@ -60,7 +37,7 @@ void	print_token_list(t_token **token_list)
 	int		i;
 
 	current = *token_list;
-	i = 0;	
+	i = 0;
 	while (current)
 	{
 		printf("Token %d: %s\n", i, current->value);

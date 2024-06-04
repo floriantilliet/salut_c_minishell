@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 11:29:13 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/03/25 11:44:54 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/04 18:34:48 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*ft_initialise(char *temp, int fd)
 	return (new);
 }
 
-char	*ft_extend_temp(char *temp, char *stock, int n_oct)
+char	*ft_extend_temp(char *temp, char stock[BUFFER_SIZE], int n_oct)
 {
 	char	*new;
 	int		i;

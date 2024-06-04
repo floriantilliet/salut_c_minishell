@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 11:29:33 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/03/11 04:28:18 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/04 18:30:44 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*free_temp(char *temp);
 char	*get_next_line(int fd);
 char	*ft_initialise(char *temp, int fd);
 char	*ft_replace_temp(char *temp, int i);
-char	*ft_extend_temp(char *temp, char *stock, int n_oct);
+char	*ft_extend_temp(char *temp, char stock[BUFFER_SIZE], int n_oct);
 char	*ft_strdup2(char *src, int n);
 int		ft_strlen2(const char *str);
 int		ft_strchr2(const char *str, int character);
