@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:46:29 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/05/24 17:30:14 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:22:27 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,28 +92,35 @@ t_cmd		*initialise_cmd(t_token **tokens, t_env **env)
 	cmd->free_path = 0;
 	cmd->path = NULL;
 	cmd->len = 0;
+	cmd->is_access = 1;
+	cmd->is_pipe = 0;
+	cmd->cmd = NULL;
+	cmd->env = NULL;
 	if (!count_len(tokens, cmd))
 		return (free(cmd), NULL);
-	printf("%d\n", cmd->len);
-	if (cmd->len != 0)
+	if (cmd->len && cmd->is_access)
+	{
 		cmd->cmd = initialise_cmd_cmd(*tokens, cmd, cmd->len);
-	else
-		cmd->cmd = NULL;
-	cmd->env = initialise_cmd_env(env);
-	if (!cmd->cmd || !cmd->env)
-		return (free(cmd), NULL);
+		cmd->env = initialise_cmd_env(env);
+		if (!cmd->cmd || !cmd->env)
+			return (free(cmd), NULL);
+	}
 	return (cmd);
 }
 
-void	get_access(t_cmd *cmd, char *str, char *env)
+void	get_access(t_cmd *cmd, char *str, t_env *lst_env)
 {
 	char	**tab;
 	char	*tmp;
 	int		i;
-	
-	i = 0;
-	tab = ft_split(env, ':');
-	while (tab[i])
+
+	while (lst_env->next && ft_strncmp(lst_env->key, "PATH", 5))
+			lst_env = lst_env->next;
+	if (!ft_strncmp(lst_env->key, "PATH", 5))
+		return ;
+	i = -1;
+	tab = ft_split(lst_env->value, ':');
+	while (tab[i++])
 	{
 		tmp = ft_strjoin(tab[i], "/");
 		cmd->path = ft_strjoin(tmp, str);
@@ -125,7 +132,6 @@ void	get_access(t_cmd *cmd, char *str, char *env)
 			return ;
 		}
 		free(cmd->path);
-		i++;
 	}
 	free_char_tab(tab);
 	cmd->path = NULL;
@@ -144,15 +150,11 @@ int	access_cmd(t_token **tokens, t_env **env)
 		return (0);
 	while (lst_tok->type != 0 && lst_tok->next)
 		lst_tok = lst_tok->next;
-	if (access(lst_tok->value,  F_OK | X_OK) == -1)
-	{
-		while (lst_env->next && ft_strncmp(lst_env->key, "PATH", 5))
-			lst_env = lst_env->next;
-		if (!ft_strncmp(lst_env->key, "PATH", 5))
-			get_access(cmd, lst_tok->value, lst_env->value);
-	}
-	if (!cmd || execve(cmd->path, cmd->cmd, cmd->env) == -1)
+	if (cmd->is_access && access(lst_tok->value,  F_OK | X_OK) == -1)
+		get_access(cmd, lst_tok->value, lst_env);
+	if (!cmd || !cmd->path || execve(cmd->path, cmd->cmd, cmd->env) == -1)
 		printf("Erreur execve\n");
 	free_char_tab(cmd->cmd);
 	return (free_char_tab(cmd->env), free(cmd), 0);
+	return (1);
 }

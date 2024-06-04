@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/05/24 16:48:36 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/04 17:01:50 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ typedef struct s_cmd
 	int		len;
 	char	**cmd;
 	char	**env;
+	int		is_pipe;
+	int		is_access;
 }					t_cmd;
 // env.c
 
@@ -101,10 +103,14 @@ void				sigint_handler(int code);
 // builtins
 
 int					ft_pwd(void);
+int					ft_cd(t_token **tokens);
+int					ft_export(t_token **tokens, t_env **env);
+void				ft_echo(t_token **tok);
 
 // execute.c
 
 int	access_cmd(t_token **tokens, t_env **env);
 int		count_len(t_token **tokens, t_cmd *cmd);
+char	**initialise_cmd_env(t_env **env);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:11:05 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/05/24 16:48:05 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/01 16:35:37 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int		ft_redirect(int type, t_token *lst)
 	}
 	return (TRUE);
 }
+
 void    here_doc_put_in(char *limit, int pipe_fd[2])
 {
     char    *ret;
@@ -57,6 +58,7 @@ void    here_doc_put_in(char *limit, int pipe_fd[2])
         free(ret);
     }
 }
+
 int    heredoc(t_token *lst)
 {
     int		    pipe_fd[2];
@@ -80,6 +82,27 @@ int    heredoc(t_token *lst)
     return (TRUE);
 }
 
+int		ft_is_builtin(int type, char *str, t_cmd *cmd)
+{
+	if (type != CMD)
+		return (FALSE);
+	if (!ft_strncmp(str, "echo", 5))
+		return (cmd->is_access = 0, TRUE);
+	if (!ft_strncmp(str, "pwd", 4))
+		return (cmd->is_access = 0, TRUE);
+	if (!ft_strncmp(str, "cd", 3))
+		return (cmd->is_access = 0, TRUE);
+	if (!ft_strncmp(str, "export", 7))
+		return (cmd->is_access = 0, TRUE);
+	if (!ft_strncmp(str, "unset", 6))
+		return (cmd->is_access = 0, TRUE);
+	if (!ft_strncmp(str, "env", 4))
+		return (cmd->is_access = 0, TRUE);
+	if (!ft_strncmp(str, "exit", 5))
+		return (cmd->is_access = 0, TRUE);
+	return (TRUE);
+}
+
 int		count_len(t_token **tokens, t_cmd *cmd)
 {
 	t_token *lst;
@@ -88,25 +111,24 @@ int		count_len(t_token **tokens, t_cmd *cmd)
 	cmd->len = 0;
 	while (lst)
 	{
-		if (lst->type == CMD)
+		if (ft_is_builtin(lst->type, lst->value, cmd))
 			cmd->len = 1;
 		else if (lst->type == ARG)
 			cmd->len++;
 		else if (lst->type == PIPE )
-			return (TRUE);
+			return (cmd->is_pipe = 1, TRUE);
 		else if (lst->type == OUT || lst->type == APPEND || lst->type == IN)
 		{
 			if (!ft_redirect(lst->type, lst->next))
 				return (FALSE);
 			lst = lst->next;
 		}
-		else if (lst->type == HEREDOC)
+		else
 		{
 			if (!heredoc(lst->next))
 				return (FALSE);
 			lst = lst->next;
 		}
-		printf("%d\n", cmd->len);
 		lst = lst->next;
 	}
 	return (TRUE);
