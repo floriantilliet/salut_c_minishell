@@ -6,66 +6,95 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:08:44 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/04 17:08:56 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/06 12:09:54 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../include/minishell.h"
 
-int		ft_strcmp(const char *s1, const char *s2)
+void	build_tab(char *value, char *tab[2])
 {
-	if (!s1 || !s2)
-		return (FALSE);
-	while (*s1 && *s2 && *s1 == *s2)
+	int	len;
+
+	len = 0;
+	tab[0] = NULL;
+	while (value[len] && value[len] != '=')
+		len++;
+	if (!value[len])
+		return ;
+	tab[0] = malloc(sizeof(char) * (len + 1));
+	if (!tab[0])
 	{
-		s1++;
-		s2++;
-	}
-	return (*s2 - *s1);
-}
-
-void	put_env_in_order(char **tab)
-{
-	int	i;
-	int	j;
-	char	*tmp;
-
-	i = 0;
-	while (tab[i])
-	{
-		j = i + 1;
-		while (tab[j])
-		{
-			if (ft_strcmp(tab[i], tab[j]) < 0)
-			{
-				tmp = tab[i];
-				tab[i] = tab[j];
-				tab[j] = tmp;
-			}
-			j++;
-		}
-		i++;
-	}
-}
-
-void	print_env_in_order(t_env **env)
-{
-	char	**tab;
-
-	tab = initialise_cmd_env(env);
-	if (!tab)
-	{
-		printf("ERREUR MALLOC\n");
+		printf("Erreur malloc\n");
 		return ;
 	}
-	put_env_in_order(tab);
-	int i = 0;
-	while (tab[i])
+	len = -1;
+	while (value[++len] != '=')
+		tab[0][len] = value[len];
+	tab[0][len] = '\0';
+	value += len + 1;
+	tab[1] = ft_strdup(value);
+	if (!tab[1])
 	{
-		printf("declare -x %s\n", tab[i]);
-		i++;
+		free(tab[0]);
+		printf("Erreur malloc\n");
 	}
-	free_char_tab(tab);
+}
+
+int	ft_concatenate_var(char *tab[2], t_env *l_env, t_env **env)
+{
+	int	i;
+	char	*tmp;
+	
+	i = 0;
+	while (tab[0][i])
+		i++;
+	if (i > 0 && tab[0][i - 1] != '+')
+		return (FALSE);
+	tab[0][ft_strlen(tab[0]) - 1] = '\0';
+	while (l_env && ft_strcmp(l_env->key, tab[0]))
+		l_env = l_env->next;
+	if (l_env)
+	{
+		tmp = ft_strjoin(l_env->value, tab[1]);
+		free(l_env->value);
+		l_env->value = ft_strdup(tmp);
+		if (!l_env->value)
+			return (printf("Error malloc\n"), TRUE);
+		free(tmp);
+		return (TRUE);
+	}
+	if (!ft_create_var(env, tab))
+		return (printf("Erreur malloc\n"), TRUE);
+	return (TRUE);
+}
+
+int	ft_export_bis(t_token *lst, t_env **env)
+{
+	t_env	*l_env;
+	char	*tab[2];
+
+	l_env = *env;
+	build_tab(lst->value, tab);
+	if (!tab[0] || !tab[1])
+		return (FALSE);
+	if (ft_concatenate_var(tab, l_env, env))
+		return (free(tab[0]), free(tab[1]), TRUE);
+	while (l_env && ft_strcmp(l_env->key, tab[0]))
+		l_env = l_env->next;
+	if (l_env)
+	{
+		free(l_env->value);
+		l_env->value = ft_strdup(tab[1]);
+		if (!l_env->value)
+			return (printf("Error malloc\n"), free(tab[0]), free(tab[1]), TRUE);
+	}
+	else
+	{
+		if (!ft_create_var(env, tab))
+			return (printf("Error malloc\n"), free(tab[0]), free(tab[1]), TRUE);
+	}
+	return (free(tab[0]), free(tab[1]), TRUE);
 }
 
 int	ft_export(t_token **tokens, t_env **env)
@@ -76,6 +105,12 @@ int	ft_export(t_token **tokens, t_env **env)
 	if (lst->type == CMD)
 		lst = lst->next;
 	if (!lst || lst->type != ARG)
-		print_env_in_order(env);
+		return (print_env_in_order(env), TRUE);
+	while (lst && lst->type == ARG)
+	{
+		if (!ft_export_bis(lst, env))
+			return (FALSE);
+		lst = lst->next;
+	}
 	return (TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/06/04 17:01:50 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/07 15:22:24 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,15 @@
 # define APPEND 5
 # define HEREDOC 6
 
-// booleens
 # define FALSE 0
 # define TRUE 1
+# define ERR_PIPE "bash: syntax error near unexpected token `|'\n"
+# define ERR_REDIRECT "bash: syntax error near unexpected token `newline'\n"
+# define ERR_REDIRECT_2 "bash: syntax error near unexpected token "
+# define ERROR_PIPE "Some mistakes occures when using pipe\n"
+# define ERROR_DUP "Some mistakes occures when using dup\n"
+# define ERROR_FORK "Some mistakes occures when using fork\n"
+#  define ERROR_EXEC "Some mistakes occures when using execve\n"
 
 typedef struct s_env
 {
@@ -49,8 +55,11 @@ typedef struct s_token
 {
 	char			*value;
 	int				type;
+	int				if_pipe;
+	int				fd_pipe[2];
 	struct s_token	*next;
 	struct s_token	*prev;
+	struct s_token	*head;
 }					t_token;
 
 typedef struct s_cmd
@@ -105,12 +114,19 @@ void				sigint_handler(int code);
 int					ft_pwd(void);
 int					ft_cd(t_token **tokens);
 int					ft_export(t_token **tokens, t_env **env);
+int					ft_create_var(t_env **env, char *tab[2]);
 void				ft_echo(t_token **tok);
+void				print_env_in_order(t_env **env);
+void				ft_unset(t_token **token, t_env **env);
+t_env				*ft_lstnew_env(char *key, char *value);
 
 // execute.c
 
-int	access_cmd(t_token **tokens, t_env **env);
+int		access_cmd(t_token **tokens, t_env **env);
 int		count_len(t_token **tokens, t_cmd *cmd);
+void	parse_exec(t_token **tokens, t_env **env);
+int		ft_strcmp(const char *s1, const char *s2);
 char	**initialise_cmd_env(t_env **env);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/06/04 14:57:29 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/06 18:05:06 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,6 @@ int	main(int ac, char **av, char **envp)
 				free(line);
 				break ;
 			}
-			else if (ft_strncmp(line, "env", 3) == 0)
-			{
-				printenv(env);
-			}
-			else if (ft_strncmp(line, "pwd", 3) == 0)
-			{
-				ft_pwd();
-			}
 			else
 			// printf("%s\n", expander(line, env));
 			{
@@ -56,9 +48,9 @@ int	main(int ac, char **av, char **envp)
 				else
 				{
 					tokens = (strings_to_tokens(line_to_strings(line)));
-					ft_export(tokens, env);
-					/* expand_token_list(tokens, env);
-					print_token_list(tokens); */
+					expand_token_list(tokens, env);
+					//print_token_list(tokens);
+					parse_exec(tokens, env);
 					/* if (*tokens)
 						access_cmd(tokens, env); */
 					free_token_list(tokens);
