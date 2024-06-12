@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/06/06 18:05:06 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/07 16:41:27 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ int	main(int ac, char **av, char **envp)
 			else
 			// printf("%s\n", expander(line, env));
 			{
-				if (!check_quote_problems(line))
-					printf("Error: unclosed quote\n");
+				if (!check_problems(line))
+					;				
 				else
 				{
-					tokens = (strings_to_tokens(line_to_strings(line)));
+					tokens = (merge_tokens(strings_to_tokens(line_to_strings(line))));
 					expand_token_list(tokens, env);
-					//print_token_list(tokens);
 					parse_exec(tokens, env);
+					// print_token_list(tokens);
 					/* if (*tokens)
 						access_cmd(tokens, env); */
 					free_token_list(tokens);

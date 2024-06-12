@@ -6,13 +6,13 @@
 /*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:57:09 by florian           #+#    #+#             */
-/*   Updated: 2024/05/05 18:59:03 by florian          ###   ########.fr       */
+/*   Updated: 2024/06/03 17:07:30 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static void	handle_quotes(char *line, char **tokens, int *i, int *j)
+void	handle_string_quotes(char *line, char **tokens, int *i, int *j)
 {
 	int	k;
 	int	quote;
@@ -27,7 +27,7 @@ static void	handle_quotes(char *line, char **tokens, int *i, int *j)
 	*i += k;
 }
 
-static void	handle_redirection(char *line, char **tokens, int *i, int *j)
+void	handle_redirection(char *line, char **tokens, int *i, int *j)
 {
 	if (line[*i + 1] == line[*i] && line[*i] != '|')
 	{
@@ -42,7 +42,21 @@ static void	handle_redirection(char *line, char **tokens, int *i, int *j)
 	(*j)++;
 }
 
-static void	handle_general(char *line, char **tokens, int *i, int *j)
+void	handle_space(char *line, char **tokens, int *i, int *j)
+{
+	int	k;
+
+	k = 0;
+	while (line[*i + k] && is_space(line[*i + k]))
+	{
+		k++;
+	}
+	tokens[*j] = ft_substr(line, *i, k);
+	*i += k;
+	(*j)++;
+}
+
+void	handle_general(char *line, char **tokens, int *i, int *j)
 {
 	int	k;
 
@@ -59,9 +73,9 @@ static void	handle_general(char *line, char **tokens, int *i, int *j)
 char	**line_to_strings(char *line)
 {
 	char	**tokens;
+	int		len;
 	int		i;
 	int		j;
-	int		len;
 
 	len = count_tokens(line);
 	tokens = malloc(sizeof(char *) * (len + 1));
@@ -72,11 +86,11 @@ char	**line_to_strings(char *line)
 	while (line[i])
 	{
 		if (line[i] == '\'' || line[i] == '"')
-			handle_quotes(line, tokens, &i, &j);
+			handle_string_quotes(line, tokens, &i, &j);
 		else if (line[i] == '|' || line[i] == '>' || line[i] == '<')
 			handle_redirection(line, tokens, &i, &j);
 		else if (is_space(line[i]))
-			i++;
+			handle_space(line, tokens, &i, &j);
 		else
 			handle_general(line, tokens, &i, &j);
 	}

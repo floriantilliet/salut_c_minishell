@@ -6,42 +6,13 @@
 /*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:22:38 by florian           #+#    #+#             */
-/*   Updated: 2024/05/05 18:43:00 by florian          ###   ########.fr       */
+/*   Updated: 2024/06/03 17:44:11 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	get_token_type(char *token)
-{
-	int	len;
-
-	len = ft_strlen(token);
-	if (len == 1)
-	{
-		if (token[0] == '|')
-			return (PIPE);
-		if (token[0] == '>')
-			return (OUT);
-		if (token[0] == '<')
-			return (IN);
-		else
-			return (ARG);
-	}
-	else if (len == 2)
-	{
-		if (token[0] == '>' && token[1] == '>')
-			return (APPEND);
-		if (token[0] == '<' && token[1] == '<')
-			return (HEREDOC);
-		else
-			return (ARG);
-	}
-	else
-		return (ARG);
-}
-
-static t_token	*create_token_node(char *value)
+t_token	*create_token_node(char *value)
 {
 	t_token	*new_node;
 
@@ -55,7 +26,7 @@ static t_token	*create_token_node(char *value)
 	return (new_node);
 }
 
-static void	add_token_to_list(t_token **token_list, t_token *new_node)
+void	add_token_to_list(t_token **token_list, t_token *new_node)
 {
 	t_token	*current;
 
@@ -71,8 +42,7 @@ static void	add_token_to_list(t_token **token_list, t_token *new_node)
 	}
 }
 
-static void	update_flags(t_token *new_node, int *cmd_flag,
-		int *redirection_flag)
+void	update_flags(t_token *new_node, int *cmd_flag, int *redirection_flag)
 {
 	if (new_node->type == IN || new_node->type == OUT
 		|| new_node->type == APPEND || new_node->type == HEREDOC)

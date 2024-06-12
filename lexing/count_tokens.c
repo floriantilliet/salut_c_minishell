@@ -6,13 +6,13 @@
 /*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 19:08:09 by florian           #+#    #+#             */
-/*   Updated: 2024/05/05 19:08:25 by florian          ###   ########.fr       */
+/*   Updated: 2024/06/03 17:08:14 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static int	handle_quotes(char *line, int *i)
+int	handle_token_quotes(char *line, int *i)
 {
 	int	k;
 	int	quote;
@@ -27,7 +27,7 @@ static int	handle_quotes(char *line, int *i)
 	return (1);
 }
 
-static int	handle_special_chars(char *line, int *i)
+int	handle_special_chars(char *line, int *i)
 {
 	if (line[*i + 1] == line[*i])
 	{
@@ -40,7 +40,7 @@ static int	handle_special_chars(char *line, int *i)
 	return (1);
 }
 
-static int	handle_normal_chars(char *line, int *i)
+int	handle_normal_chars(char *line, int *i)
 {
 	int	k;
 
@@ -50,6 +50,13 @@ static int	handle_normal_chars(char *line, int *i)
 		&& line[*i + k] != '<')
 		k++;
 	*i += k;
+	return (1);
+}
+
+int	handle_spaces(char *line, int *i)
+{
+	while (line[*i] && is_space(line[*i]))
+		(*i)++;
 	return (1);
 }
 
@@ -63,11 +70,11 @@ int	count_tokens(char *line)
 	while (line[i])
 	{
 		if (line[i] == '\'' || line[i] == '"')
-			j += handle_quotes(line, &i);
+			j += handle_token_quotes(line, &i);
 		else if (line[i] == '|' || line[i] == '>' || line[i] == '<')
 			j += handle_special_chars(line, &i);
 		else if (is_space(line[i]))
-			i++;
+			j += handle_spaces(line, &i);
 		else
 			j += handle_normal_chars(line, &i);
 	}
