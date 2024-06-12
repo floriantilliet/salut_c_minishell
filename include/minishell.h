@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/06/07 15:22:24 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/11 17:36:02 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void				expand_token_list(t_token **token_list, t_env **env);
 void				free_char_tab(char **tab);
 void				free_env(t_env **env);
 void				free_token_list(t_token **token_list);
+void				free_everything(t_env **env, t_token **tokens);
 
 // signals.c
 
@@ -127,6 +128,7 @@ int		count_len(t_token **tokens, t_cmd *cmd);
 void	parse_exec(t_token **tokens, t_env **env);
 int		ft_strcmp(const char *s1, const char *s2);
 char	**initialise_cmd_env(t_env **env);
+int		do_cmd(t_token *lst, t_env **env);
 
 
 #endif

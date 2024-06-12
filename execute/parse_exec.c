@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 16:20:48 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/07 15:54:02 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/11 17:36:19 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,43 +46,25 @@ int	check_pipe(t_token **tokens)
 	return (TRUE);
 }
 
-int	ft_dup(t_token *lst)
-{
-	while (lst && lst->type != PIPE)
-	{
-		if (lst->type == CMD || lst->type == ARG)
-			lst = lst->next;
-		else if (lst->type == PIPE)
-		{
-			if (dup2(lst->head->fd_pipe[1], 1) == -1)
-				exit(0);
-			return (close(lst->head->fd_pipe[1]))
-		}
-	}
-}
-
-int do_cmd(t_token *lst, t_env **env)
+int do_last_cmd(t_token *lst, t_env **env)
 {
     pid_t   pid;
 
     if (pipe(lst->head->fd_pipe) == -1)
-        return (ft_printf(ERROR_PIPE) ,FALSE);
+        return (perror(ERROR_PIPE) ,FALSE);
     pid = fork();
     if (pid == -1)
-        return (ft_printf(ERROR_FORK), FALSE);
+        return (perror(ERROR_FORK), FALSE);
     if (!pid)
     {
-		close(lst->head->fd_pipe[0]);
-		ft_dup(lst);
-/*      dup2(pipe_fd[1], 1);
-        free_pipe(lst, pipe_fd);
-        execve(path_cmd, cmd, envp); */
+		if (!ft_dup(lst) || !check_builtins(lst, env))
+			free_everything(env, lst->head);
     }
     else
     {
-/*         close(pipe_fd[1]);
-        dup2(pipe_fd[0], 0);
-        close(pipe_fd[0]); */
+        close(lst->head->fd_pipe[1]);
+        dup2(lst->head->fd_pipe[0], 0);
+        close(lst->head->fd_pipe[0]);
     }
     return (TRUE);
 }
@@ -104,4 +86,6 @@ void	parse_exec(t_token **tokens, t_env **env)
 		if (lst)
 			lst = lst->next;
 	}
+	do_last_cmd(lst, env);
+	return ;
 }

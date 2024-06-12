@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:46:29 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/03 15:22:27 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/11 17:09:31 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,5 +156,4 @@ int	access_cmd(t_token **tokens, t_env **env)
 		printf("Erreur execve\n");
 	free_char_tab(cmd->cmd);
 	return (free_char_tab(cmd->env), free(cmd), 0);
-	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:11:05 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/01 16:35:37 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/11 17:33:46 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ int		ft_redirect(int type, t_token *lst)
 	{
 		fd = open(lst->value, O_RDONLY);
 		if (fd == -1)
-			return (printf("Erreur open\n"), FALSE);
+			return (perror("Erreur open\n"), FALSE);
 		if (dup2(fd, 0) == -1)
-			return (printf("Erreur dup2"), FALSE);
+			return (perror("Erreur dup2"), FALSE);
 	}
 	else
 	{
@@ -33,9 +33,9 @@ int		ft_redirect(int type, t_token *lst)
 		else
 			fd = open(lst->value, O_CREAT | O_RDWR | O_TRUNC, 0000644);
 		if (fd == -1)
-			return (printf("Erreur open\n"), FALSE);
-		if (dup2(fd, 1) == -1)
-			return (printf("Erreur dup2"), FALSE);
+			return (perror("Erreur open\n"), FALSE);
+		if (dup2(lst->head->fd_pipe[1], 1) == -1)
+			return (perror("Erreur dup2"), FALSE);
 	}
 	return (TRUE);
 }
@@ -65,17 +65,17 @@ int    heredoc(t_token *lst)
 	pid_t	pid;
 
     if (pipe(pipe_fd) == -1)
-        return (printf("ERROR_PIPE"), FALSE);
+        return (perror("ERROR_PIPE"), FALSE);
     pid = fork();
     if (pid == -1)
-        return (printf("ERROR_FORK"), FALSE);
+        return (perror("ERROR_FORK"), FALSE);
     if (!pid)
 		here_doc_put_in(lst->value, pipe_fd);
 	else
 	{
 		close(pipe_fd[1]);
 		if (dup2(pipe_fd[0], 0) == -1)
-            return (printf("ERROR_DUP"), FALSE);
+            return (perror("ERROR_DUP"), FALSE);
         close(pipe_fd[0]);
 		wait(NULL);
 	}
