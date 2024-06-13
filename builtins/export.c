@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:08:44 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/11 17:07:58 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/13 13:13:56 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,11 +97,11 @@ int	ft_export_bis(t_token *lst, t_env **env)
 	return (free(tab[0]), free(tab[1]), TRUE);
 }
 
-int	ft_export(t_token **tokens, t_env **env)
+int	ft_export(t_token *tokens, t_env **env)
 {
 	t_token	*lst;
 
-	lst = *tokens;
+	lst = tokens;
 	if (lst->type == CMD)
 		lst = lst->next;
 	if (!lst || lst->type != ARG)

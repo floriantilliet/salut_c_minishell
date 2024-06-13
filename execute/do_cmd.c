@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:38 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/13 09:36:07 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/13 14:15:45 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	check_builtins(t_token *lst, t_env **env)
 	else if (!ft_strncmp(lst->value, "echo", 5))
 		return (ft_echo(lst), FALSE);
 	else if (!ft_strncmp(lst->value, "pwd", 4))
-		return (ft_pwd, FALSE);
+		return (ft_pwd(), FALSE);
 	else if (!ft_strncmp(lst->value, "cd", 3))
 		return (ft_cd(lst), FALSE);
 	else if (!ft_strncmp(lst->value, "export", 7))
@@ -55,13 +55,14 @@ int	check_builtins(t_token *lst, t_env **env)
 	else if (!ft_strncmp(lst->value, "unset", 6))
 		return (ft_unset(lst, env), FALSE);
 	else if (!ft_strncmp(lst->value, "env", 4))
-		return (printenv(lst), FALSE);
+		return (printenv(env), FALSE);
 	else if (!ft_strncmp(lst->value, "exit", 5))
 		return (FALSE);
 	else
 		access_cmd(&lst, env);
 	return (FALSE);
 }
+
 
 int do_cmd(t_token *lst, t_env **env)
 {

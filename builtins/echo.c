@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 16:29:15 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/11 17:08:06 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/13 13:12:31 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ void	print_word_echo(char *str)
 	}
 }
 
-void	ft_echo(t_token **tok)
+void	ft_echo(t_token *tok)
 {
 	int	flag;
 	t_token *lst;
 	
-	lst = *tok;
+	lst = tok;
 	flag = is_flag(lst->value);
 	while (skip_flag(lst->value))
 		lst = lst->next;

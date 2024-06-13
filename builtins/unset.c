@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:14:12 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/06 12:45:25 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/13 13:14:16 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ void	remove_node(t_env **env, t_env *node)
 	return ;
 }
 
-void	ft_unset(t_token **token, t_env **env)
+void	ft_unset(t_token *token, t_env **env)
 {
 	t_token *lst;
 	t_env	*l_env;
 
-	lst = *token;
+	lst = token;
 	if (lst && lst->type == CMD)
 		lst = lst->next;
 	while (lst && lst->type == ARG)

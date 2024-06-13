@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:11:05 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/13 12:28:03 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/13 14:27:38 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,24 +111,16 @@ int		count_len(t_token **tokens, t_cmd *cmd)
 	cmd->len = 0;
 	while (lst)
 	{
-		if (ft_is_builtin(lst->type, lst->value, cmd))
-			cmd->len = 1;
-		else if (lst->type == ARG)
+		if (lst->type == ARG)
 			cmd->len++;
 		else if (lst->type == PIPE )
 			return (cmd->is_pipe = 1, TRUE);
+		else if (lst->type == CMD)
+			cmd->len = 1;
 		else if (lst->type == OUT || lst->type == APPEND || lst->type == IN)
-		{
-			if (!ft_redirect(lst->type, lst->next))
-				return (FALSE);
 			lst = lst->next;
-		}
 		else
-		{
-			if (!heredoc(lst->next))
-				return (FALSE);
 			lst = lst->next;
-		}
 		lst = lst->next;
 	}
 	return (TRUE);

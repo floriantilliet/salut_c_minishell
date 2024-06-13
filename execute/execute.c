@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:46:29 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/11 17:09:31 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/13 15:32:09 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,16 @@ t_cmd		*initialise_cmd(t_token **tokens, t_env **env)
 	cmd->env = NULL;
 	if (!count_len(tokens, cmd))
 		return (free(cmd), NULL);
+//	printf("Len de cmd : %d\n", cmd->len);
 	if (cmd->len && cmd->is_access)
 	{
 		cmd->cmd = initialise_cmd_cmd(*tokens, cmd, cmd->len);
+/* 		int i = 0;
+		while (cmd->cmd[i])
+		{
+			printf("%s\n", cmd->cmd[i]);
+			i++;
+		} */
 		cmd->env = initialise_cmd_env(env);
 		if (!cmd->cmd || !cmd->env)
 			return (free(cmd), NULL);
@@ -114,17 +121,18 @@ void	get_access(t_cmd *cmd, char *str, t_env *lst_env)
 	char	*tmp;
 	int		i;
 
-	while (lst_env->next && ft_strncmp(lst_env->key, "PATH", 5))
+	while (lst_env->next && ft_strcmp(lst_env->key, "PATH"))
 			lst_env = lst_env->next;
-	if (!ft_strncmp(lst_env->key, "PATH", 5))
+	if (ft_strcmp(lst_env->key, "PATH"))
 		return ;
 	i = -1;
 	tab = ft_split(lst_env->value, ':');
-	while (tab[i++])
+	while (tab[++i])
 	{
 		tmp = ft_strjoin(tab[i], "/");
 		cmd->path = ft_strjoin(tmp, str);
 		free(tmp);
+		printf("%s\n", cmd->path);
 		if (access(cmd->path, F_OK | X_OK) != -1)
 		{
 			free_char_tab(tab);
@@ -148,12 +156,16 @@ int	access_cmd(t_token **tokens, t_env **env)
 	cmd = initialise_cmd(tokens, env);
 	if (!cmd)
 		return (0);
-	while (lst_tok->type != 0 && lst_tok->next)
+	while (lst_tok->type != CMD && lst_tok->next)
 		lst_tok = lst_tok->next;
 	if (cmd->is_access && access(lst_tok->value,  F_OK | X_OK) == -1)
 		get_access(cmd, lst_tok->value, lst_env);
+	else if (access(lst_tok->value,  F_OK | X_OK) != -1)
+		cmd->path = ft_strdup(lst_tok->value);
+	printf("cmd PATH : %s\n", cmd->path);
 	if (!cmd || !cmd->path || execve(cmd->path, cmd->cmd, cmd->env) == -1)
 		printf("Erreur execve\n");
 	free_char_tab(cmd->cmd);
+	free(cmd->path);
 	return (free_char_tab(cmd->env), free(cmd), 0);
 }

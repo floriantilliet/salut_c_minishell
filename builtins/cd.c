@@ -6,19 +6,19 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 13:08:16 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/11 17:08:13 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/13 13:13:29 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../include/minishell.h"
 
-int		ft_cd(t_token **tokens)
+int		ft_cd(t_token *tokens)
 {
 	t_token *lst;
 	char	*pwd;
 	char	*str;
 	
-	lst = *tokens;
+	lst = tokens;
 	while (lst && lst->type != CMD)
 		lst = lst->next;
 	if (!lst && !lst->next && (lst->next)->type == ARG)

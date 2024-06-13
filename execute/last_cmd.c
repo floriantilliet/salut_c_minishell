@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:57 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/13 12:36:08 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/13 14:11:59 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,6 @@ int last_cmd(t_token *lst, t_env **env)
 		if (!ft_dup_last(lst) || !check_builtins(lst, env))
 			free_everything(env, lst->head);
     }
-	waitpid(pid, &status);
+	waitpid(pid, &status, 0);
     return (TRUE);
 }
