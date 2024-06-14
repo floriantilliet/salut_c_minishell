@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:11:05 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/13 14:27:38 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/14 15:10:30 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,14 @@ void    here_doc_put_in(char *limit, int pipe_fd[2])
         {
             close(pipe_fd[1]);
             free(ret);
-            exit(0);
+            return ;
         }
         ft_putstr_fd(ret, pipe_fd[1]);
         free(ret);
     }
 }
 
-int    heredoc(t_token *lst)
+int    heredoc(t_token *lst, t_env **env)
 {
     int		    pipe_fd[2];
 	pid_t	pid;
@@ -70,7 +70,10 @@ int    heredoc(t_token *lst)
     if (pid == -1)
         return (perror("ERROR_FORK"), FALSE);
     if (!pid)
+	{
 		here_doc_put_in(lst->value, pipe_fd);
+		free_everything(env, lst->head);
+	}
 	else
 	{
 		close(pipe_fd[1]);

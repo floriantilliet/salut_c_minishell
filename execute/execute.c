@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:46:29 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/13 15:32:09 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/14 14:59:00 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,16 +98,9 @@ t_cmd		*initialise_cmd(t_token **tokens, t_env **env)
 	cmd->env = NULL;
 	if (!count_len(tokens, cmd))
 		return (free(cmd), NULL);
-//	printf("Len de cmd : %d\n", cmd->len);
 	if (cmd->len && cmd->is_access)
 	{
 		cmd->cmd = initialise_cmd_cmd(*tokens, cmd, cmd->len);
-/* 		int i = 0;
-		while (cmd->cmd[i])
-		{
-			printf("%s\n", cmd->cmd[i]);
-			i++;
-		} */
 		cmd->env = initialise_cmd_env(env);
 		if (!cmd->cmd || !cmd->env)
 			return (free(cmd), NULL);
@@ -132,7 +125,6 @@ void	get_access(t_cmd *cmd, char *str, t_env *lst_env)
 		tmp = ft_strjoin(tab[i], "/");
 		cmd->path = ft_strjoin(tmp, str);
 		free(tmp);
-		printf("%s\n", cmd->path);
 		if (access(cmd->path, F_OK | X_OK) != -1)
 		{
 			free_char_tab(tab);
@@ -162,7 +154,6 @@ int	access_cmd(t_token **tokens, t_env **env)
 		get_access(cmd, lst_tok->value, lst_env);
 	else if (access(lst_tok->value,  F_OK | X_OK) != -1)
 		cmd->path = ft_strdup(lst_tok->value);
-	printf("cmd PATH : %s\n", cmd->path);
 	if (!cmd || !cmd->path || execve(cmd->path, cmd->cmd, cmd->env) == -1)
 		printf("Erreur execve\n");
 	free_char_tab(cmd->cmd);

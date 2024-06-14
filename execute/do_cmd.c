@@ -6,13 +6,13 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:38 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/13 14:15:45 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/14 15:12:30 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../include/minishell.h"
 
-int	ft_dup(t_token *lst)
+int	ft_dup(t_token *lst, t_env **env)
 {
 	close(lst->head->fd_pipe[0]);
 	if (dup2(lst->head->fd_pipe[1], 1) == -1)
@@ -23,7 +23,7 @@ int	ft_dup(t_token *lst)
 			lst = lst->next;
 		else if (lst->type == HEREDOC)
 		{
-			if (!heredoc(lst->next))
+			if (!heredoc(lst->next, env))
 				return (FALSE);
 			lst = lst->next;
 		}
@@ -75,7 +75,7 @@ int do_cmd(t_token *lst, t_env **env)
         return (perror(ERROR_FORK), FALSE);
     if (!pid)
     {
-		if (!ft_dup(lst) || !check_builtins(lst, env))
+		if (!ft_dup(lst, env) || !check_builtins(lst, env))
 			free_everything(env, lst->head);
     }
     else

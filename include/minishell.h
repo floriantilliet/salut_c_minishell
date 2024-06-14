@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/06/13 14:13:12 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/06/14 15:08:55 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ int		check_builtins(t_token *lst, t_env **env);
 char	**initialise_cmd_env(t_env **env);
 int		do_cmd(t_token *lst, t_env **env);
 int last_cmd(t_token *lst, t_env **env);
-int		heredoc(t_token *lst);
+int		heredoc(t_token *lst, t_env **env);
 int		ft_redirect(int type, t_token *lst);
 
 

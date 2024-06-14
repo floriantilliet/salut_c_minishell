@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/06/07 16:41:27 by florian          ###   ########.fr       */
+/*   Updated: 2024/06/14 16:57:54 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	main(int ac, char **av, char **envp)
 				{
 					tokens = (merge_tokens(strings_to_tokens(line_to_strings(line))));
 					expand_token_list(tokens, env);
-					parse_exec(tokens, env);
+					//parse_exec(tokens, env);
 					// print_token_list(tokens);
 					/* if (*tokens)
 						access_cmd(tokens, env); */
