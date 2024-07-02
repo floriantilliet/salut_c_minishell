@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 16:20:48 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/14 16:49:16 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/02 15:41:16 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,10 @@ void	parse_exec(t_token **tokens, t_env **env)
 	lst = *tokens;
 	if (!check_pipe(tokens))
 		return ;
-/* 	if (!lst->head->if_pipe)
-	{
-		check_builtins_without_pipe(lst, env);
-		return ;
-	} */
 	while (lst->head->if_pipe && lst)
 	{
 		printf("alloaololalo\n\n\n");
-		if (!do_cmd(lst, env))
+		if (!do_cmd(tokens, lst, env))
 			return ;
 		lst->head->if_pipe--;
 		while (lst && lst->type != PIPE)
@@ -69,6 +64,6 @@ void	parse_exec(t_token **tokens, t_env **env)
 		if (lst)
 			lst = lst->next;
 	}
-	last_cmd(lst, env);
+	last_cmd(tokens, lst, env);
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:14:26 by florian           #+#    #+#             */
-/*   Updated: 2024/06/14 16:55:58 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/02 15:16:56 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,6 @@ void	free_token_list(t_token **token_list)
 	t_token	*current;
 	t_token	*next;
 
-
-	current = *token_list;
-	while (current)
-	{
-		printf("%s\n", current->value);
-		current = current->next;
-	}
-	printf("fin de la list\n\n");
 	current = *token_list;
 	while (current)
 	{
@@ -63,16 +55,17 @@ void	free_token_list(t_token **token_list)
 		free(current);
 		current = next;
 	}
-	// free(token_list);
+	free(token_list);
 }
 
-void	free_everything(t_env **env, t_token *tokens)
+void	free_everything(t_env **env, t_token **tokens)
 {
-	t_token	*lst;
-
-	lst = tokens->head;
 	if (tokens)
-		free_token_list(&lst);
+		free_token_list(tokens);
+	if ((*env)->fd_in)
+		close((*env)->fd_in);
+	if ((*env)->fd_out)
+		close((*env)->fd_out);
 	if (env)
 		free_env(env);
 	exit (0);

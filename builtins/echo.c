@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 16:29:15 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/13 13:12:31 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/02 15:43:17 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,18 @@ void	ft_echo(t_token *tok)
 	t_token *lst;
 	
 	lst = tok;
+	if (lst && lst->type == CMD)
+		lst = lst->next;
+	if (!lst)
+		return ;
 	flag = is_flag(lst->value);
 	while (skip_flag(lst->value))
 		lst = lst->next;
-	while (lst)
+	while (lst && lst->type == ARG)
 	{
 		print_word_echo(lst->value);
 		lst = lst->next;
-		if (lst)
+		if (lst && lst->type == ARG)
 			write(1, " ", 1);
 	}
 	if (!flag)

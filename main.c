@@ -6,11 +6,20 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/06/14 16:57:54 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/02 15:42:15 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/minishell.h"
+
+int	init_std(t_env *env)
+{
+	if (dup2(env->fd_in, STDIN_FILENO) == -1)
+		return (printf(ERROR_DUP), FALSE);
+	if (dup2(env->fd_out, STDOUT_FILENO) == -1)
+		return (printf(ERROR_DUP), FALSE);
+	return (TRUE);
+}
 
 int	main(int ac, char **av, char **envp)
 {
@@ -28,6 +37,8 @@ int	main(int ac, char **av, char **envp)
 	env = NULL;
 	env = store_env(envp);
 	signals();
+	(*env)->fd_in = dup(STDIN_FILENO);
+	(*env)->fd_out = dup(STDOUT_FILENO);
 	line = "\0";
 	while (line != NULL)
 	{
@@ -49,18 +60,19 @@ int	main(int ac, char **av, char **envp)
 				{
 					tokens = (merge_tokens(strings_to_tokens(line_to_strings(line))));
 					expand_token_list(tokens, env);
-					//parse_exec(tokens, env);
+					parse_exec(tokens, env);
 					// print_token_list(tokens);
 					/* if (*tokens)
 						access_cmd(tokens, env); */
 					free_token_list(tokens);
+					init_std(*env);
 				}
 			}
 		}
 		free(line);
 	}
 	rl_clear_history();
-	free_env(env);
+	free_everything(env, NULL);
 	return (0);
 }
 

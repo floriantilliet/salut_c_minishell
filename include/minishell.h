@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/06/14 15:08:55 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/02 15:55:59 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ typedef struct s_env
 	char			*value;
 	struct s_env	*next;
 	struct s_env	*prev;
+	int				fd_in;
+	int				fd_out;
 }					t_env;
 
 typedef struct s_token
@@ -57,6 +59,7 @@ typedef struct s_token
 	char			*value;
 	int				type;
 	int				if_pipe;
+	int				fd;
 	int				fd_pipe[2];
 	struct s_token	*next;
 	struct s_token	*prev;
@@ -155,7 +158,7 @@ char				*get_env_value(char *key, t_env **env);
 void				free_char_tab(char **tab);
 void				free_env(t_env **env);
 void				free_token_list(t_token **token_list);
-void				free_everything(t_env **env, t_token *token);
+void				free_everything(t_env **env, t_token **token);
 
 // signals.c
 
@@ -182,9 +185,9 @@ void	parse_exec(t_token **tokens, t_env **env);
 int		ft_strcmp(const char *s1, const char *s2);
 int		check_builtins(t_token *lst, t_env **env);
 char	**initialise_cmd_env(t_env **env);
-int		do_cmd(t_token *lst, t_env **env);
-int last_cmd(t_token *lst, t_env **env);
-int		heredoc(t_token *lst, t_env **env);
+int		do_cmd(t_token **tokens, t_token *lst, t_env **env);
+int		last_cmd(t_token **tokens, t_token *lst, t_env **env);
+int		heredoc(t_token **tokens, t_token *lst, t_env **env);
 int		ft_redirect(int type, t_token *lst);
 
 

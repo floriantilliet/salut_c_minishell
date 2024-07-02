@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:46:29 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/14 14:59:00 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/02 13:58:33 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,8 +154,10 @@ int	access_cmd(t_token **tokens, t_env **env)
 		get_access(cmd, lst_tok->value, lst_env);
 	else if (access(lst_tok->value,  F_OK | X_OK) != -1)
 		cmd->path = ft_strdup(lst_tok->value);
+	printf("On y est ???\n\n");
 	if (!cmd || !cmd->path || execve(cmd->path, cmd->cmd, cmd->env) == -1)
 		printf("Erreur execve\n");
+	printf("Et la\n\n\n");
 	free_char_tab(cmd->cmd);
 	free(cmd->path);
 	return (free_char_tab(cmd->env), free(cmd), 0);

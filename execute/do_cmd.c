@@ -6,13 +6,13 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:38 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/14 15:12:30 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/02 15:20:28 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../include/minishell.h"
 
-int	ft_dup(t_token *lst, t_env **env)
+int	ft_dup(t_token **tokens, t_token *lst, t_env **env)
 {
 	close(lst->head->fd_pipe[0]);
 	if (dup2(lst->head->fd_pipe[1], 1) == -1)
@@ -23,7 +23,7 @@ int	ft_dup(t_token *lst, t_env **env)
 			lst = lst->next;
 		else if (lst->type == HEREDOC)
 		{
-			if (!heredoc(lst->next, env))
+			if (!heredoc(tokens, lst->next, env))
 				return (FALSE);
 			lst = lst->next;
 		}
@@ -59,12 +59,15 @@ int	check_builtins(t_token *lst, t_env **env)
 	else if (!ft_strncmp(lst->value, "exit", 5))
 		return (FALSE);
 	else
+	{
+		printf("On rentre dans access cmd\n\n");
 		access_cmd(&lst, env);
+	}
 	return (FALSE);
 }
 
 
-int do_cmd(t_token *lst, t_env **env)
+int do_cmd(t_token **tokens, t_token *lst, t_env **env)
 {
     pid_t   pid;
 
@@ -75,8 +78,8 @@ int do_cmd(t_token *lst, t_env **env)
         return (perror(ERROR_FORK), FALSE);
     if (!pid)
     {
-		if (!ft_dup(lst, env) || !check_builtins(lst, env))
-			free_everything(env, lst->head);
+		if (!ft_dup(tokens, lst, env) || !check_builtins(lst, env))
+			free_everything(env, tokens);
     }
     else
     {

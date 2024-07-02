@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:11:05 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/14 15:10:30 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/02 15:56:16 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,26 @@
 
 int		ft_redirect(int type, t_token *lst)
 {
-	int	fd;
-
 	if (!lst || lst->type != ARG)
 		return (FALSE);
 	if (type == IN)
 	{
-		fd = open(lst->value, O_RDONLY);
-		if (fd == -1)
+		lst->fd = open(lst->value, O_RDONLY);
+		if (lst->fd == -1)
 			return (perror("Erreur open\n"), FALSE);
-		if (dup2(fd, 0) == -1)
-			return (perror("Erreur dup2"), FALSE);
+		if (dup2(lst->fd, 0) == -1)
+			return (perror("Erreur dup2\n"), FALSE);
 	}
 	else
 	{
 		if (type == APPEND)
-			fd = open(lst->value, O_WRONLY | O_CREAT | O_APPEND, 0000644);
+			lst->fd = open(lst->value, O_WRONLY | O_CREAT | O_APPEND, 0000644);
 		else
-			fd = open(lst->value, O_CREAT | O_RDWR | O_TRUNC, 0000644);
-		if (fd == -1)
+			lst->fd = open(lst->value, O_CREAT | O_RDWR | O_TRUNC, 0000644);
+		if (lst->fd == -1)
 			return (perror("Erreur open\n"), FALSE);
-		if (dup2(fd, 1) == -1)
-			return (perror("Erreur dup2"), FALSE);
+		if (dup2(lst->fd, 1) == -1)
+			return (perror("Erreur dup2\n"), FALSE);
 	}
 	return (TRUE);
 }
@@ -59,7 +57,7 @@ void    here_doc_put_in(char *limit, int pipe_fd[2])
     }
 }
 
-int    heredoc(t_token *lst, t_env **env)
+int    heredoc(t_token **tokens, t_token *lst, t_env **env)
 {
     int		    pipe_fd[2];
 	pid_t	pid;
@@ -72,7 +70,7 @@ int    heredoc(t_token *lst, t_env **env)
     if (!pid)
 	{
 		here_doc_put_in(lst->value, pipe_fd);
-		free_everything(env, lst->head);
+		free_everything(env, tokens);
 	}
 	else
 	{
