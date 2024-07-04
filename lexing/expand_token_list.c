@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_token_list.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:13:10 by florian           #+#    #+#             */
-/*   Updated: 2024/06/03 16:25:46 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/03 18:25:14 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,18 @@ void	trim_token(t_token *current)
 	current->value = tmp;
 }
 
+void	initialise_fd(t_token **tokens)
+{
+	t_token *lst;
+
+	lst = *tokens;
+	while (lst)
+	{
+		lst->fd = -1;
+		lst = lst->next;
+	}
+}
+
 void	expand_token_list(t_token **token_list, t_env **env)
 {
 	t_token	*current;
@@ -79,4 +91,5 @@ void	expand_token_list(t_token **token_list, t_env **env)
 		flag = 0;
 		current = current->next;
 	}
+	initialise_fd(token_list);
 }

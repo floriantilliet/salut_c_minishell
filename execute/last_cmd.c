@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:57 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/02 15:56:37 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/03 18:26:38 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,11 @@ int	ft_dup_last(t_token **tokens, t_token *lst, t_env **env)
 	return (FALSE);
 }
 
-void	close_redirect(t_token *lst)
+void	close_redirect(t_token **tokens)
 {
+	t_token *lst;
+
+	lst = *tokens;
 	while (lst)
 	{
 		if (lst->type != CMD && lst->type != ARG)
@@ -42,14 +45,14 @@ void	close_redirect(t_token *lst)
 			lst = lst->next;
 			if (!lst)
 				return ;
-			if (lst->type == ARG)
+			if (lst->type == ARG && lst->fd != -1)
 				close(lst->fd);
 		}
 		lst = lst->next;
 	}
 }
 
-int	check_builtins_without_pipe(t_token *lst, t_env **env)
+int	check_builtins_without_pipe(t_token **tokens, t_token *lst, t_env **env)
 {
 	while (lst && lst->type != CMD)
 		lst = lst->next;
@@ -60,7 +63,7 @@ int	check_builtins_without_pipe(t_token *lst, t_env **env)
 	else if (!ft_strncmp(lst->value, "pwd", 4))
 		return (ft_pwd(), TRUE);
 	else if (!ft_strncmp(lst->value, "cd", 3))
-		return (ft_cd(lst), TRUE);
+		return (ft_cd(lst, env), TRUE);
 	else if (!ft_strncmp(lst->value, "export", 7))
 		return (ft_export(lst, env), TRUE);
 	else if (!ft_strncmp(lst->value, "unset", 6))
@@ -68,7 +71,7 @@ int	check_builtins_without_pipe(t_token *lst, t_env **env)
 	else if (!ft_strncmp(lst->value, "env", 4))
 		return (printenv(env), TRUE);
 	else if (!ft_strncmp(lst->value, "exit", 5))
-		return (TRUE);
+		return (ft_exit(tokens, lst, env), TRUE);
 	return (FALSE);
 }
 
@@ -78,19 +81,18 @@ int last_cmd(t_token **tokens, t_token *lst, t_env **env)
 	int		status;
 
 	ft_dup_last(tokens, lst, env);
-	if (check_builtins_without_pipe(lst, env))
-		return (close_redirect(lst), TRUE);
+	if (check_builtins_without_pipe(tokens, lst, env))
+		return (close_redirect(&lst), TRUE);
     pid = fork();
 	if (pid == -1)
         return (perror(ERROR_FORK), FALSE);
     if (!pid)
     {
-		printf("test\n\n");
 		ft_dup_last(tokens, lst, env);
-		if (!check_builtins(lst, env))
-			free_everything(env, tokens);
-		exit(0);
+		if (!access_cmd(&lst, env))
+			free_everything(env, tokens, 1);
     }
 	waitpid(pid, &status, 0);
+	close_redirect(tokens);
     return (TRUE);
 }

@@ -6,28 +6,14 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:08:44 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/13 13:13:56 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/03 17:08:24 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../include/minishell.h"
 
-void	build_tab(char *value, char *tab[2])
+void	build_tab2(char *value, char *tab[2], int len)
 {
-	int	len;
-
-	len = 0;
-	tab[0] = NULL;
-	while (value[len] && value[len] != '=')
-		len++;
-	if (!value[len])
-		return ;
-	tab[0] = malloc(sizeof(char) * (len + 1));
-	if (!tab[0])
-	{
-		printf("Erreur malloc\n");
-		return ;
-	}
 	len = -1;
 	while (value[++len] != '=')
 		tab[0][len] = value[len];
@@ -39,6 +25,30 @@ void	build_tab(char *value, char *tab[2])
 		free(tab[0]);
 		printf("Erreur malloc\n");
 	}
+}
+
+void	build_tab(char *value, char *tab[2], t_env *env)
+{
+	int	len;
+
+	len = 0;
+	tab[0] = NULL;
+	while (value[len] && value[len] != '=')
+		len++;
+	if (!value[len])
+	{
+		while (env && env->next)
+			env = env->next;
+		env->next = ft_lstnew_env(value, NULL, TRUE);
+		return ;
+	}
+	tab[0] = malloc(sizeof(char) * (len + 1));
+	if (!tab[0])
+	{
+		printf("Erreur malloc\n");
+		return ;
+	}
+	build_tab2(value, tab, len);
 }
 
 int	ft_concatenate_var(char *tab[2], t_env *l_env, t_env **env)
@@ -75,7 +85,7 @@ int	ft_export_bis(t_token *lst, t_env **env)
 	char	*tab[2];
 
 	l_env = *env;
-	build_tab(lst->value, tab);
+	build_tab(lst->value, tab, *env);
 	if (!tab[0] || !tab[1])
 		return (FALSE);
 	if (ft_concatenate_var(tab, l_env, env))
@@ -87,12 +97,12 @@ int	ft_export_bis(t_token *lst, t_env **env)
 		free(l_env->value);
 		l_env->value = ft_strdup(tab[1]);
 		if (!l_env->value)
-			return (printf("Error malloc\n"), free(tab[0]), free(tab[1]), TRUE);
+			return (ft_printf(ERR_MALLOC, 2), free(tab[0]), free(tab[1]), TRUE);
 	}
 	else
 	{
 		if (!ft_create_var(env, tab))
-			return (printf("Error malloc\n"), free(tab[0]), free(tab[1]), TRUE);
+			return (ft_printf(ERR_MALLOC, 2), free(tab[0]), free(tab[1]), TRUE);
 	}
 	return (free(tab[0]), free(tab[1]), TRUE);
 }

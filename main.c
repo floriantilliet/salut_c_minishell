@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/02 15:42:15 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/03 14:21:37 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,33 +46,25 @@ int	main(int ac, char **av, char **envp)
 		if (line)
 		{
 			add_history(line);
-			if (ft_strncmp(line, "exit", 5) == 0)
-			{
-				free(line);
-				break ;
-			}
-			else
 			// printf("%s\n", expander(line, env));
+			if (!check_problems(line))
+				;				
+			else
 			{
-				if (!check_problems(line))
-					;				
-				else
-				{
-					tokens = (merge_tokens(strings_to_tokens(line_to_strings(line))));
-					expand_token_list(tokens, env);
-					parse_exec(tokens, env);
-					// print_token_list(tokens);
-					/* if (*tokens)
-						access_cmd(tokens, env); */
-					free_token_list(tokens);
-					init_std(*env);
-				}
+				tokens = (merge_tokens(strings_to_tokens(line_to_strings(line))));
+				expand_token_list(tokens, env);
+				parse_exec(tokens, env);
+				// print_token_list(tokens);
+				/* if (*tokens)
+					access_cmd(tokens, env); */
+				free_token_list(tokens);
+				init_std(*env);
 			}
 		}
 		free(line);
 	}
 	rl_clear_history();
-	free_everything(env, NULL);
+	free_env(env);
 	return (0);
 }
 

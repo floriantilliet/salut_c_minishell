@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/02 15:55:59 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/03 18:13:02 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@
 # define ERROR_PIPE "Some mistakes occures when using pipe\n"
 # define ERROR_DUP "Some mistakes occures when using dup\n"
 # define ERROR_FORK "Some mistakes occures when using fork\n"
-#  define ERROR_EXEC "Some mistakes occures when using execve\n"
+# define ERROR_EXEC "Some mistakes occures when using execve\n"
+# define ERR_MALLOC "Error malloc\n"
 
 typedef struct s_env
 {
@@ -158,7 +159,7 @@ char				*get_env_value(char *key, t_env **env);
 void				free_char_tab(char **tab);
 void				free_env(t_env **env);
 void				free_token_list(t_token **token_list);
-void				free_everything(t_env **env, t_token **token);
+void				free_everything(t_env **env, t_token **token, int code_exit);
 
 // signals.c
 
@@ -168,14 +169,15 @@ void				signals(void);
 // builtins
 
 int					ft_pwd(void);
-int					ft_cd(t_token *tokens);
+int					ft_cd(t_token *tokens, t_env **env);
 int					ft_export(t_token *tokens, t_env **env);
 int					ft_create_var(t_env **env, char *tab[2]);
 int					printenv(t_env **env);
+void				ft_exit(t_token **tokens, t_token *lst, t_env **env);
 void				ft_echo(t_token *tok);
 void				print_env_in_order(t_env **env);
 void				ft_unset(t_token *token, t_env **env);
-t_env				*ft_lstnew_env(char *key, char *value);
+t_env				*ft_lstnew_env(char *key, char *value, int create);
 
 // execute.c
 
@@ -189,6 +191,7 @@ int		do_cmd(t_token **tokens, t_token *lst, t_env **env);
 int		last_cmd(t_token **tokens, t_token *lst, t_env **env);
 int		heredoc(t_token **tokens, t_token *lst, t_env **env);
 int		ft_redirect(int type, t_token *lst);
+void	close_redirect(t_token **tokens);
 
 
 #endif

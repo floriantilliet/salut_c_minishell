@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:11:05 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/02 15:56:16 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/03 18:22:30 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,11 @@ void    here_doc_put_in(char *limit, int pipe_fd[2])
     while (1)
     {
         ret = get_next_line(0);
-        if (!ft_strncmp(ret, limit, ft_strlen(limit)))
+        if (!ft_strcmp(ret, limit))
         {
             close(pipe_fd[1]);
             free(ret);
+			free(limit);
             return ;
         }
         ft_putstr_fd(ret, pipe_fd[1]);
@@ -60,6 +61,7 @@ void    here_doc_put_in(char *limit, int pipe_fd[2])
 int    heredoc(t_token **tokens, t_token *lst, t_env **env)
 {
     int		    pipe_fd[2];
+	int			status;
 	pid_t	pid;
 
     if (pipe(pipe_fd) == -1)
@@ -69,8 +71,8 @@ int    heredoc(t_token **tokens, t_token *lst, t_env **env)
         return (perror("ERROR_FORK"), FALSE);
     if (!pid)
 	{
-		here_doc_put_in(lst->value, pipe_fd);
-		free_everything(env, tokens);
+		here_doc_put_in(ft_strjoin(lst->value, "\n"), pipe_fd);
+		free_everything(env, tokens, 0);
 	}
 	else
 	{
@@ -78,7 +80,7 @@ int    heredoc(t_token **tokens, t_token *lst, t_env **env)
 		if (dup2(pipe_fd[0], 0) == -1)
             return (perror("ERROR_DUP"), FALSE);
         close(pipe_fd[0]);
-		wait(NULL);
+		waitpid(pid, &status, 0);
 	}
     return (TRUE);
 }

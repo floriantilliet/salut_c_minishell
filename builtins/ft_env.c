@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 11:40:47 by florian           #+#    #+#             */
-/*   Updated: 2024/06/11 17:07:06 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/03 17:21:34 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	printenv(t_env **env)
 	current = *env;
 	while (current)
 	{
-		printf("%s=%s\n", current->key, current->value);
+		if (current->value)
+			printf("%s=%s\n", current->key, current->value);
 		current = current->next;
 	}
 	return (0);

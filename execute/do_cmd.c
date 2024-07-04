@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:38 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/02 15:20:28 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/03 15:36:23 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	check_builtins(t_token *lst, t_env **env)
 	else if (!ft_strncmp(lst->value, "pwd", 4))
 		return (ft_pwd(), FALSE);
 	else if (!ft_strncmp(lst->value, "cd", 3))
-		return (ft_cd(lst), FALSE);
+		return (ft_cd(lst, env), FALSE);
 	else if (!ft_strncmp(lst->value, "export", 7))
 		return (ft_export(lst, env), FALSE);
 	else if (!ft_strncmp(lst->value, "unset", 6))
@@ -79,7 +79,7 @@ int do_cmd(t_token **tokens, t_token *lst, t_env **env)
     if (!pid)
     {
 		if (!ft_dup(tokens, lst, env) || !check_builtins(lst, env))
-			free_everything(env, tokens);
+			free_everything(env, tokens, 0);
     }
     else
     {

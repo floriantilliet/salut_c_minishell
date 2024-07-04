@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:14:26 by florian           #+#    #+#             */
-/*   Updated: 2024/07/02 15:16:56 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/03 17:22:14 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	free_env(t_env **env)
 	{
 		next = current->next;
 		free(current->key);
-		free(current->value);
+		if (current->value)
+			free(current->value);
 		free(current);
 		current = next;
 	}
@@ -58,7 +59,7 @@ void	free_token_list(t_token **token_list)
 	free(token_list);
 }
 
-void	free_everything(t_env **env, t_token **tokens)
+void	free_everything(t_env **env, t_token **tokens, int code_exit)
 {
 	if (tokens)
 		free_token_list(tokens);
@@ -68,5 +69,5 @@ void	free_everything(t_env **env, t_token **tokens)
 		close((*env)->fd_out);
 	if (env)
 		free_env(env);
-	exit (0);
+	exit (code_exit);
 }

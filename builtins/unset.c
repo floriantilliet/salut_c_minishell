@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:14:12 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/06/13 13:14:16 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/03 17:53:22 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 void	free_node(t_env *node)
 {
 	free(node->key);
-	free(node->value);
+	if (node->value)
+		free(node->value);
 	free(node);
 }
 
