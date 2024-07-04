@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 11:40:47 by florian           #+#    #+#             */
-/*   Updated: 2024/07/03 17:21:34 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/04 15:34:11 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,9 @@ int	printenv(t_env **env)
 		current = current->next;
 	}
 	return (0);
+}
+
+void	exit_status(int code_exit, t_env *env)
+{
+	env->exit_code = code_exit;
 }

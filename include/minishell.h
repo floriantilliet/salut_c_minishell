@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/03 18:13:02 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/04 15:26:55 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_env
 	struct s_env	*prev;
 	int				fd_in;
 	int				fd_out;
+	char			exit_code;
 }					t_env;
 
 typedef struct s_token
@@ -176,6 +177,7 @@ int					printenv(t_env **env);
 void				ft_exit(t_token **tokens, t_token *lst, t_env **env);
 void				ft_echo(t_token *tok);
 void				print_env_in_order(t_env **env);
+void				exit_status(int code_exit, t_env *env);
 void				ft_unset(t_token *token, t_env **env);
 t_env				*ft_lstnew_env(char *key, char *value, int create);
 

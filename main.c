@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/03 14:21:37 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/04 15:03:09 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	main(int ac, char **av, char **envp)
 					access_cmd(tokens, env); */
 				free_token_list(tokens);
 				init_std(*env);
+				exit_status(0, *env);
 			}
 		}
 		free(line);
