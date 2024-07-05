@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 11:40:03 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/03 17:10:32 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/05 15:34:08 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,6 @@ int	ft_create_var(t_env **env, char *tab[2])
 		lst = lst->next;
 	lst->next = ft_lstnew_env(tab[0], tab[1], FALSE);
 	if (!lst->next)
-		return (printf("Error malloc\n"), FALSE);
-	return (TRUE);
+		return (perror("Error malloc\n"), exit_status(1, *env), FALSE);
+	return (exit_status(1, *env), TRUE);
 }
