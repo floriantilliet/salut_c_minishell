@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:11 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/04 15:32:38 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/07 16:36:23 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,6 @@ char	*get_env_value(char *key, t_env **env)
 	current = *env;
 	if (ft_strlen(key) == 0)
 		return ("");
-	if (!ft_strcmp(key, "?"))
-		return (ft_itoa((*env)->exit_code));
 	while (current)
 	{
 		if (ft_strncmp(current->key, key, ft_strlen(key)) == 0
