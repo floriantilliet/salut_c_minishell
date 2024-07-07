@@ -55,7 +55,7 @@ int	main(int ac, char **av, char **envp)
 				tokens = (merge_tokens(strings_to_tokens(line_to_strings(line))));
 				expand_token_list(tokens, env);
 				parse_exec(tokens, env);
-				// print_token_list(tokens);
+				//print_token_list(tokens);
 				/* if (*tokens)
 					access_cmd(tokens, env); */
 				free_token_list(tokens);

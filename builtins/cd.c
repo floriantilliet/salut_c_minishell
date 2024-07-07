@@ -12,20 +12,20 @@
 
 # include "../include/minishell.h"
 
-int		cd_home(t_env *env)
+int		cd_home(t_env **env, t_env *lst)
 {
-	while (env)
+	while (lst)
 	{
-		if (!ft_strcmp(env->key, "HOME"))
+		if (!ft_strcmp(lst->key, "HOME"))
 			break ;
-		env = env->next;
+		lst = lst->next;
 	}
-	if (!env)
-		return (ft_printf("bash: cd: HOME not set\n", 2), FALSE);
-	if (chdir(env->value) != 0)
+	if (!lst)
+		return (ft_printf("bash: cd: HOME not set\n", 2), exit_status(1, *env), FALSE);
+	if (chdir(lst->value) != 0)
 		return (ft_printf("bash: cd: %s: No such file or directory\n", 2, 
-		env->value), FALSE);
-	return (TRUE);
+		lst->value), exit_status(1, *env),  FALSE);
+	return (exit_status(0, *env), TRUE);
 }
 
 int		ft_cd(t_token *tokens, t_env **env)
@@ -39,7 +39,9 @@ int		ft_cd(t_token *tokens, t_env **env)
 		lst = lst->next;
 	lst = lst->next;
 	if (!lst || lst->type != ARG)
-		return(cd_home(*env));
+		return(cd_home(env, *env));
+	else if (lst->next && lst->next->type == ARG)
+		return (ft_printf("bash: cd: too many arguments\n", 2), exit_status(1, *env), FALSE);
 	if (chdir(lst->value) == 0)
 		return (TRUE);
 	pwd = getcwd(NULL, 0);
@@ -47,7 +49,7 @@ int		ft_cd(t_token *tokens, t_env **env)
 	free(pwd);
 	if (chdir(str) != 0)
 		return (free(str), ft_printf("bash: cd: %s: No such file or directory\n", 2,
-		 lst->value), FALSE);
+		 lst->value), exit_status(1, *env), FALSE);
 	free(str);
-	return (TRUE);
+	return (exit_status(0, *env), TRUE);
 }
