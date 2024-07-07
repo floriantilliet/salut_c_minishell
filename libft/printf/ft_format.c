@@ -23,9 +23,7 @@ int	ft_strchr3(const char *str, int character)
 int	ft_check(const char *format)
 {
 	int			count;
-	const char	*str;
 
-	str = format;
 	count = 0;
 	if (!format)
 		return (-1);
