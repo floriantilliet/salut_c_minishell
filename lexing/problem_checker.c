@@ -6,7 +6,7 @@
 /*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 11:37:41 by florian           #+#    #+#             */
-/*   Updated: 2024/06/02 12:51:48 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/07 13:18:29 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,22 @@ int	check_redirection_problems(char *line)
 
 int	check_pipe_problems(char *line)
 {
-	int	i;
-	int	flag;
+	int		i;
+	int		flag;
+	char	quote;
 
 	i = 0;
 	flag = 0;
+	quote = '\0';
 	while (line[i])
 	{
+		if (line[i] == '\'' || line[i] == '"')
+		{
+			quote = line[i];
+			i++;
+			while (line[i] && line[i] != quote)
+				i++;
+		}
 		if (!is_space(line[i]) && line[i] != '|')
 			flag = 1;
 		if (line[i] == '|' && flag == 0)
