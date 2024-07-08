@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:08:44 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/05 17:25:31 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/05 17:36:19 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int	parsing_export(char *str)
 	str++;
 	while (*str)
 	{
-		if (*str == '=')
+		if (*str == '=' || (*str == '+' && *str == '='))
 			break ;
 		else if (*str != '_' && !ft_isalnum(*str))
 		{
