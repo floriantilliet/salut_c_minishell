@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:46:29 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/10 16:28:41 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/10 20:54:27 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,21 @@ char	**initialise_cmd_cmd(t_token *lst, t_cmd *cmd, int len)
 			lst = lst->next;
 	while (lst && i < len)
 	{
-		if (lst->type != PIPE)
+		if (lst->type < PIPE)
 		{
 			cmd->cmd[i] = ft_strdup(lst->value);
 			lst = lst->next;
 			if (!cmd->cmd[i])
 				return (free_char_tab(cmd->cmd), free(cmd), printf(ERR_MALLOC), NULL);
+			i++;
+		}
+		else if (lst->type > PIPE)
+		{
+			lst = lst->next;
+			lst = lst->next;
 		}
 		else
 			break ;
-		i++;
 	}
 	return (cmd->cmd);
 }
@@ -143,27 +148,30 @@ void	get_access(t_cmd *cmd, char *str, t_env *lst_env)
 	cmd->path = NULL;
 }
 
-int	access_cmd(t_token **tokens, t_env **env)
+int	access_cmd(t_token *lst, t_token **tokens, t_env **env)
 {
 	t_env	*lst_env;
-	t_token	*lst_tok;
 	t_cmd	*cmd;
 
 	lst_env = *env;
-	lst_tok = *tokens;
 	cmd = initialise_cmd(tokens, env);
 	if (!cmd)
 		return (0);
-	while (lst_tok->type != CMD && lst_tok->next)
-		lst_tok = lst_tok->next;
-	if (cmd->is_access && access(lst_tok->value,  F_OK | X_OK) == -1)
-		get_access(cmd, lst_tok->value, lst_env);
-	else if (access(lst_tok->value,  F_OK | X_OK) != -1)
-		cmd->path = ft_strdup(lst_tok->value);
+	while (lst->type != CMD && lst->next)
+		lst = lst->next;
+	if (cmd->is_access && access(lst->value,  F_OK | X_OK) == -1)
+		get_access(cmd, lst->value, lst_env);
+	else if (access(lst->value,  F_OK | X_OK) != -1)
+		cmd->path = ft_strdup(lst->value);
+	close_redirect(tokens);
+	close_dup(env);
 	if (!cmd || !cmd->path || execve(cmd->path, cmd->cmd, cmd->env) == -1)
-		perror("Error execve\n");
+		perror("Error execve");
 	free_char_tab(cmd->cmd);
+	free_char_tab(cmd->env);
 	free(cmd->path);
-	free_everything(env, tokens, 1);
-	return (free_char_tab(cmd->env), free(cmd), 0);
+	free(cmd);
+	if (errno == ENOENT)
+		free_everything(env, tokens, 127);
+	return (free_everything(env, tokens, errno), 0);
 }

@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/08 17:04:07 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/10 20:45:59 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,7 @@ void				free_char_tab(char **tab);
 void				free_env(t_env **env);
 void				free_token_list(t_token **token_list);
 void				free_everything(t_env **env, t_token **token, int code_exit);
+void				close_dup(t_env **env);
 
 // signals.c
 
@@ -172,7 +173,7 @@ void				signals(void);
 int					ft_pwd(t_env **env);
 int					ft_cd(t_token *tokens, t_env **env);
 int					ft_export(t_token *tokens, t_env **env);
-int					printenv(t_env **env);
+int					printenv(t_env **env, t_token *lst);
 void				ft_exit(t_token **tokens, t_token *lst, t_env **env);
 void				ft_echo(t_token *tok);
 void				print_env_in_order(t_env **env);
@@ -182,11 +183,11 @@ void	add_new_env_node(char *key, char *value, t_env **env);
 
 // execute.c
 
-int		access_cmd(t_token **tokens, t_env **env);
+int		access_cmd(t_token *lst, t_token **tokens, t_env **env);
 int		count_len(t_token **tokens, t_cmd *cmd);
 void	parse_exec(t_token **tokens, t_env **env);
 int		ft_strcmp(const char *s1, const char *s2);
-int		check_builtins(t_token *lst, t_env **env);
+int	check_builtins(t_token *lst, t_token **tokens, t_env **env);
 char	**initialise_cmd_env(t_env **env);
 int		do_cmd(t_token **tokens, t_token *lst, t_env **env);
 int		last_cmd(t_token **tokens, t_token *lst, t_env **env);

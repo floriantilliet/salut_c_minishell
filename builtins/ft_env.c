@@ -6,24 +6,30 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 11:40:47 by florian           #+#    #+#             */
-/*   Updated: 2024/07/04 15:34:11 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/10 19:25:59 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	printenv(t_env **env)
+int	printenv(t_env **env, t_token *lst)
 {
 	t_env	*current;
 
 	current = *env;
+	if (lst->next && lst->next->type == ARG)
+	{
+		ft_printf("env: ‘%s’: No such file or directory\n", 
+		STDERR_FILENO, lst->next->value);
+		return (exit_status(127, *env), FALSE);
+	}
 	while (current)
 	{
 		if (current->value)
 			printf("%s=%s\n", current->key, current->value);
 		current = current->next;
 	}
-	return (0);
+	return (exit_status(0, *env), 0);
 }
 
 void	exit_status(int code_exit, t_env *env)
