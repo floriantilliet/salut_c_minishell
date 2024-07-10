@@ -6,7 +6,7 @@
 /*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 11:37:41 by florian           #+#    #+#             */
-/*   Updated: 2024/07/10 16:58:38 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/10 17:41:53 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,16 @@ int	check_pipe_problems(char *line)
 
 int	check_problems(char *line)
 {
-	if (*line == '\0')
+	size_t	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (!is_space(line[i]))
+			break ;
+		i++;
+	}
+	if (i == ft_strlen(line))
 		return (0);
 	if (!check_quote_problems(line))
 		return (printf("Error: unclosed quote\n"), 0);
