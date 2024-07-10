@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 16:29:15 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/03 16:42:45 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/10 16:20:51 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,12 @@ void	ft_echo(t_token *tok)
 	flag = is_flag(lst->value);
 	while (lst && skip_flag(lst->value))
 		lst = lst->next;
-	while (lst && lst->type == ARG)
+	while (lst && lst->type != PIPE)
 	{
-		print_word_echo(lst->value);
+		if (lst->type > PIPE)
+			lst = lst->next;
+		else
+			print_word_echo(lst->value);
 		lst = lst->next;
 		if (lst && lst->type == ARG)
 			write(1, " ", 1);

@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:57 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/08 17:37:20 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/10 16:37:10 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	ft_dup_last(t_token **tokens, t_token *lst, t_env **env)
 		}
 		lst = lst->next;
 	}
-	return (FALSE);
+	return (TRUE);
 }
 
 void	close_redirect(t_token **tokens)
@@ -79,8 +79,10 @@ int last_cmd(t_token **tokens, t_token *lst, t_env **env)
 {
     pid_t   pid;
 	int		status;
+	int		exit_code;
 
-	ft_dup_last(tokens, lst, env);
+	if (!ft_dup_last(tokens, lst, env))
+		return (FALSE);
 	if (check_builtins_without_pipe(tokens, lst, env))
 		return (close_redirect(&lst), TRUE);
     pid = fork();
@@ -88,12 +90,14 @@ int last_cmd(t_token **tokens, t_token *lst, t_env **env)
         return (perror(ERROR_FORK), FALSE);
     if (!pid)
     {
-		ft_dup_last(tokens, lst, env);
 		if (!access_cmd(&lst, env))
 			free_everything(env, tokens, 1);
     }
 	waitpid(pid, &status, 0);
-	exit_status(status, *env);
+	exit_code = 1;
+	if (WIFEXITED(status))
+		exit_code = WEXITSTATUS(status);
+	exit_status(exit_code, *env);
 	close_redirect(tokens);
     return (TRUE);
 }
