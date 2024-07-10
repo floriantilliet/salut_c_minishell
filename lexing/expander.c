@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:57 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/04 15:32:56 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/07 16:36:14 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,10 @@ void	handle_expansion(char **res, char *line, int *i, t_env **env)
 {
 	int		j;
 	char	*sub;
+	char	*sub2;
 	char	*tmp;
+	char	*tmp2;
+	char	*exit;
 
 	j = 0;
 	(*i)++;
@@ -60,7 +63,18 @@ void	handle_expansion(char **res, char *line, int *i, t_env **env)
 	else
 	{
 		sub = ft_substr(line, *i, j);
-		tmp = ft_strjoin(*res, get_env_value(sub, env));
+		if (sub[0] == '?')
+		{
+			exit = ft_itoa((*env)->exit_code);
+			sub2 = ft_substr(sub, 1, j - 1);
+			tmp2 = ft_strjoin(exit, sub2);
+			tmp = ft_strjoin(*res, tmp2);
+			free(tmp2);
+			free(exit);
+			free(sub2);
+		}
+		else
+			tmp = ft_strjoin(*res, get_env_value(sub, env));
 		free(*res);
 		free(sub);
 		*res = tmp;

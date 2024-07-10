@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:11:05 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/03 18:22:30 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/10 16:31:31 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int		ft_redirect(int type, t_token *lst)
 	{
 		lst->fd = open(lst->value, O_RDONLY);
 		if (lst->fd == -1)
-			return (perror("Erreur open\n"), FALSE);
+			return (perror("Erreur open"), FALSE);
 		if (dup2(lst->fd, 0) == -1)
-			return (perror("Erreur dup2\n"), FALSE);
+			return (perror("Erreur dup2"), FALSE);
 	}
 	else
 	{
@@ -31,9 +31,9 @@ int		ft_redirect(int type, t_token *lst)
 		else
 			lst->fd = open(lst->value, O_CREAT | O_RDWR | O_TRUNC, 0000644);
 		if (lst->fd == -1)
-			return (perror("Erreur open\n"), FALSE);
+			return (perror("Erreur open"), FALSE);
 		if (dup2(lst->fd, 1) == -1)
-			return (perror("Erreur dup2\n"), FALSE);
+			return (perror("Erreur dup2"), FALSE);
 	}
 	return (TRUE);
 }

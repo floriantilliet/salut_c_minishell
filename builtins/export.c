@@ -6,113 +6,11 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:08:44 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/05 17:36:19 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/08 16:37:42 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../include/minishell.h"
-
-void	build_tab2(char *value, char *tab[2], int len, t_env *env)
-{
-	tab[0] = malloc(sizeof(char) * (len + 1));
-	if (!tab[0])
-	{
-		perror("Erreur malloc\n");
-		exit_status(1, env);
-		return ;
-	}
-	len = -1;
-	while (value[++len] != '=')
-		tab[0][len] = value[len];
-	tab[0][len] = '\0';
-	value += len + 1;
-	tab[1] = ft_strdup(value);
-	if (!tab[1])
-	{
-		free(tab[0]);
-		perror("Erreur malloc\n");
-		exit_status(1, env);
-	}
-}
-
-void	build_tab(char *value, char *tab[2], t_env *env)
-{
-	int	len;
-	t_env	*lst;
-
-	len = 0;
-	lst = 	env;
-	tab[0] = NULL;
-	tab[1] = NULL;
-	while (value[len] && value[len] != '=')
-		len++;
-	if (!value[len])
-	{
-		while (lst && lst->next)
-			lst = lst->next;
-		lst->next = ft_lstnew_env(value, NULL, TRUE);
-		exit_status(0, env);
-		return ;
-	}
-	build_tab2(value, tab, len, env);
-}
-
-int	ft_concatenate_var(char *tab[2], t_env *l_env, t_env **env)
-{
-	int	i;
-	char	*tmp;
-	
-	i = 0;
-	while (tab[0][i])
-		i++;
-	if (i > 0 && tab[0][i - 1] != '+')
-		return (FALSE);
-	tab[0][ft_strlen(tab[0]) - 1] = '\0';
-	while (l_env && ft_strcmp(l_env->key, tab[0]))
-		l_env = l_env->next;
-	if (l_env)
-	{
-		tmp = ft_strjoin(l_env->value, tab[1]);
-		free(l_env->value);
-		l_env->value = ft_strdup(tmp);
-		if (!l_env->value)
-			return (printf("Error malloc\n"), exit_status(1, *env), TRUE);
-		free(tmp);
-		return (exit_status(0, *env), TRUE);
-	}
-	if (!ft_create_var(env, tab))
-		return (printf("Erreur malloc\n"), exit_status(1, *env), TRUE);
-	return (exit_status(0, *env), TRUE);
-}
-
-int	ft_export_bis(t_token *lst, t_env **env)
-{
-	t_env	*l_env;
-	char	*tab[2];
-
-	l_env = *env;
-	build_tab(lst->value, tab, *env);
-	if (!tab[0] && !tab[1])
-		return (TRUE);
-	if (ft_concatenate_var(tab, l_env, env))
-		return (free(tab[0]), free(tab[1]), TRUE);
-	while (l_env && ft_strcmp(l_env->key, tab[0]))
-		l_env = l_env->next;
-	if (l_env)
-	{
-		free(l_env->value);
-		l_env->value = ft_strdup(tab[1]);
-		exit_status(1, *env);
-		if (!l_env->value)
-			return (perror(ERR_MALLOC), free(tab[0]), free(tab[1]), TRUE);
-	}
-	else
-	{
-		if (!ft_create_var(env, tab))
-			return (perror(ERR_MALLOC), free(tab[0]), free(tab[1]), TRUE);
-	}
-	return (free(tab[0]), free(tab[1]), exit_status(0, *env), TRUE);
-}
 
 int	parsing_export(char *str)
 {
@@ -124,7 +22,7 @@ int	parsing_export(char *str)
 	str++;
 	while (*str)
 	{
-		if (*str == '=' || (*str == '+' && *str == '='))
+		if (*str == '=' || (*str == '+' && *(str + 1)== '='))
 			break ;
 		else if (*str != '_' && !ft_isalnum(*str))
 		{
@@ -133,6 +31,86 @@ int	parsing_export(char *str)
 		}
 		str++;
 	}
+	return (TRUE);
+}
+
+void	concatenate_value(char *tab[2], t_env *lst, t_env **env)
+{
+	char	*tmp;
+	
+	while (lst && ft_strcmp(tab[0], lst->key))
+		lst = lst->next;
+	if (!lst)
+		add_new_env_node(tab[0], tab[1], env);
+	if (!lst->value || !*lst->value)
+		lst->value = ft_strdup(tab[1]);
+	else
+	{
+		tmp = lst->value;
+		lst->value = ft_strjoin(lst->value, tab[1]);
+		free(tmp);
+	}
+	if (lst && !lst->value)
+		perror(ERR_MALLOC);
+	if (tab[0])
+		free(tab[0]);
+	if (tab[1])
+		free(tab[1]);
+}
+
+void	replace_value(char *key, char *value, t_env *lst, t_env **env)
+{
+	while (lst && ft_strcmp(key, lst->key))
+		lst = lst->next;
+	if (!lst)
+		add_new_env_node(key, value, env);
+	else
+	{
+		free(lst->value);
+		lst->value = ft_strdup(value);
+		if (!lst->value)
+			perror(ERR_MALLOC);
+	}
+	if (key)
+		free(key);
+	if (value)
+		free(value);
+}
+
+int	is_new_node(char *value, t_env **env)
+{
+	t_env *lst;
+
+	lst = *env;
+	while (lst && ft_strcmp(value, lst->key))
+		lst = lst->next;
+	if (lst)
+		return (FALSE);
+	return (TRUE);
+}
+
+int	ft_export_bis(char *value, t_env **env)
+{
+	char	*tab[2];
+	int		len;
+
+	len = ft_strchr2(value, '+');
+	tab[0] = NULL;
+	tab[1] = NULL;
+	if (len == ft_strchr2(value, '=') - 1 && value[len + 2])
+	{
+		tab[0] = ft_substr(value, 0, len);
+		tab[1] = ft_substr(value, len + 2, ft_strlen(value));
+		concatenate_value(tab, *env, env);
+	}
+	else if (ft_strchr2(value, '=') != -1 && value[ft_strchr2(value, '=') + 1])
+	{
+		tab[0] = ft_substr(value, 0, ft_strchr2(value, '='));
+		tab[1] = ft_substr(value, ft_strchr2(value, '=') + 1, ft_strlen(value));
+		replace_value(tab[0], tab[1], *env, env);
+	}
+	else if (is_new_node(value, env))
+		add_new_env_node(value, NULL, env);
 	return (TRUE);
 }
 
@@ -147,17 +125,12 @@ int	ft_export(t_token *tokens, t_env **env)
 		lst = lst->next;
 	if (!lst || lst->type != ARG)
 		return (print_env_in_order(env), exit_status(0, *env), TRUE);
-	if (ft_strchr(lst->value, '-') + 1 == ft_strchr(lst->value, '='))
-	{
-		ft_printf("bash: export: `%s': not a valid identifier\n", 2, lst->value);
-		return (exit_status(1, *env), FALSE);
-	}
 	while (lst && lst->type == ARG)
 	{
 		if (!parsing_export(lst->value))
 			exit_code = 1;
-		else if (!ft_export_bis(lst, env))
-			return (FALSE);
+		else if (!ft_export_bis(lst->value, env))
+			exit_code = 1;
 		lst = lst->next;
 	}
 	if (exit_code)

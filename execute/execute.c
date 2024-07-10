@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:46:29 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/04 13:20:33 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/10 16:28:41 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ char	**initialise_cmd_cmd(t_token *lst, t_cmd *cmd, int len)
 
 	cmd->cmd = malloc(sizeof(char *) * (len + 1));
 	if (!cmd->cmd)
-		return (printf(ERR_MALLOC), NULL);
+		return (perror(ERR_MALLOC), NULL);
 	cmd->cmd[len] = NULL;
 	i = 0;
 	while (lst && lst->type != CMD)
 			lst = lst->next;
 	while (lst && i < len)
 	{
-		if (lst->type < PIPE)
+		if (lst->type != PIPE)
 		{
 			cmd->cmd[i] = ft_strdup(lst->value);
 			lst = lst->next;
@@ -45,7 +45,12 @@ char	*build_env(char *key, char *value)
 	char	*built;
 
 	if (!value)
-		return (ft_strdup(key));
+	{
+		built = ft_strdup(key);
+		if (!built)
+			return (NULL);
+		return (built);
+	}
 	tmp = ft_strjoin(key, "=");
 	if (!tmp)
 		return (printf(ERR_MALLOC), NULL);
@@ -69,7 +74,7 @@ char	**initialise_cmd_env(t_env **env)
 	}
 	tab = malloc(sizeof(char *) * (len + 1));
 	if (!tab)
-		return (printf(ERR_MALLOC), NULL);
+		return (perror(ERR_MALLOC), NULL);
 	lst = *env;
 	tab[len] = NULL;
 	len = -1;
@@ -78,7 +83,7 @@ char	**initialise_cmd_env(t_env **env)
 		tab[len] = build_env(lst->key, lst->value);
 		lst = lst->next;
 		if (!tab[len])
-			return (printf(ERR_MALLOC), free_char_tab(tab), NULL);
+			return (perror(ERR_MALLOC), free_char_tab(tab), NULL);
 	}
 	return (tab);
 }
@@ -89,7 +94,7 @@ t_cmd		*initialise_cmd(t_token **tokens, t_env **env)
 
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
-		return (printf(ERR_MALLOC), NULL);
+		return (perror(ERR_MALLOC), NULL);
 	cmd->free_path = 0;
 	cmd->path = NULL;
 	cmd->len = 0;

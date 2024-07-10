@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:14:26 by florian           #+#    #+#             */
-/*   Updated: 2024/07/03 17:22:14 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/08 16:55:03 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,5 @@ void	free_everything(t_env **env, t_token **tokens, int code_exit)
 		close((*env)->fd_out);
 	if (env)
 		free_env(env);
-	exit (code_exit);
+	exit(code_exit);
 }

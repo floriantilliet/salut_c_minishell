@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 11:40:03 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/05 15:34:08 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/08 16:45:26 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,29 @@ void	put_env_in_order(char **tab)
 	}
 }
 
+void	print_one_line(char *str)
+{
+	int	len;
+	
+	write(1, "declare -x ", ft_strlen("declare -x "));
+	len = ft_strchr2(str, '=');
+	if (len != -1)
+	{
+		write(1, str, len);
+		write(1, "=\"", 2);
+		if (str[len + 1])
+			write(1, &str[len + 1], ft_strlen(str) - len);
+		write(1, "\"", 1);
+	}
+	else
+		write(1, str, ft_strlen(str));
+	write(1, "\n", 1);
+}
+
 void	print_env_in_order(t_env **env)
 {
 	char	**tab;
+	int 		i;
 
 	tab = initialise_cmd_env(env);
 	if (!tab)
@@ -59,47 +79,39 @@ void	print_env_in_order(t_env **env)
 		return ;
 	}
 	put_env_in_order(tab);
-	int i = 0;
+	i = 0;
 	while (tab[i])
 	{
-		printf("declare -x %s\n", tab[i]);
+		print_one_line(tab[i]);
 		i++;
 	}
 	free_char_tab(tab);
 }
 
-t_env	*ft_lstnew_env(char *key, char *value, int create)
-{
-	t_env	*new;
-
-	new = malloc(sizeof(t_env));
-	if (!new)
-		return (NULL);
-	new->key = ft_strdup(key);
-	if (!new->key)
-		return (free(new), NULL);
-	if (create)
-	{
-		new->value = NULL;
-		new->next = NULL;
-		return (new);
-	}
-	new->value = ft_strdup(value);
-	if (!new->value)
-		return (free(new->key), free(new), NULL);
-	new->next = NULL;
-	return (new);
-}
-
-int	ft_create_var(t_env **env, char *tab[2])
+void	add_new_env_node(char *key, char *value, t_env **env)
 {
 	t_env	*lst;
 
 	lst = *env;
 	while (lst->next)
 		lst = lst->next;
-	lst->next = ft_lstnew_env(tab[0], tab[1], FALSE);
+	lst->next = malloc(sizeof(t_env));
 	if (!lst->next)
-		return (perror("Error malloc\n"), exit_status(1, *env), FALSE);
-	return (exit_status(1, *env), TRUE);
+		return ;
+	lst->next->key = ft_strdup(key);
+	if (!lst->next->key)
+		free(lst->next);
+	if (value && key)
+	{
+		lst->next->value = ft_strdup(value);
+		if (!lst->next->value)
+		{
+			free(lst->next->key);
+			free(lst->next);
+		}
+	}
+	else
+		lst->next->value = NULL;
+	if (lst->next)
+		lst->next->next = NULL;
 }
