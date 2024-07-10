@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:46:29 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/04 13:20:33 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/08 15:42:52 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,12 @@ char	*build_env(char *key, char *value)
 	char	*built;
 
 	if (!value)
-		return (ft_strdup(key));
+	{
+		built = ft_strdup(key);
+		if (!built)
+			return (NULL);
+		return (built);
+	}
 	tmp = ft_strjoin(key, "=");
 	if (!tmp)
 		return (printf(ERR_MALLOC), NULL);

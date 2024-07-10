@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:14:12 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/03 17:53:22 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/08 17:08:18 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,5 @@ void	ft_unset(t_token *token, t_env **env)
 		}
 		lst = lst->next;
 	}
+	exit_status(0, *env);
 }

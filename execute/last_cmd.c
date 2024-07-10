@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:57 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/03 18:26:38 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/08 17:37:20 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	check_builtins_without_pipe(t_token **tokens, t_token *lst, t_env **env)
 	else if (!ft_strncmp(lst->value, "echo", 5))
 		return (ft_echo(lst), TRUE);
 	else if (!ft_strncmp(lst->value, "pwd", 4))
-		return (ft_pwd(), TRUE);
+		return (ft_pwd(env), TRUE);
 	else if (!ft_strncmp(lst->value, "cd", 3))
 		return (ft_cd(lst, env), TRUE);
 	else if (!ft_strncmp(lst->value, "export", 7))
@@ -93,6 +93,7 @@ int last_cmd(t_token **tokens, t_token *lst, t_env **env)
 			free_everything(env, tokens, 1);
     }
 	waitpid(pid, &status, 0);
+	exit_status(status, *env);
 	close_redirect(tokens);
     return (TRUE);
 }

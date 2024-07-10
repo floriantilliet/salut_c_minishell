@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:38 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/03 15:36:23 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/08 17:37:06 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	check_builtins(t_token *lst, t_env **env)
 	else if (!ft_strncmp(lst->value, "echo", 5))
 		return (ft_echo(lst), FALSE);
 	else if (!ft_strncmp(lst->value, "pwd", 4))
-		return (ft_pwd(), FALSE);
+		return (ft_pwd(env), FALSE);
 	else if (!ft_strncmp(lst->value, "cd", 3))
 		return (ft_cd(lst, env), FALSE);
 	else if (!ft_strncmp(lst->value, "export", 7))
@@ -70,7 +70,9 @@ int	check_builtins(t_token *lst, t_env **env)
 int do_cmd(t_token **tokens, t_token *lst, t_env **env)
 {
     pid_t   pid;
+	int		*nb;
 
+	nb = NULL;
     if (pipe(lst->head->fd_pipe) == -1)
         return (perror(ERROR_PIPE) ,FALSE);
     pid = fork();
@@ -87,6 +89,8 @@ int do_cmd(t_token **tokens, t_token *lst, t_env **env)
     	if (dup2(lst->head->fd_pipe[0], 0) == -1)
 			perror(ERROR_DUP);
         close(lst->head->fd_pipe[0]);
+		waitpid(pid, nb, 0);
+		exit_status(*nb, *env);
     }
     return (TRUE);
 }

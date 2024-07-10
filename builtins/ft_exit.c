@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 09:19:00 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/04 14:00:01 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/08 17:45:55 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int		print_msg(t_token **tokens, t_token *lst, t_env **env)
 {
 	long	code_exit;
 	
-	printf("exit\n");
+	//printf("exit\n");
 	if (!lst)
 		return (TRUE);
 	if (is_numeric(lst->value))
@@ -75,14 +75,15 @@ int		print_msg(t_token **tokens, t_token *lst, t_env **env)
 		code_exit = ft_atoi(lst->value);
 		lst = lst->next;
 		if (lst && lst->type == ARG)
-			return (write(1, "bash: exit: too many arguments\n", 32), FALSE);
-		free_everything(env, tokens, code_exit % 255);
+			return (write(2, "bash: exit: too many arguments\n", 32), FALSE);
+		free_everything(env, tokens, code_exit % 256);
 	}
 	else if (lst->type < PIPE)
 	{
 		write(2, "bash: exit: ", 12);
 		write(2, lst->value, ft_strlen(lst->value));
 		write(2, ": numeric argument required\n", 29);
+		free_everything(env, tokens, 2);
 	}
 	return (TRUE);
 }
@@ -95,7 +96,10 @@ void	ft_exit(t_token **tokens, t_token *lst, t_env **env)
 	if (lst && lst->type == CMD)
 		lst = lst->next;
 	if (!print_msg(tokens, lst, env))
+	{
+		exit_status(1, *env);
 		return ;
+	}
 	if (!lst)
 		free_everything(env, tokens, 0);
 	free_everything(env, tokens, 128);

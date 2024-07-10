@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/04 15:26:55 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/08 17:04:07 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,17 +169,16 @@ void				signals(void);
 
 // builtins
 
-int					ft_pwd(void);
+int					ft_pwd(t_env **env);
 int					ft_cd(t_token *tokens, t_env **env);
 int					ft_export(t_token *tokens, t_env **env);
-int					ft_create_var(t_env **env, char *tab[2]);
 int					printenv(t_env **env);
 void				ft_exit(t_token **tokens, t_token *lst, t_env **env);
 void				ft_echo(t_token *tok);
 void				print_env_in_order(t_env **env);
 void				exit_status(int code_exit, t_env *env);
 void				ft_unset(t_token *token, t_env **env);
-t_env				*ft_lstnew_env(char *key, char *value, int create);
+void	add_new_env_node(char *key, char *value, t_env **env);
 
 // execute.c
 
