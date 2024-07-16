@@ -6,11 +6,13 @@
 /*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/07 16:36:25 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/13 16:49:11 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/minishell.h"
+
+int g_exit_code = 0;
 
 int	init_std(t_env *env)
 {
@@ -46,6 +48,13 @@ int	main(int ac, char **av, char **envp)
 		line = readline("minishell $> ");
 		if (line)
 		{
+			if (g_exit_code != 0)
+			{
+				exit_status(130, *env);
+				g_exit_code = 0;
+			}
+			else
+				exit_status(0, *env);
 			add_history(line);
 			// printf("%s\n", expander(line, env));
 			if (!check_problems(line))

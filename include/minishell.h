@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/10 20:45:59 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/13 16:49:08 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@
 # define ERROR_EXEC "Some mistakes occures when using execve\n"
 # define ERR_MALLOC "Error malloc\n"
 
+extern	int	g_exit_code;
+
 typedef struct s_env
 {
 	char			*key;
@@ -53,7 +55,7 @@ typedef struct s_env
 	struct s_env	*prev;
 	int				fd_in;
 	int				fd_out;
-	char			exit_code;
+	unsigned char			exit_code;
 }					t_env;
 
 typedef struct s_token

@@ -6,7 +6,7 @@
 /*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:13:24 by florian           #+#    #+#             */
-/*   Updated: 2024/05/05 18:03:07 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/13 13:53:35 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 void	handle_sigint(int code)
 {
 	(void)code;
+	(void)g_exit_code;
+	g_exit_code = 1;
 	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
