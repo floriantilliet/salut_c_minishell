@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:38 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/10 20:56:47 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/16 11:17:33 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int	check_builtins(t_token *lst, t_token **tokens, t_env **env)
 int do_cmd(t_token **tokens, t_token *lst, t_env **env)
 {
     pid_t   pid;
-	int		nb;
 
     if (pipe(lst->head->fd_pipe) == -1)
         return (perror(ERROR_PIPE) ,FALSE);
@@ -83,9 +82,6 @@ int do_cmd(t_token **tokens, t_token *lst, t_env **env)
     	if (dup2(lst->head->fd_pipe[0], 0) == -1)
 			perror(ERROR_DUP);
         close(lst->head->fd_pipe[0]);
-		waitpid(pid, &nb, 0);
-		exit_status(nb, *env);
-		perror("PIPE CLOSED\n");
     }
     return (TRUE);
 }

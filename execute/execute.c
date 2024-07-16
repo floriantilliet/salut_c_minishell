@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:46:29 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/10 20:54:27 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/16 12:28:47 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ int	access_cmd(t_token *lst, t_token **tokens, t_env **env)
 	t_cmd	*cmd;
 
 	lst_env = *env;
-	cmd = initialise_cmd(tokens, env);
+	cmd = initialise_cmd(&lst, env);
 	if (!cmd)
 		return (0);
 	while (lst->type != CMD && lst->next)
