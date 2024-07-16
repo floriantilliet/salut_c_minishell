@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:57 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/10 16:37:10 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/16 12:23:48 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	check_builtins_without_pipe(t_token **tokens, t_token *lst, t_env **env)
 	else if (!ft_strncmp(lst->value, "unset", 6))
 		return (ft_unset(lst, env), TRUE);
 	else if (!ft_strncmp(lst->value, "env", 4))
-		return (printenv(env), TRUE);
+		return (printenv(env, lst), TRUE);
 	else if (!ft_strncmp(lst->value, "exit", 5))
 		return (ft_exit(tokens, lst, env), TRUE);
 	return (FALSE);
@@ -82,7 +82,7 @@ int last_cmd(t_token **tokens, t_token *lst, t_env **env)
 	int		exit_code;
 
 	if (!ft_dup_last(tokens, lst, env))
-		return (FALSE);
+		return (exit_status(2, *env), FALSE);
 	if (check_builtins_without_pipe(tokens, lst, env))
 		return (close_redirect(&lst), TRUE);
     pid = fork();
@@ -90,7 +90,7 @@ int last_cmd(t_token **tokens, t_token *lst, t_env **env)
         return (perror(ERROR_FORK), FALSE);
     if (!pid)
     {
-		if (!access_cmd(&lst, env))
+		if (!access_cmd(lst, tokens, env))
 			free_everything(env, tokens, 1);
     }
 	waitpid(pid, &status, 0);

@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:38 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/08 17:37:06 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/16 11:17:33 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,13 @@ int	ft_dup(t_token **tokens, t_token *lst, t_env **env)
 		return (FALSE);
 	while (lst && lst->type != PIPE)
 	{
-		if (lst->type == CMD || lst->type == ARG)
-			lst = lst->next;
-		else if (lst->type == HEREDOC)
+		if (lst->type == HEREDOC)
 		{
 			if (!heredoc(tokens, lst->next, env))
 				return (FALSE);
 			lst = lst->next;
 		}
-		else
+		else if (lst->type > PIPE)
 		{
 			if (!ft_redirect(lst->type, lst->next))
 				return (FALSE);
@@ -38,7 +36,7 @@ int	ft_dup(t_token **tokens, t_token *lst, t_env **env)
 	return (close(lst->head->fd_pipe[1]), TRUE);
 }
 
-int	check_builtins(t_token *lst, t_env **env)
+int	check_builtins(t_token *lst, t_token **tokens, t_env **env)
 {
 	while (lst && lst->type != CMD)
 		lst = lst->next;
@@ -55,14 +53,11 @@ int	check_builtins(t_token *lst, t_env **env)
 	else if (!ft_strncmp(lst->value, "unset", 6))
 		return (ft_unset(lst, env), FALSE);
 	else if (!ft_strncmp(lst->value, "env", 4))
-		return (printenv(env), FALSE);
+		return (printenv(env, lst), FALSE);
 	else if (!ft_strncmp(lst->value, "exit", 5))
 		return (FALSE);
 	else
-	{
-		printf("On rentre dans access cmd\n\n");
-		access_cmd(&lst, env);
-	}
+		access_cmd(lst, tokens, env);
 	return (FALSE);
 }
 
@@ -70,9 +65,7 @@ int	check_builtins(t_token *lst, t_env **env)
 int do_cmd(t_token **tokens, t_token *lst, t_env **env)
 {
     pid_t   pid;
-	int		*nb;
 
-	nb = NULL;
     if (pipe(lst->head->fd_pipe) == -1)
         return (perror(ERROR_PIPE) ,FALSE);
     pid = fork();
@@ -80,8 +73,8 @@ int do_cmd(t_token **tokens, t_token *lst, t_env **env)
         return (perror(ERROR_FORK), FALSE);
     if (!pid)
     {
-		if (!ft_dup(tokens, lst, env) || !check_builtins(lst, env))
-			free_everything(env, tokens, 0);
+		if (!ft_dup(tokens, lst, env) || !check_builtins(lst, tokens, env))
+			free_everything(env, tokens, (*env)->exit_code);
     }
     else
     {
@@ -89,8 +82,6 @@ int do_cmd(t_token **tokens, t_token *lst, t_env **env)
     	if (dup2(lst->head->fd_pipe[0], 0) == -1)
 			perror(ERROR_DUP);
         close(lst->head->fd_pipe[0]);
-		waitpid(pid, nb, 0);
-		exit_status(*nb, *env);
     }
     return (TRUE);
 }
