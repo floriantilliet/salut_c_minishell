@@ -6,11 +6,11 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:10:17 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/03 15:29:37 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/17 16:04:59 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "ft_printf.h"
+#include "ft_printf.h"
 
 int	ft_format(va_list args, int std, const char *format)
 {

@@ -6,13 +6,13 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 13:08:16 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/03 15:48:37 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/17 16:08:29 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/minishell.h"
+#include "../include/minishell.h"
 
-int		cd_home(t_env **env, t_env *lst)
+int	cd_home(t_env **env, t_env *lst)
 {
 	while (lst)
 	{
@@ -21,14 +21,15 @@ int		cd_home(t_env **env, t_env *lst)
 		lst = lst->next;
 	}
 	if (!lst)
-		return (ft_printf("bash: cd: HOME not set\n", 2), exit_status(1, *env), FALSE);
+		return (ft_printf("bash: cd: HOME not set\n", 2),
+		exit_status(1, *env), FALSE);
 	if (chdir(lst->value) != 0)
 		return (ft_printf("bash: cd: %s: No such file or directory\n", 2, 
 		lst->value), exit_status(1, *env),  FALSE);
 	return (exit_status(0, *env), TRUE);
 }
 
-int		ft_cd(t_token *tokens, t_env **env)
+int	ft_cd(t_token *tokens, t_env **env)
 {
 	t_token *lst;
 	char	*pwd;
