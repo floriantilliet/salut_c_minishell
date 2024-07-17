@@ -6,17 +6,17 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:08:44 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/08 16:37:42 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/17 17:14:32 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/minishell.h"
+#include "../include/minishell.h"
 
 int	parsing_export(char *str)
 {
 	if (*str != '_' && !ft_isalpha(*str) && *str)
 	{
-		ft_printf("bash: export: `%s': not a valid identifier\n", 2, str);
+		ft_printf(ERR_EXPORT, STDERR_FILENO, str);
 		return (FALSE);
 	}
 	str++;
@@ -26,7 +26,7 @@ int	parsing_export(char *str)
 			break ;
 		else if (*str != '_' && !ft_isalnum(*str))
 		{
-			ft_printf("bash: export: `%s': not a valid identifier\n", 2, str);
+			ft_printf(ERR_EXPORT, STDERR_FILENO, str);
 			return (FALSE);
 		}
 		str++;

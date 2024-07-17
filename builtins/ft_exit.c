@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 09:19:00 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/08 17:45:55 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/17 17:21:23 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,12 @@ int		print_msg(t_token **tokens, t_token *lst, t_env **env)
 		code_exit = ft_atoi(lst->value);
 		lst = lst->next;
 		if (lst && lst->type == ARG)
-			return (write(2, "bash: exit: too many arguments\n", 32), FALSE);
+			return (ft_printf(ERR_EXIT_NB_ARG, STDERR_FILENO), FALSE);
 		free_everything(env, tokens, code_exit % 256);
 	}
 	else if (lst->type < PIPE)
 	{
-		write(2, "bash: exit: ", 12);
-		write(2, lst->value, ft_strlen(lst->value));
-		write(2, ": numeric argument required\n", 29);
+		ft_printf(ERR_EXIT_WRONG_ARG, STDERR_FILENO);
 		free_everything(env, tokens, 2);
 	}
 	return (TRUE);
@@ -92,7 +90,7 @@ void	ft_exit(t_token **tokens, t_token *lst, t_env **env)
 {
 	close_redirect(tokens);
 	if (dup2((*env)->fd_out, STDOUT_FILENO) == -1)
-		perror(ERROR_DUP);
+		ft_printf(ERROR_DUP, STDERR_FILENO);
 	if (lst && lst->type == CMD)
 		lst = lst->next;
 	if (!print_msg(tokens, lst, env))

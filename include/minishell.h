@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/16 15:46:18 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/17 17:22:14 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,21 @@
 
 # define FALSE 0
 # define TRUE 1
-# define ERR_PIPE "bash: syntax error near unexpected token `|'\n"
-# define ERR_REDIRECT "bash: syntax error near unexpected token `newline'\n"
-# define ERR_REDIRECT_2 "bash: syntax error near unexpected token "
+# define ERR_PIPE "minishell: syntax error near unexpected token `|'\n"
+# define ERR_REDIRECT "minishell: syntax error near unexpected token `newline'\n"
+# define ERR_REDIRECT_2 "minishell: syntax error near unexpected token "
 # define ERROR_PIPE "Some mistakes occures when using pipe\n"
 # define ERROR_DUP "Some mistakes occures when using dup\n"
 # define ERROR_FORK "Some mistakes occures when using fork\n"
 # define ERROR_EXEC "Some mistakes occures when using execve\n"
 # define ERR_MALLOC "Error malloc\n"
+# define ERR_EXPORT "minishell: export: `%s': not a valid identifier\n"
+# define ERR_CD_NO_ARGS "minishell: cd: HOME not set\n"
+# define ERR_CD "minishell: cd: %s: No such file or directory\n"
+# define ERR_CD_NB_ARG "minishell: cd: too many arguments\n"
+# define ERR_ENV "env: ‘%s’: No such file or directory\n"
+# define ERR_EXIT_NB_ARG "minishell: exit: too many arguments\n"
+# define ERR_EXIT_WRONG_ARG "minishell: exit: %s: numeric argument required\n"
 
 typedef struct s_env
 {

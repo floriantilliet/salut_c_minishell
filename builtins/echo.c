@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 16:29:15 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/10 18:49:07 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/17 17:12:17 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	print_word_echo(char *str)
 	while (str && *str)
 	{
 		if (*str != '\\')
-			write(1, str, 1);
+			write(STDIN_FILENO, str, 1);
 		if (str)
 			str++;
 	}
@@ -65,7 +65,7 @@ void	ft_echo(t_token *tok)
 		lst = lst->next;
 	if (!lst)
 	{
-		write(1, "\n",1);
+		write(STDIN_FILENO, "\n",1);
 		return ;
 	}
 	flag = is_flag(lst->value);
@@ -83,7 +83,7 @@ void	ft_echo(t_token *tok)
 			print_word_echo(lst->value);
 			lst = lst->next;
 			if (lst && lst->type != PIPE)
-				write(1, " ", 1);
+				write(STDIN_FILENO, " ", 1);
 		}
 	}
 	if (!flag)
