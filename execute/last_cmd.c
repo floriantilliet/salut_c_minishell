@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:57 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/16 12:23:48 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:54:32 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int last_cmd(t_token **tokens, t_token *lst, t_env **env)
 	int		exit_code;
 
 	if (!ft_dup_last(tokens, lst, env))
-		return (exit_status(2, *env), FALSE);
+		return (exit_status(1, *env), FALSE);
 	if (check_builtins_without_pipe(tokens, lst, env))
 		return (close_redirect(&lst), TRUE);
     pid = fork();

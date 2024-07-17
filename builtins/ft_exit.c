@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 09:19:00 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/08 17:45:55 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:48:12 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int		print_msg(t_token **tokens, t_token *lst, t_env **env)
 		lst = lst->next;
 		if (lst && lst->type == ARG)
 			return (write(2, "bash: exit: too many arguments\n", 32), FALSE);
-		free_everything(env, tokens, code_exit % 256);
+		free_everything(env, tokens, code_exit);
 	}
 	else if (lst->type < PIPE)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/13 16:49:11 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/16 16:13:07 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	main(int ac, char **av, char **envp)
 	(*env)->fd_in = dup(STDIN_FILENO);
 	(*env)->fd_out = dup(STDOUT_FILENO);
 	line = "\0";
-	//exit_status(0, *env);
+	exit_status(0, *env);
 	while (line != NULL)
 	{
 		line = readline("minishell $> ");
@@ -53,8 +53,6 @@ int	main(int ac, char **av, char **envp)
 				exit_status(130, *env);
 				g_exit_code = 0;
 			}
-			else
-				exit_status(0, *env);
 			add_history(line);
 			// printf("%s\n", expander(line, env));
 			if (!check_problems(line))

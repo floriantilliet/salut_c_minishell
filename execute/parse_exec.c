@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 16:20:48 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/16 12:26:58 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:57:38 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ void	parse_exec(t_token **tokens, t_env **env)
 
 	lst = *tokens;
 	if (!check_pipe(tokens))
+	{
+		exit_status(2, *env);
 		return ;
+	}
 	while (lst->head->if_pipe && lst)
 	{
 		if (!do_cmd(tokens, lst, env))

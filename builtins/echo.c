@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 16:29:15 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/10 18:49:07 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:52:22 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	print_word_echo(char *str)
 void	ft_echo(t_token *tok)
 {
 	int	flag;
+	int	flag2;
 	t_token *lst;
 	
 	lst = tok;
@@ -69,6 +70,7 @@ void	ft_echo(t_token *tok)
 		return ;
 	}
 	flag = is_flag(lst->value);
+	flag2 = 0;
 	while (lst && skip_flag(lst->value))
 		lst = lst->next;
 	while (lst && lst->type != PIPE)
@@ -82,9 +84,10 @@ void	ft_echo(t_token *tok)
 		{
 			print_word_echo(lst->value);
 			lst = lst->next;
-			if (lst && lst->type != PIPE)
-				write(1, " ", 1);
 		}
+		if (lst && lst->type == ARG && flag2)
+			write(1, " ", 1);
+		flag2 = 1;
 	}
 	if (!flag)
 		printf("\n");
