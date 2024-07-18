@@ -6,11 +6,11 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:57 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/18 11:48:04 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/18 16:21:14 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/minishell.h"
+#include "../include/minishell.h"
 
 int	ft_dup_last(t_token **tokens, t_token *lst, t_env **env)
 {
@@ -35,7 +35,7 @@ int	ft_dup_last(t_token **tokens, t_token *lst, t_env **env)
 
 void	close_redirect(t_token **tokens)
 {
-	t_token *lst;
+	t_token	*lst;
 
 	lst = *tokens;
 	while (lst)
@@ -75,9 +75,9 @@ int	check_builtins_without_pipe(t_token **tokens, t_token *lst, t_env **env)
 	return (FALSE);
 }
 
-int last_cmd(t_token **tokens, t_token *lst, t_env **env)
+int	last_cmd(t_token **tokens, t_token *lst, t_env **env)
 {
-    pid_t   pid;
+	pid_t	pid;
 	int		status;
 	int		exit_code;
 
@@ -85,19 +85,19 @@ int last_cmd(t_token **tokens, t_token *lst, t_env **env)
 		return (exit_status(1, *env), FALSE);
 	if (check_builtins_without_pipe(tokens, lst, env))
 		return (close_redirect(&lst), TRUE);
-    pid = fork();
+	pid = fork();
 	if (pid == -1)
-        return (perror(ERROR_FORK), FALSE);
-    if (!pid)
-    {
+		return (perror(ERROR_FORK), FALSE);
+	if (!pid)
+	{
 		if (!access_cmd(lst, tokens, env))
 			free_everything(env, tokens, 1);
-    }
+	}
 	waitpid(pid, &status, 0);
 	exit_code = 1;
 	if (WIFEXITED(status))
 		exit_code = WEXITSTATUS(status);
 	exit_status(exit_code, *env);
 	close_redirect(tokens);
-    return (TRUE);
+	return (TRUE);
 }

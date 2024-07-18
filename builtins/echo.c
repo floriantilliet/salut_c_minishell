@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 16:29:15 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/18 12:43:16 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/18 16:08:33 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_token	*skip_redirect(t_token *lst, int flag2)
 int	ft_echo(t_token *lst, t_env **env)
 {
 	int		flag[2];
-	
+
 	if (lst && lst->type == CMD)
 		lst = lst->next;
 	if (!lst)
