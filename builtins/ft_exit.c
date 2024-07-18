@@ -6,13 +6,13 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 09:19:00 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/18 12:02:57 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/18 12:24:05 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/minishell.h"
+#include "../include/minishell.h"
 
-int		is_long(char *str, int len)
+int	is_long(char *str, int len)
 {
 	int	i;
 
@@ -37,7 +37,7 @@ int		is_long(char *str, int len)
 	return (TRUE);
 }
 
-int		is_numeric(char *str)
+int	is_numeric(char *str)
 {
 	int	i;
 	int	neg;
@@ -46,7 +46,7 @@ int		is_numeric(char *str)
 	neg = 0;
 	if (!str)
 		return (FALSE);
-	else if (str[i] == '-' || str[i] =='+')
+	else if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
 			neg = 1;
@@ -63,11 +63,10 @@ int		is_numeric(char *str)
 	return (is_long(str, i - neg));
 }
 
-int		print_msg(t_token **tokens, t_token *lst, t_env **env)
+int	print_msg(t_token **tokens, t_token *lst, t_env **env)
 {
 	long	code_exit;
-	
-	//printf("exit\n");
+
 	if (!lst)
 		return (TRUE);
 	if (is_numeric(lst->value))
