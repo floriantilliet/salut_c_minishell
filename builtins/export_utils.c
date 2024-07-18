@@ -6,13 +6,13 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 11:40:03 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/08 16:45:26 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/18 11:24:08 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/minishell.h"
+#include "../include/minishell.h"
 
-int		ft_strcmp(const char *s1, const char *s2)
+int	ft_strcmp(const char *s1, const char *s2)
 {
 	if (!s1 || !s2)
 		return (FALSE);
@@ -26,8 +26,8 @@ int		ft_strcmp(const char *s1, const char *s2)
 
 void	put_env_in_order(char **tab)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	*tmp;
 
 	i = 0;
@@ -51,31 +51,31 @@ void	put_env_in_order(char **tab)
 void	print_one_line(char *str)
 {
 	int	len;
-	
-	write(1, "declare -x ", ft_strlen("declare -x "));
+
+	write(STDOUT_FILENO, "declare -x ", ft_strlen("declare -x "));
 	len = ft_strchr2(str, '=');
 	if (len != -1)
 	{
-		write(1, str, len);
-		write(1, "=\"", 2);
+		write(STDOUT_FILENO, str, len);
+		write(STDOUT_FILENO, "=\"", 2);
 		if (str[len + 1])
-			write(1, &str[len + 1], ft_strlen(str) - len);
-		write(1, "\"", 1);
+			write(STDOUT_FILENO, &str[len + 1], ft_strlen(str) - len);
+		write(STDOUT_FILENO, "\"", 1);
 	}
 	else
-		write(1, str, ft_strlen(str));
-	write(1, "\n", 1);
+		write(STDOUT_FILENO, str, ft_strlen(str));
+	write(STDOUT_FILENO, "\n", 1);
 }
 
 void	print_env_in_order(t_env **env)
 {
 	char	**tab;
-	int 		i;
+	int		i;
 
 	tab = initialise_cmd_env(env);
 	if (!tab)
 	{
-		printf("ERREUR MALLOC\n");
+		ft_printf(ERR_MALLOC, STDERR_FILENO);
 		return ;
 	}
 	put_env_in_order(tab);

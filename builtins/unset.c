@@ -6,11 +6,11 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:14:12 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/08 17:08:18 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/18 11:24:57 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/minishell.h"
+#include "../include/minishell.h"
 
 void	free_node(t_env *node)
 {
@@ -26,7 +26,7 @@ void	remove_node(t_env **env, t_env *node)
 	t_env	*lst2;
 
 	lst2 = *env;
-	while (lst2 && lst2 !=node)
+	while (lst2 && lst2 != node)
 	{
 		lst1 = lst2;
 		lst2 = lst2->next;
@@ -43,8 +43,8 @@ void	remove_node(t_env **env, t_env *node)
 
 void	ft_unset(t_token *token, t_env **env)
 {
-	t_token *lst;
-	t_env	*l_env;
+	t_token		*lst;
+	t_env		*l_env;
 
 	lst = token;
 	if (lst && lst->type == CMD)

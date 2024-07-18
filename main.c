@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/16 16:13:07 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/18 11:59:22 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ int g_exit_code = 0;
 int	init_std(t_env *env)
 {
 	if (dup2(env->fd_in, STDIN_FILENO) == -1)
-		return (printf(ERROR_DUP), FALSE);
+		return (ft_printf(ERROR_DUP, STDERR_FILENO), FALSE);
 	if (dup2(env->fd_out, STDOUT_FILENO) == -1)
-		return (printf(ERROR_DUP), FALSE);
+		return (ft_printf(ERROR_DUP, STDERR_FILENO), FALSE);
 	return (TRUE);
 }
 
