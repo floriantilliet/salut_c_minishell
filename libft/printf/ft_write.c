@@ -6,11 +6,11 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 07:41:05 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/03 15:26:58 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/18 11:17:18 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "ft_printf.h"
+#include "ft_printf.h"
 
 int	ft_putchar(char c, int std)
 {

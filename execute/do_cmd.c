@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:38 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/16 11:17:33 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/18 11:47:53 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	check_builtins(t_token *lst, t_token **tokens, t_env **env)
 	if (!lst)
 		return (FALSE);
 	else if (!ft_strncmp(lst->value, "echo", 5))
-		return (ft_echo(lst), FALSE);
+		return (ft_echo(lst, env), FALSE);
 	else if (!ft_strncmp(lst->value, "pwd", 4))
 		return (ft_pwd(env), FALSE);
 	else if (!ft_strncmp(lst->value, "cd", 3))

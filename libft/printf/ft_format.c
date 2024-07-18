@@ -6,10 +6,11 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:37:05 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/03 15:29:30 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/18 11:17:05 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_printf.h"
 
 int	ft_strchr3(const char *str, int character)
 {

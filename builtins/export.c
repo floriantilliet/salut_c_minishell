@@ -6,38 +6,16 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:08:44 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/17 17:14:32 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/18 11:55:02 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	parsing_export(char *str)
-{
-	if (*str != '_' && !ft_isalpha(*str) && *str)
-	{
-		ft_printf(ERR_EXPORT, STDERR_FILENO, str);
-		return (FALSE);
-	}
-	str++;
-	while (*str)
-	{
-		if (*str == '=' || (*str == '+' && *(str + 1)== '='))
-			break ;
-		else if (*str != '_' && !ft_isalnum(*str))
-		{
-			ft_printf(ERR_EXPORT, STDERR_FILENO, str);
-			return (FALSE);
-		}
-		str++;
-	}
-	return (TRUE);
-}
-
 void	concatenate_value(char *tab[2], t_env *lst, t_env **env)
 {
 	char	*tmp;
-	
+
 	while (lst && ft_strcmp(tab[0], lst->key))
 		lst = lst->next;
 	if (!lst)
@@ -51,7 +29,7 @@ void	concatenate_value(char *tab[2], t_env *lst, t_env **env)
 		free(tmp);
 	}
 	if (lst && !lst->value)
-		perror(ERR_MALLOC);
+		ft_printf(ERR_MALLOC, STDERR_FILENO);
 	if (tab[0])
 		free(tab[0]);
 	if (tab[1])
@@ -69,7 +47,7 @@ void	replace_value(char *key, char *value, t_env *lst, t_env **env)
 		free(lst->value);
 		lst->value = ft_strdup(value);
 		if (!lst->value)
-			perror(ERR_MALLOC);
+			ft_printf(ERR_MALLOC, STDERR_FILENO);
 	}
 	if (key)
 		free(key);
@@ -79,7 +57,7 @@ void	replace_value(char *key, char *value, t_env *lst, t_env **env)
 
 int	is_new_node(char *value, t_env **env)
 {
-	t_env *lst;
+	t_env	*lst;
 
 	lst = *env;
 	while (lst && ft_strcmp(value, lst->key))

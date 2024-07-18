@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 09:19:00 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/17 17:21:23 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/18 12:02:57 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,6 @@ int		print_msg(t_token **tokens, t_token *lst, t_env **env)
 void	ft_exit(t_token **tokens, t_token *lst, t_env **env)
 {
 	close_redirect(tokens);
-	if (dup2((*env)->fd_out, STDOUT_FILENO) == -1)
-		ft_printf(ERROR_DUP, STDERR_FILENO);
 	if (lst && lst->type == CMD)
 		lst = lst->next;
 	if (!print_msg(tokens, lst, env))

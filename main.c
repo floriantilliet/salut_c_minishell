@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/07 16:36:25 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/18 11:59:22 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int	init_std(t_env *env)
 {
 	if (dup2(env->fd_in, STDIN_FILENO) == -1)
-		return (printf(ERROR_DUP), FALSE);
+		return (ft_printf(ERROR_DUP, STDERR_FILENO), FALSE);
 	if (dup2(env->fd_out, STDOUT_FILENO) == -1)
-		return (printf(ERROR_DUP), FALSE);
+		return (ft_printf(ERROR_DUP, STDERR_FILENO), FALSE);
 	return (TRUE);
 }
 
