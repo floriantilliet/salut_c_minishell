@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
 /*   Updated: 2024/07/18 11:41:48 by ochetrit         ###   ########.fr       */
@@ -52,6 +52,8 @@
 # define ERR_EXIT_NB_ARG "minishell: exit: too many arguments\n"
 # define ERR_EXIT_WRONG_ARG "minishell: exit: %s: numeric argument required\n"
 
+extern	int	g_exit_code;
+
 typedef struct s_env
 {
 	char			*key;
@@ -60,7 +62,7 @@ typedef struct s_env
 	struct s_env	*prev;
 	int				fd_in;
 	int				fd_out;
-	char			exit_code;
+	unsigned char			exit_code;
 }					t_env;
 
 typedef struct s_token

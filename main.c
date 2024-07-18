@@ -12,6 +12,8 @@
 
 #include "include/minishell.h"
 
+int g_exit_code = 0;
+
 int	init_std(t_env *env)
 {
 	if (dup2(env->fd_in, STDIN_FILENO) == -1)
@@ -40,12 +42,17 @@ int	main(int ac, char **av, char **envp)
 	(*env)->fd_in = dup(STDIN_FILENO);
 	(*env)->fd_out = dup(STDOUT_FILENO);
 	line = "\0";
-	//exit_status(0, *env);
+	exit_status(0, *env);
 	while (line != NULL)
 	{
 		line = readline("minishell $> ");
 		if (line)
 		{
+			if (g_exit_code != 0)
+			{
+				exit_status(130, *env);
+				g_exit_code = 0;
+			}
 			add_history(line);
 			// printf("%s\n", expander(line, env));
 			if (!check_problems(line))

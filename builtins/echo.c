@@ -35,25 +35,33 @@ t_token	*skip_redirect(t_token *lst)
 int	ft_echo(t_token *lst, t_env **env)
 {
 	int		flag;
-
+	int	flag2;
+	
 	if (lst && lst->type == CMD)
 		lst = lst->next;
 	if (!lst)
 		return (write(STDOUT_FILENO, "\n", 1));
 	flag = is_flag(lst->value);
+	flag2 = 0;
 	while (lst && skip_flag(lst->value))
 		lst = lst->next;
 	while (lst && lst->type != PIPE)
 	{
 		if (lst->type > PIPE)
+    {
 			lst = skip_redirect(lst);
+			flag2--;
+		}
 		else
 		{
 			print_word_echo(lst->value);
 			lst = lst->next;
 			if (lst && lst->type != PIPE)
 				write(STDOUT_FILENO, " ", 1);
+			flag2 = 1000;
 		}
+		if (lst && lst->type == ARG && flag2 > -1)
+			write(1, " ", 1);
 	}
 	if (!flag)
 		ft_printf("\n", STDOUT_FILENO);
