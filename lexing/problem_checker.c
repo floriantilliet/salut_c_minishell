@@ -6,7 +6,7 @@
 /*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 11:37:41 by florian           #+#    #+#             */
-/*   Updated: 2024/07/19 11:20:21 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/19 14:34:56 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	check_pipe_problems(char *line)
 	return (1);
 }
 
-int	check_problems(char *line)
+int	check_problems(char *line, t_env **env)
 {
 	size_t	i;
 
@@ -122,10 +122,19 @@ int	check_problems(char *line)
 	if (i == ft_strlen(line))
 		return (0);
 	if (!check_quote_problems(line))
-		return (ft_printf("Error: unclosed quote\n", 2), 0);
+	{
+		exit_status(2, *env);
+		return (ft_printf("Error: unclosed quote\n", STDERR_FILENO), 0);
+	}
 	if (!check_pipe_problems(line))
-		return (ft_printf("Error: nothing to be piped\n", 2), 0);
+	{
+		exit_status(2, *env);
+		return (ft_printf(ERR_PIPE, STDERR_FILENO), 0);
+	}
 	if (!check_redirection_problems(line))
-		return (ft_printf("Error: nothing to redirect\n", 2), 0);
+	{
+		exit_status(2, *env);
+		return (ft_printf(ERR_REDIRECT, STDERR_FILENO), 0);
+	}
 	return (1);
 }

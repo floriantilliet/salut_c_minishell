@@ -6,7 +6,7 @@
 /*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/19 11:17:46 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/19 14:32:40 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	main(int ac, char **av, char **envp)
 			}
 			add_history(line);
 			// printf("%s\n", expander(line, env));
-			if (!check_problems(line))
+			if (!check_problems(line, env))
 				;				
 			else
 			{
