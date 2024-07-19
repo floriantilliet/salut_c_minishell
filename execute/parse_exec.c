@@ -6,15 +6,15 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 16:20:48 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/16 16:57:38 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/18 16:24:02 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/minishell.h"
+#include "../include/minishell.h"
 
 void	init_head(t_token **tokens)
 {
-	t_token *lst;
+	t_token	*lst;
 
 	lst = *tokens;
 	while (lst)
@@ -26,7 +26,7 @@ void	init_head(t_token **tokens)
 
 int	check_pipe(t_token **tokens)
 {
-	t_token *lst;
+	t_token	*lst;
 
 	lst = *tokens;
 	lst->if_pipe = 0;
@@ -34,11 +34,14 @@ int	check_pipe(t_token **tokens)
 	while (lst)
 	{
 		if (lst->type == PIPE && !lst->next)
-			return (printf(ERR_PIPE), FALSE);
+			return (ft_printf(ERR_PIPE, STDERR_FILENO), FALSE);
 		else if (lst->type >= OUT && !lst->next)
-			return (printf(ERR_REDIRECT), FALSE);
+			return (ft_printf(ERR_REDIRECT, STDERR_FILENO), FALSE);
 		else if (lst->type >= OUT && lst->next->type != ARG)
-			return (printf(ERR_REDIRECT_2), printf("'%s'\n", lst->next->value), FALSE);
+		{
+			ft_printf(ERR_REDIRECT_2, STDERR_FILENO);
+			return (ft_printf("'%s'\n", STDERR_FILENO, lst->next->value), FALSE);
+		}
 		else if (lst->type == PIPE)
 			lst->head->if_pipe++;
 		lst = lst->next;
@@ -48,7 +51,7 @@ int	check_pipe(t_token **tokens)
 
 void	parse_exec(t_token **tokens, t_env **env)
 {
-	t_token *lst;
+	t_token	*lst;
 
 	lst = *tokens;
 	if (!check_pipe(tokens))

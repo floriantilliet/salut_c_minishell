@@ -6,11 +6,11 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:38 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/18 11:47:53 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/18 17:16:59 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/minishell.h"
+#include "../include/minishell.h"
 
 int	ft_dup(t_token **tokens, t_token *lst, t_env **env)
 {
@@ -61,27 +61,26 @@ int	check_builtins(t_token *lst, t_token **tokens, t_env **env)
 	return (FALSE);
 }
 
-
-int do_cmd(t_token **tokens, t_token *lst, t_env **env)
+int	do_cmd(t_token **tokens, t_token *lst, t_env **env)
 {
-    pid_t   pid;
+	pid_t	pid;
 
-    if (pipe(lst->head->fd_pipe) == -1)
-        return (perror(ERROR_PIPE) ,FALSE);
-    pid = fork();
-    if (pid == -1)
-        return (perror(ERROR_FORK), FALSE);
-    if (!pid)
-    {
+	if (pipe(lst->head->fd_pipe) == -1)
+		return (ft_printf(ERROR_PIPE, STDERR_FILENO), FALSE);
+	pid = fork();
+	if (pid == -1)
+		return (ft_printf(ERROR_FORK, STDERR_FILENO), FALSE);
+	if (!pid)
+	{
 		if (!ft_dup(tokens, lst, env) || !check_builtins(lst, tokens, env))
 			free_everything(env, tokens, (*env)->exit_code);
-    }
-    else
-    {
-        close(lst->head->fd_pipe[1]);
-    	if (dup2(lst->head->fd_pipe[0], 0) == -1)
-			perror(ERROR_DUP);
-        close(lst->head->fd_pipe[0]);
-    }
-    return (TRUE);
+	}
+	else
+	{
+		close(lst->head->fd_pipe[1]);
+		if (dup2(lst->head->fd_pipe[0], 0) == -1)
+			ft_printf(ERROR_DUP, STDERR_FILENO);
+		close(lst->head->fd_pipe[0]);
+	}
+	return (TRUE);
 }
