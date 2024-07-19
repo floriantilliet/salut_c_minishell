@@ -6,7 +6,7 @@
 /*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 11:37:41 by florian           #+#    #+#             */
-/*   Updated: 2024/07/10 17:41:53 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/19 11:20:21 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,10 +122,10 @@ int	check_problems(char *line)
 	if (i == ft_strlen(line))
 		return (0);
 	if (!check_quote_problems(line))
-		return (printf("Error: unclosed quote\n"), 0);
+		return (ft_printf("Error: unclosed quote\n", 2), 0);
 	if (!check_pipe_problems(line))
-		return (printf("Error: nothing to be piped\n"), 0);
+		return (ft_printf("Error: nothing to be piped\n", 2), 0);
 	if (!check_redirection_problems(line))
-		return (printf("Error: nothing to redirect\n"), 0);
+		return (ft_printf("Error: nothing to redirect\n", 2), 0);
 	return (1);
 }
