@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_token_list.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:13:10 by florian           #+#    #+#             */
-/*   Updated: 2024/07/03 18:25:14 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/24 23:26:57 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	trim_token(t_token *current)
 
 void	initialise_fd(t_token **tokens)
 {
-	t_token *lst;
+	t_token	*lst;
 
 	lst = *tokens;
 	while (lst)
