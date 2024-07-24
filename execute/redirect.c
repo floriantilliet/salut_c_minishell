@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:11:05 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/18 17:37:58 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/24 16:38:46 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	here_doc_put_in(char *limit, int pipe_fd[2])
 	close(pipe_fd[0]);
 	while (1)
 	{
+		// write(STDOUT_FILENO, ">", 1);
 		ret = get_next_line(0);
 		if (!ft_strcmp(ret, limit))
 		{
@@ -57,6 +58,17 @@ void	here_doc_put_in(char *limit, int pipe_fd[2])
 		free(ret);
 	}
 }
+
+// for n here_doc
+//main process ---> change_signal() --> open(.tmpN, O_RWRONLY) --> fill --> close(tmpN);
+// --> restore_signal();
+// --> ^C --> close() --> unlink();
+
+//child --> si -> here_doc --> open --> dup --> close
+// unlink();
+
+// main --> read --> buffer[n][1_000_000];
+//child --> write(pipe[1]);
 
 int	heredoc(t_token **tokens, t_token *lst, t_env **env)
 {

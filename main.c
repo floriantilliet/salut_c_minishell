@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/19 14:32:40 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/24 16:40:28 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@ int	init_std(t_env *env)
 		return (ft_printf(ERROR_DUP, STDERR_FILENO), FALSE);
 	return (TRUE);
 }
+
+static int rl_resync(void)
+{
+	return (1);
+}
+
 
 int	main(int ac, char **av, char **envp)
 {
@@ -45,14 +51,15 @@ int	main(int ac, char **av, char **envp)
 	exit_status(0, *env);
 	while (line != NULL)
 	{
+		rl_event_hook = rl_resync;
+		if (g_exit_code != 0)
+		{
+			exit_status(130, *env);
+			g_exit_code = 0;
+		}
 		line = readline("minishell $> ");
 		if (line)
 		{
-			if (g_exit_code != 0)
-			{
-				exit_status(130, *env);
-				g_exit_code = 0;
-			}
 			add_history(line);
 			// printf("%s\n", expander(line, env));
 			if (!check_problems(line, env))
@@ -62,9 +69,6 @@ int	main(int ac, char **av, char **envp)
 				tokens = (merge_tokens(strings_to_tokens(line_to_strings(line))));
 				expand_token_list(tokens, env);
 				parse_exec(tokens, env);
-				// print_token_list(tokens);
-				/* if (*tokens)
-					access_cmd(tokens, env); */
 				free_token_list(tokens);
 				init_std(*env);
 			}

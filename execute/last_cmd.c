@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:57 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/18 16:21:14 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/24 16:09:30 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	check_builtins_without_pipe(t_token **tokens, t_token *lst, t_env **env)
 	while (lst && lst->type != CMD)
 		lst = lst->next;
 	if (!lst)
-		return (FALSE);
+		return (TRUE);
 	else if (!ft_strncmp(lst->value, "echo", 5))
 		return (ft_echo(lst, env), TRUE);
 	else if (!ft_strncmp(lst->value, "pwd", 4))

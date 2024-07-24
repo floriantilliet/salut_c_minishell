@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:08:44 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/18 11:55:02 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/24 15:47:46 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,15 +81,18 @@ int	ft_export_bis(char *value, t_env **env)
 		tab[1] = ft_substr(value, len + 2, ft_strlen(value));
 		concatenate_value(tab, *env, env);
 	}
-	else if (ft_strchr2(value, '=') != -1 && value[ft_strchr2(value, '=') + 1])
+	else if (ft_strchr2(value, '=') != -1)
 	{
 		tab[0] = ft_substr(value, 0, ft_strchr2(value, '='));
-		tab[1] = ft_substr(value, ft_strchr2(value, '=') + 1, ft_strlen(value));
+		if (!value[ft_strchr2(value, '=') + 1])
+			tab[1] = ft_strdup("");
+		else
+			tab[1] = ft_substr(value, ft_strchr2(value, '=') + 1, ft_strlen(value));
 		replace_value(tab[0], tab[1], *env, env);
 	}
 	else if (is_new_node(value, env))
 		add_new_env_node(value, NULL, env);
-	return (TRUE);
+	return (TRUE);	
 }
 
 int	ft_export(t_token *tokens, t_env **env)
