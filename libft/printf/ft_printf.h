@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 11:56:24 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/03 15:29:19 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/24 23:56:11 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 
-# define  FT_PRINTF_H
+# define FT_PRINTF_H
 # include <stdlib.h>
 # include <stdio.h>
 # include <stdarg.h>

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/24 16:40:28 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/25 00:01:06 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/minishell.h"
 
-int g_exit_code = 0;
+int			g_exit_code = 0;
 
 int	init_std(t_env *env)
 {
@@ -23,11 +23,10 @@ int	init_std(t_env *env)
 	return (TRUE);
 }
 
-static int rl_resync(void)
+static int	rl_resync(void)
 {
 	return (1);
 }
-
 
 int	main(int ac, char **av, char **envp)
 {
@@ -63,7 +62,7 @@ int	main(int ac, char **av, char **envp)
 			add_history(line);
 			// printf("%s\n", expander(line, env));
 			if (!check_problems(line, env))
-				;				
+				;
 			else
 			{
 				tokens = (merge_tokens(strings_to_tokens(line_to_strings(line))));
@@ -79,4 +78,3 @@ int	main(int ac, char **av, char **envp)
 	free_env(env);
 	return (0);
 }
-
