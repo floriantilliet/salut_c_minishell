@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:13:24 by florian           #+#    #+#             */
-/*   Updated: 2024/07/25 15:26:53 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/25 15:47:00 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,14 @@ void	ctrl_c_child(int code)
 	rl_done = 1;
 }
 
+void	sigquit_child(int code)
+{
+	(void)code;
+	g_exit_code = 2;
+	ft_printf("Quit (core dumped)\n", STDOUT_FILENO);
+	rl_done = 1;
+}
+
 void	signals(int flag)
 {
 	if (flag == PROMPT)
@@ -52,5 +60,6 @@ void	signals(int flag)
 	else if (flag == CHILD)
 	{
 		signal(SIGINT, &ctrl_c_child);
+		signal(SIGQUIT, &sigquit_child);
 	}
 }

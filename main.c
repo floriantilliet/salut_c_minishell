@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/25 11:34:03 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/25 15:46:26 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,14 @@ int	main(int ac, char **av, char **envp)
 	while (line != NULL)
 	{
 		rl_event_hook = rl_resync;
-		if (g_exit_code != 0)
+		if (g_exit_code == 1)
 		{
 			exit_status(130, *env);
+			g_exit_code = 0;
+		}
+		if (g_exit_code == 2)
+		{
+			exit_status(131, *env);
 			g_exit_code = 0;
 		}
 		line = readline("minishell $> ");
