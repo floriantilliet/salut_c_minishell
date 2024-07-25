@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:14:26 by florian           #+#    #+#             */
-/*   Updated: 2024/07/25 12:14:31 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/25 15:10:46 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,9 @@ void	free_token_list(t_token **token_list)
 	{
 		next = current->next;
 		free(current->value);
-		if (current->file_n)
+		if (current->type == HEREDOC && current->file_n)
 		{
+			close(current->fd);
 			unlink(current->file_n);
 			free(current->file_n);
 		}

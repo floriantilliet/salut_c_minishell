@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:57 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/25 14:43:28 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/25 15:30:44 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	close_redirect(t_token **tokens)
 			if (lst->type == ARG && lst->fd != -1)
 				close(lst->fd);
 		}
+		else if (lst->type == HEREDOC)
+			close(lst->fd);
 		lst = lst->next;
 	}
 }
@@ -85,6 +87,7 @@ int	last_cmd(t_token **tokens, t_token *lst, t_env **env)
 		return (exit_status(1, *env), FALSE);
 	if (check_builtins_without_pipe(tokens, lst, env))
 		return (close_redirect(&lst), TRUE);
+	signals(CHILD);
 	pid = fork();
 	if (pid == -1)
 		return (perror(ERROR_FORK), FALSE);

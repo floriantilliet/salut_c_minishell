@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:38 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/25 11:33:17 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/25 15:30:52 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	do_cmd(t_token **tokens, t_token *lst, t_env **env)
 		return (ft_printf(ERROR_FORK, STDERR_FILENO), FALSE);
 	if (!pid)
 	{
+		signals(CHILD);
 		if (!ft_dup(lst, env) || !check_builtins(lst, tokens, env))
 			free_everything(env, tokens, (*env)->exit_code);
 	}

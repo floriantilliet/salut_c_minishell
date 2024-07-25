@@ -6,7 +6,7 @@
 /*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:22:38 by florian           #+#    #+#             */
-/*   Updated: 2024/06/03 17:44:11 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/25 14:41:37 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ t_token	*create_token_node(char *value)
 	new_node->type = get_token_type(value);
 	new_node->prev = NULL;
 	new_node->next = NULL;
+	new_node->file_n = NULL;
+	new_node->fd = -1;
 	return (new_node);
 }
 
