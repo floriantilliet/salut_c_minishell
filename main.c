@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/25 00:01:06 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/25 11:34:03 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	main(int ac, char **av, char **envp)
 	}
 	env = NULL;
 	env = store_env(envp);
-	signals();
+	signals(PROMPT);
 	(*env)->fd_in = dup(STDIN_FILENO);
 	(*env)->fd_out = dup(STDOUT_FILENO);
 	line = "\0";
@@ -67,7 +67,8 @@ int	main(int ac, char **av, char **envp)
 			{
 				tokens = (merge_tokens(strings_to_tokens(line_to_strings(line))));
 				expand_token_list(tokens, env);
-				parse_exec(tokens, env);
+				if (handle_here_doc(tokens, env))
+					parse_exec(tokens, env);
 				free_token_list(tokens);
 				init_std(*env);
 			}

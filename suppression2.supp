@@ -1,8 +1,0 @@
-{
-   suppression_de_grep
-   Memcheck:Leak
-   fun:malloc
-   fun:some_function_in_grep
-   fun:main
-   obj:/usr/bin/grep
-}

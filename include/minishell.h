@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/19 14:32:38 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/25 11:28:54 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdbool.h>
 
 # define CMD 0
 # define ARG 1
@@ -33,6 +34,12 @@
 # define APPEND 5
 # define HEREDOC 6
 # define IS_SPACE 7
+
+typedef enum e_flag_sig{
+	PROMPT,
+	HERE_DOC,
+	CHILD
+} t_flag_sig;
 
 # define FALSE 0
 # define TRUE 1
@@ -74,6 +81,7 @@ typedef struct s_env
 typedef struct s_token
 {
 	char			*value;
+	char			*file_n;
 	int				type;
 	int				if_pipe;
 	int				fd;
@@ -180,7 +188,7 @@ void				close_dup(t_env **env);
 // signals.c
 
 void				handle_sigint(int code);
-void				signals(void);
+void				signals(int flag);
 
 // builtins
 
@@ -203,13 +211,14 @@ t_token				*skip_redirect(t_token *lst, int flag2);
 
 int		access_cmd(t_token *lst, t_token **tokens, t_env **env);
 int		count_len(t_token **tokens, t_cmd *cmd);
+int	handle_here_doc(t_token **tokens, t_env **env);
 void	parse_exec(t_token **tokens, t_env **env);
 int		ft_strcmp(const char *s1, const char *s2);
 int	check_builtins(t_token *lst, t_token **tokens, t_env **env);
 char	**initialise_cmd_env(t_env **env);
 int		do_cmd(t_token **tokens, t_token *lst, t_env **env);
 int		last_cmd(t_token **tokens, t_token *lst, t_env **env);
-int		heredoc(t_token **tokens, t_token *lst, t_env **env);
+int		heredoc(t_token *lst, t_env **env);
 int		ft_redirect(int type, t_token *lst);
 void	close_redirect(t_token **tokens);
 t_cmd	*initialise_cmd(t_token **tokens, t_env **env);

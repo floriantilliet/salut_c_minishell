@@ -6,19 +6,19 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:57 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/24 16:09:30 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/25 11:33:41 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	ft_dup_last(t_token **tokens, t_token *lst, t_env **env)
+int	ft_dup_last(t_token *lst, t_env **env)
 {
 	while (lst)
 	{
 		if (lst->type == HEREDOC)
 		{
-			if (!heredoc(tokens, lst->next, env))
+			if (!heredoc(lst, env))
 				return (FALSE);
 			lst = lst->next;
 		}
@@ -81,7 +81,7 @@ int	last_cmd(t_token **tokens, t_token *lst, t_env **env)
 	int		status;
 	int		exit_code;
 
-	if (!ft_dup_last(tokens, lst, env))
+	if (!ft_dup_last(lst, env))
 		return (exit_status(1, *env), FALSE);
 	if (check_builtins_without_pipe(tokens, lst, env))
 		return (close_redirect(&lst), TRUE);

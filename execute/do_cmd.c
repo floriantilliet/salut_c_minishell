@@ -6,13 +6,13 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:38 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/18 17:16:59 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/25 11:33:17 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	ft_dup(t_token **tokens, t_token *lst, t_env **env)
+int	ft_dup(t_token *lst, t_env **env)
 {
 	close(lst->head->fd_pipe[0]);
 	if (dup2(lst->head->fd_pipe[1], 1) == -1)
@@ -21,7 +21,7 @@ int	ft_dup(t_token **tokens, t_token *lst, t_env **env)
 	{
 		if (lst->type == HEREDOC)
 		{
-			if (!heredoc(tokens, lst->next, env))
+			if (!heredoc(lst, env))
 				return (FALSE);
 			lst = lst->next;
 		}
@@ -72,7 +72,7 @@ int	do_cmd(t_token **tokens, t_token *lst, t_env **env)
 		return (ft_printf(ERROR_FORK, STDERR_FILENO), FALSE);
 	if (!pid)
 	{
-		if (!ft_dup(tokens, lst, env) || !check_builtins(lst, tokens, env))
+		if (!ft_dup(lst, env) || !check_builtins(lst, tokens, env))
 			free_everything(env, tokens, (*env)->exit_code);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:11:05 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/24 16:38:46 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/25 12:14:02 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_redirect(int type, t_token *lst)
 	{
 		lst->fd = open(lst->value, O_RDONLY);
 		if (lst->fd == -1)
-			return (ft_printf("Erreur open", STDERR_FILENO), FALSE);
+			return (ft_printf(ERROR_OPEN, STDERR_FILENO), FALSE);
 		if (dup2(lst->fd, 0) == -1)
 			return (ft_printf(ERROR_DUP, STDERR_FILENO), FALSE);
 	}
@@ -38,27 +38,6 @@ int	ft_redirect(int type, t_token *lst)
 	return (TRUE);
 }
 
-void	here_doc_put_in(char *limit, int pipe_fd[2])
-{
-	char	*ret;
-
-	close(pipe_fd[0]);
-	while (1)
-	{
-		// write(STDOUT_FILENO, ">", 1);
-		ret = get_next_line(0);
-		if (!ft_strcmp(ret, limit))
-		{
-			close(pipe_fd[1]);
-			free(ret);
-			free(limit);
-			return ;
-		}
-		ft_putstr_fd(ret, pipe_fd[1]);
-		free(ret);
-	}
-}
-
 // for n here_doc
 //main process ---> change_signal() --> open(.tmpN, O_RWRONLY) --> fill --> close(tmpN);
 // --> restore_signal();
@@ -70,30 +49,13 @@ void	here_doc_put_in(char *limit, int pipe_fd[2])
 // main --> read --> buffer[n][1_000_000];
 //child --> write(pipe[1]);
 
-int	heredoc(t_token **tokens, t_token *lst, t_env **env)
+int	heredoc(t_token *lst, t_env **env)
 {
-	int		pipe_fd[2];
-	int		status;
-	pid_t	pid;
-
-	if (pipe(pipe_fd) == -1)
-		return (ft_printf(ERROR_PIPE, STDERR_FILENO), FALSE);
-	pid = fork();
-	if (pid == -1)
-		return (ft_printf(ERROR_FORK, STDERR_FILENO), FALSE);
-	if (!pid)
-	{
-		here_doc_put_in(ft_strjoin(lst->value, "\n"), pipe_fd);
-		free_everything(env, tokens, 0);
-	}
-	else
-	{
-		close(pipe_fd[1]);
-		if (dup2(pipe_fd[0], 0) == -1)
-			return (ft_printf(ERROR_DUP, STDERR_FILENO), FALSE);
-		close(pipe_fd[0]);
-		waitpid(pid, &status, 0);
-	}
+	lst->fd = open(lst->file_n, O_RDWR);
+	if (lst->fd == -1)
+		return (ft_printf(ERROR_OPEN, STDERR_FILENO), exit_status(1, *env), FALSE);
+	if (dup2(lst->fd, 0) == -1)
+		return (ft_printf(ERROR_DUP, STDERR_FILENO), exit_status(1, *env),  FALSE);
 	return (TRUE);
 }
 
