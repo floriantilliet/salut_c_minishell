@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 08:56:16 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/25 13:53:01 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/25 14:23:54 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,6 @@ int	write_in(int fd, char *limit, t_env **env)
 			if (g_exit_code == 1)
 				return (free(ret), close(fd), exit_status(130, *env), FALSE);
 			return (exit_status(0, *env), TRUE);
-		}
-		else if (g_exit_code == 1)
-		{
-			ft_putstr_fd(limit, STDIN_FILENO);
-			return (free(ret), close(fd), FALSE);
 		}
 		ft_putstr_fd(ret, fd);
 		free(ret);
@@ -70,7 +65,6 @@ int	handle_here_doc(t_token **tokens, t_env **env)
 	while (lst)
 	{
 		lst->fd = 0;
-		lst->file_n = NULL;
 		if (lst->type == HEREDOC)
 		{
 			nb++;

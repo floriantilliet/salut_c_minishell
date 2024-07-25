@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:57 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/25 11:33:41 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/25 14:43:28 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	close_redirect(t_token **tokens)
 	lst = *tokens;
 	while (lst)
 	{
-		if (lst->type != CMD && lst->type != ARG)
+		if (lst->type > PIPE && lst->type < HEREDOC)
 		{
 			lst = lst->next;
 			if (!lst)

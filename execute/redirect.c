@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:11:05 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/25 12:14:02 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/25 14:26:51 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,10 @@ int	ft_redirect(int type, t_token *lst)
 int	heredoc(t_token *lst, t_env **env)
 {
 	lst->fd = open(lst->file_n, O_RDWR);
+	printf("fd = %d\n", lst->fd);
 	if (lst->fd == -1)
 		return (ft_printf(ERROR_OPEN, STDERR_FILENO), exit_status(1, *env), FALSE);
-	if (dup2(lst->fd, 0) == -1)
+	if (dup2(lst->fd, STDIN_FILENO) == -1)
 		return (ft_printf(ERROR_DUP, STDERR_FILENO), exit_status(1, *env),  FALSE);
 	return (TRUE);
 }
