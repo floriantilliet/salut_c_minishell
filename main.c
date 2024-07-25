@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/25 15:46:26 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/25 17:27:28 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,69 +14,78 @@
 
 int			g_exit_code = 0;
 
-int	init_std(t_env *env)
-{
-	if (dup2(env->fd_in, STDIN_FILENO) == -1)
-		return (ft_printf(ERROR_DUP, STDERR_FILENO), FALSE);
-	if (dup2(env->fd_out, STDOUT_FILENO) == -1)
-		return (ft_printf(ERROR_DUP, STDERR_FILENO), FALSE);
-	return (TRUE);
-}
-
 static int	rl_resync(void)
 {
 	return (1);
+}
+
+t_env	**init_main(char **envp)
+{
+	t_env	**env;
+
+	if (!*envp || !envp)
+	{
+		ft_printf("No environment variables found\n", 2);
+		exit(1);
+	}
+	env = NULL;
+	env = store_env(envp);
+	if (!env)
+		exit(1);
+	signals(PROMPT);
+	(*env)->fd_in = dup(STDIN_FILENO);
+	(*env)->fd_out = dup(STDOUT_FILENO);
+	exit_status(0, *env);
+	return (env);
+}
+
+void	handle_sig_exit_code(t_env **env)
+{
+	if (g_exit_code == 1)
+	{
+		exit_status(130, *env);
+		g_exit_code = 0;
+	}
+	if (g_exit_code == 2)
+	{
+		exit_status(131, *env);
+		g_exit_code = 0;
+	}
+}
+
+void	tokens_and_exec(char *line, t_env **env)
+{
+	t_token	**tokens;
+
+	tokens = (merge_tokens(strings_to_tokens(line_to_strings(line))));
+	expand_token_list(tokens, env);
+	if (handle_here_doc(tokens, env))
+		parse_exec(tokens, env);
+	free_token_list(tokens);
+	init_std(*env);
 }
 
 int	main(int ac, char **av, char **envp)
 {
 	char	*line;
 	t_env	**env;
-	t_token	**tokens;
 
 	(void)av;
 	(void)ac;
-	if (!*envp || !envp)
-	{
-		ft_printf("No environment variables found\n", 2);
-		return (1);
-	}
-	env = NULL;
-	env = store_env(envp);
-	signals(PROMPT);
-	(*env)->fd_in = dup(STDIN_FILENO);
-	(*env)->fd_out = dup(STDOUT_FILENO);
+	env = init_main(envp);
 	line = "\0";
-	exit_status(0, *env);
 	while (line != NULL)
 	{
 		rl_event_hook = rl_resync;
-		if (g_exit_code == 1)
-		{
-			exit_status(130, *env);
-			g_exit_code = 0;
-		}
-		if (g_exit_code == 2)
-		{
-			exit_status(131, *env);
-			g_exit_code = 0;
-		}
+		handle_sig_exit_code(env);
 		line = readline("minishell $> ");
 		if (line)
 		{
 			add_history(line);
-			// printf("%s\n", expander(line, env));
 			if (!check_problems(line, env))
 				;
 			else
-			{
-				tokens = (merge_tokens(strings_to_tokens(line_to_strings(line))));
-				expand_token_list(tokens, env);
-				if (handle_here_doc(tokens, env))
-					parse_exec(tokens, env);
-				free_token_list(tokens);
-				init_std(*env);
-			}
+				tokens_and_exec(line, env);
 		}
 		free(line);
 	}

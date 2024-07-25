@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:11:05 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/25 15:04:56 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/25 17:09:37 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,19 @@ int	ft_redirect(int type, t_token *lst)
 	return (TRUE);
 }
 
-// for n here_doc
-//main process ---> change_signal() --> open(.tmpN, O_RWRONLY) --> fill --> close(tmpN);
-// --> restore_signal();
-// --> ^C --> close() --> unlink();
-
-//child --> si -> here_doc --> open --> dup --> close
-// unlink();
-
-// main --> read --> buffer[n][1_000_000];
-//child --> write(pipe[1]);
-
 int	heredoc(t_token *lst, t_env **env)
 {
 	lst->fd = open(lst->file_n, O_RDWR);
 	if (lst->fd == -1)
-		return (ft_printf(ERROR_OPEN, STDERR_FILENO), exit_status(1, *env), FALSE);
+	{
+		ft_printf(ERROR_OPEN, STDERR_FILENO);
+		return (exit_status(1, *env), FALSE);
+	}
 	if (dup2(lst->fd, STDIN_FILENO) == -1)
-		return (ft_printf(ERROR_DUP, STDERR_FILENO), exit_status(1, *env),  FALSE);
+	{
+		ft_printf(ERROR_DUP, STDERR_FILENO);
+		return (exit_status(1, *env), FALSE);
+	}
 	return (TRUE);
 }
 

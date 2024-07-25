@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:13:24 by florian           #+#    #+#             */
-/*   Updated: 2024/07/25 15:47:00 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/25 15:51:21 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	handle_sigint(int code)
 	rl_done = 1;
 }
 
-void	ctrl_c_here_doc(int code) 
+void	ctrl_c_here_doc(int code)
 {
 	(void)code;
 	g_exit_code = 1;
@@ -53,10 +53,7 @@ void	signals(int flag)
 		signal(SIGQUIT, SIG_IGN);
 	}
 	else if (flag == HERE_DOC)
-	{
 		signal(SIGINT, &ctrl_c_here_doc);
-		//signal()
-	}
 	else if (flag == CHILD)
 	{
 		signal(SIGINT, &ctrl_c_child);

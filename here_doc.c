@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 08:56:16 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/25 14:23:54 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/25 17:27:36 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	write_in(int fd, char *limit, t_env **env)
 {
-	char *ret;
+	char	*ret;
 
 	while (TRUE)
 	{
@@ -56,8 +56,8 @@ int	create_here_doc(t_token *lst, char *limiter, int n, t_env **env)
 
 int	handle_here_doc(t_token **tokens, t_env **env)
 {
-	t_token 	*lst;
-	int			nb;
+	t_token	*lst;
+	int		nb;
 
 	lst = *tokens;
 	nb = 0;
@@ -76,5 +76,14 @@ int	handle_here_doc(t_token **tokens, t_env **env)
 		lst = lst->next;
 	}
 	signals(PROMPT);
+	return (TRUE);
+}
+
+int	init_std(t_env *env)
+{
+	if (dup2(env->fd_in, STDIN_FILENO) == -1)
+		return (ft_printf(ERROR_DUP, STDERR_FILENO), FALSE);
+	if (dup2(env->fd_out, STDOUT_FILENO) == -1)
+		return (ft_printf(ERROR_DUP, STDERR_FILENO), FALSE);
 	return (TRUE);
 }

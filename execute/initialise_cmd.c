@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:11:27 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/18 17:38:27 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/25 15:57:26 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char	**initialise_cmd_env(t_env **env)
 		tab[len] = build_env(lst->key, lst->value);
 		lst = lst->next;
 		if (!tab[len])
-			return (ft_printf(ERR_MALLOC, STDERR_FILENO), free_char_tab(tab), NULL);
+			return (ft_printf(ERR_MALLOC, STDERR), free_char_tab(tab), NULL);
 	}
 	return (tab);
 }

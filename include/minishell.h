@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/25 11:28:54 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/25 17:28:02 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,11 @@ typedef enum e_flag_sig{
 	PROMPT,
 	HERE_DOC,
 	CHILD
-} t_flag_sig;
+}	t_flag_sig;
 
 # define FALSE 0
 # define TRUE 1
+# define STDERR STDERR_FILENO
 # define ERR_PIPE "minishell: syntax error near unexpected token `|'\n"
 # define ERR_REDIRECT "minishell: syntax error near unexpected token `newline'\n"
 # define ERR_REDIRECT_2 "minishell: syntax error near unexpected token\n"
@@ -61,11 +62,10 @@ typedef enum e_flag_sig{
 # define ERR_EXIT_WRONG_ARG "minishell: exit: %s: numeric argument required\n"
 # define ERROR_PERMISSION "minishell: %s: Permission denied\n"
 # define ERR_NOT_FOUND "minishell: %s: File not found\n"
-# define ERR_COMP_NOT_DIR "Error: A component of the path %s is not a directory\n"
+# define ERR_COMP_NO_DIR "Error: A component of the path %s is not a directory\n"
 # define ERR_ACCESS "Error: Cannot access %s: %s\n"
 
-
-extern	int	g_exit_code;
+extern int	g_exit_code;
 
 typedef struct s_env
 {
@@ -75,7 +75,7 @@ typedef struct s_env
 	struct s_env	*prev;
 	int				fd_in;
 	int				fd_out;
-	unsigned char			exit_code;
+	unsigned char	exit_code;
 }					t_env;
 
 typedef struct s_token
@@ -182,7 +182,7 @@ char				*get_env_value(char *key, t_env **env);
 void				free_char_tab(char **tab);
 void				free_env(t_env **env);
 void				free_token_list(t_token **token_list);
-void				free_everything(t_env **env, t_token **token, int code_exit);
+void				free_everything(t_env **env, t_token **token, int code_exi);
 void				close_dup(t_env **env);
 
 // signals.c
@@ -209,19 +209,19 @@ t_token				*skip_redirect(t_token *lst, int flag2);
 
 // execute.c
 
-int		access_cmd(t_token *lst, t_token **tokens, t_env **env);
-int		count_len(t_token **tokens, t_cmd *cmd);
-int	handle_here_doc(t_token **tokens, t_env **env);
-void	parse_exec(t_token **tokens, t_env **env);
-int		ft_strcmp(const char *s1, const char *s2);
-int	check_builtins(t_token *lst, t_token **tokens, t_env **env);
-char	**initialise_cmd_env(t_env **env);
-int		do_cmd(t_token **tokens, t_token *lst, t_env **env);
-int		last_cmd(t_token **tokens, t_token *lst, t_env **env);
-int		heredoc(t_token *lst, t_env **env);
-int		ft_redirect(int type, t_token *lst);
-void	close_redirect(t_token **tokens);
-t_cmd	*initialise_cmd(t_token **tokens, t_env **env);
-
+int					access_cmd(t_token *lst, t_token **tokens, t_env **env);
+int					count_len(t_token **tokens, t_cmd *cmd);
+int					handle_here_doc(t_token **tokens, t_env **env);
+void				parse_exec(t_token **tokens, t_env **env);
+int					ft_strcmp(const char *s1, const char *s2);
+int					check_builtins(t_token *lst, t_token **tokens, t_env **env);
+char				**initialise_cmd_env(t_env **env);
+int					do_cmd(t_token **tokens, t_token *lst, t_env **env);
+int					last_cmd(t_token **tokens, t_token *lst, t_env **env);
+int					heredoc(t_token *lst, t_env **env);
+int					init_std(t_env *env);
+int					ft_redirect(int type, t_token *lst);
+void				close_redirect(t_token **tokens);
+t_cmd				*initialise_cmd(t_token **tokens, t_env **env);
 
 #endif

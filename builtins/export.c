@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:08:44 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/24 15:47:46 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/25 15:54:29 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,15 +84,16 @@ int	ft_export_bis(char *value, t_env **env)
 	else if (ft_strchr2(value, '=') != -1)
 	{
 		tab[0] = ft_substr(value, 0, ft_strchr2(value, '='));
-		if (!value[ft_strchr2(value, '=') + 1])
+		len = ft_strchr2(value, '=');
+		if (!value[len + 1])
 			tab[1] = ft_strdup("");
 		else
-			tab[1] = ft_substr(value, ft_strchr2(value, '=') + 1, ft_strlen(value));
+			tab[1] = ft_substr(value, len + 1, ft_strlen(value));
 		replace_value(tab[0], tab[1], *env, env);
 	}
 	else if (is_new_node(value, env))
 		add_new_env_node(value, NULL, env);
-	return (TRUE);	
+	return (TRUE);
 }
 
 int	ft_export(t_token *tokens, t_env **env)
