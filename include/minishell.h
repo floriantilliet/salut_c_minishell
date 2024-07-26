@@ -6,7 +6,7 @@
 /*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/26 13:49:53 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/26 14:56:09 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,10 @@ void				close_dup(t_env **env);
 void				handle_sigint(int code);
 void				signals(int flag);
 
+// here_doc.c
+
+void				initialise_file_n(t_token **tokens);
+
 // builtins
 
 int					ft_pwd(t_env **env);
@@ -225,5 +229,6 @@ int					init_std(t_env *env);
 int					ft_redirect(int type, t_token *lst);
 void				close_redirect(t_token **tokens);
 t_cmd				*initialise_cmd(t_token **tokens, t_env **env);
+
 
 #endif
