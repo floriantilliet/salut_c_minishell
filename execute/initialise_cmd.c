@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialise_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:11:27 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/25 15:57:26 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/26 13:41:17 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	**initialise_cmd_cmd(t_token *lst, t_cmd *cmd, int len)
 	cmd->cmd[len] = NULL;
 	i = 0;
 	while (lst && lst->type != CMD)
-			lst = lst->next;
+		lst = lst->next;
 	while (lst && i < len)
 	{
 		if (lst->type < PIPE)

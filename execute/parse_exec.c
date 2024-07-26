@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 16:20:48 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/25 15:32:56 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/26 13:47:45 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,12 @@ int	check_pipe(t_token **tokens)
 		if (lst->type == PIPE && !lst->next)
 			return (ft_printf(ERR_PIPE, STDERR_FILENO), FALSE);
 		else if (lst->type >= OUT && !lst->next)
-			return (ft_printf(ERR_REDIRECT, STDERR_FILENO), FALSE);
+			return (ft_printf(ERR_REDIR, STDERR_FILENO), FALSE);
 		else if (lst->type >= OUT && lst->next->type != ARG)
 		{
 			ft_printf(ERR_REDIRECT_2, STDERR_FILENO);
-			return (ft_printf("'%s'\n", STDERR_FILENO, lst->next->value), FALSE);
+			return (ft_printf("'%s'\n", STDERR_FILENO, lst->next->value),
+				FALSE);
 		}
 		else if (lst->type == PIPE)
 			lst->head->if_pipe++;

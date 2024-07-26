@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:46:29 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/18 18:43:17 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/26 13:45:19 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	get_access(t_cmd *cmd, char *str, t_env *lst_env)
 	int		i;
 
 	while (lst_env->next && ft_strcmp(lst_env->key, "PATH"))
-			lst_env = lst_env->next;
+		lst_env = lst_env->next;
 	if (ft_strcmp(lst_env->key, "PATH"))
 		return ;
 	i = -1;

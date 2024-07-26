@@ -6,7 +6,7 @@
 /*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 11:37:41 by florian           #+#    #+#             */
-/*   Updated: 2024/07/24 23:26:43 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/26 13:47:55 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int	check_problems(char *line, t_env **env)
 	if (!check_pipe_problems(line))
 		return (exit_status(2, *env), ft_printf(ERR_PIPE, STDERR_FILENO), 0);
 	if (!check_redirection_problems(line))
-		return (exit_status(2, *env), ft_printf(ERR_REDIRECT, STDERR_FILENO),
+		return (exit_status(2, *env), ft_printf(ERR_REDIR, STDERR_FILENO),
 			0);
 	return (1);
 }

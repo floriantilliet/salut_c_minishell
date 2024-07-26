@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/25 17:28:02 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/26 13:49:53 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@
 # define HEREDOC 6
 # define IS_SPACE 7
 
-typedef enum e_flag_sig{
+typedef enum e_flag_sig
+{
 	PROMPT,
 	HERE_DOC,
 	CHILD
@@ -45,7 +46,7 @@ typedef enum e_flag_sig{
 # define TRUE 1
 # define STDERR STDERR_FILENO
 # define ERR_PIPE "minishell: syntax error near unexpected token `|'\n"
-# define ERR_REDIRECT "minishell: syntax error near unexpected token `newline'\n"
+# define ERR_REDIR "minishell: syntax error near unexpected token `newline'\n"
 # define ERR_REDIRECT_2 "minishell: syntax error near unexpected token\n"
 # define ERROR_OPEN "Couldn't open the file\n"
 # define ERROR_PIPE "Some mistakes occures when using pipe\n"
@@ -62,7 +63,7 @@ typedef enum e_flag_sig{
 # define ERR_EXIT_WRONG_ARG "minishell: exit: %s: numeric argument required\n"
 # define ERROR_PERMISSION "minishell: %s: Permission denied\n"
 # define ERR_NOT_FOUND "minishell: %s: File not found\n"
-# define ERR_COMP_NO_DIR "Error: A component of the path %s is not a directory\n"
+# define ERR_COMP_DIR "Error: A component of the path %s is not a directory\n"
 # define ERR_ACCESS "Error: Cannot access %s: %s\n"
 
 extern int	g_exit_code;
