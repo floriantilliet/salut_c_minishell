@@ -6,7 +6,7 @@
 /*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:13:10 by florian           #+#    #+#             */
-/*   Updated: 2024/07/24 23:26:57 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/26 15:49:47 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	trim_token(t_token *current)
 {
 	char	*tmp;
 
+	if (!current || !current->value)
+		return ;
 	tmp = trimmer(current->value);
 	free(current->value);
 	current->value = tmp;
@@ -87,9 +89,12 @@ void	expand_token_list(t_token **token_list, t_env **env)
 		if (flag == 0)
 			expand_token(current, env);
 		else
+		{
 			trim_token(current);
-		flag = 0;
-		current = current->next;
+			flag = 0;
+		}
+		if (current)
+			current = current->next;
 	}
 	initialise_fd(token_list);
 }
