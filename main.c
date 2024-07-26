@@ -59,7 +59,9 @@ void	tokens_and_exec(char *line, t_env **env)
 
 	tokens = (merge_tokens(strings_to_tokens(line_to_strings(line))));
 	expand_token_list(tokens, env);
-	if (handle_here_doc(tokens, env))
+	if (!check_pipe(tokens))
+		exit_status(2, *env);
+	else if (handle_here_doc(tokens, env))
 		parse_exec(tokens, env);
 	free_token_list(tokens);
 	init_std(*env);

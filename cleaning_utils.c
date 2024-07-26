@@ -31,6 +31,10 @@ void	free_env(t_env **env)
 	t_env	*next;
 
 	current = *env;
+	if ((*env)->fd_in)
+		close((*env)->fd_in);
+	if ((*env)->fd_out)
+		close((*env)->fd_out);
 	while (current)
 	{
 		next = current->next;
@@ -69,10 +73,6 @@ void	free_everything(t_env **env, t_token **tokens, int code_exit)
 {
 	if (tokens)
 		free_token_list(tokens);
-	if ((*env)->fd_in)
-		close((*env)->fd_in);
-	if ((*env)->fd_out)
-		close((*env)->fd_out);
 	if (env)
 		free_env(env);
 	exit(code_exit);

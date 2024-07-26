@@ -54,11 +54,6 @@ void	parse_exec(t_token **tokens, t_env **env)
 	t_token	*lst;
 
 	lst = *tokens;
-	if (!check_pipe(tokens))
-	{
-		exit_status(2, *env);
-		return ;
-	}
 	while (lst->head->if_pipe && lst)
 	{
 		if (!do_cmd(tokens, lst, env))

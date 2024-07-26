@@ -25,7 +25,6 @@ void	ctrl_c_here_doc(int code)
 	(void)code;
 	g_exit_code = 1;
 	close(STDIN_FILENO);
-	ft_printf("\n", STDOUT_FILENO);
 	rl_done = 1;
 }
 

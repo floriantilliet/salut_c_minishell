@@ -211,6 +211,7 @@ t_token				*skip_redirect(t_token *lst, int flag2);
 
 int					access_cmd(t_token *lst, t_token **tokens, t_env **env);
 int					count_len(t_token **tokens, t_cmd *cmd);
+int					check_pipe(t_token **tokens);
 int					handle_here_doc(t_token **tokens, t_env **env);
 void				parse_exec(t_token **tokens, t_env **env);
 int					ft_strcmp(const char *s1, const char *s2);

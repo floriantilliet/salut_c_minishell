@@ -22,10 +22,12 @@ int	write_in(int fd, char *limit, t_env **env)
 		ret = get_next_line(STDIN_FILENO);
 		if (!ft_strcmp(ret, limit))
 		{
+			if (!ret)
+				write(STDOUT_FILENO, "\n", 1);
 			close(fd);
 			free(ret);
 			if (g_exit_code == 1)
-				return (free(ret), close(fd), exit_status(130, *env), FALSE);
+				return (close(fd), exit_status(130, *env), FALSE);
 			return (exit_status(0, *env), TRUE);
 		}
 		ft_putstr_fd(ret, fd);
@@ -54,6 +56,18 @@ int	create_here_doc(t_token *lst, char *limiter, int n, t_env **env)
 	return (free(limit), TRUE);
 }
 
+void	initialise_file_n(t_token **tokens)
+{
+	t_token	*lst;
+
+	lst = *tokens;
+	while (lst)
+	{
+		lst->file_n = NULL;
+		lst = lst->next;
+	}
+}
+
 int	handle_here_doc(t_token **tokens, t_env **env)
 {
 	t_token	*lst;
@@ -62,6 +76,7 @@ int	handle_here_doc(t_token **tokens, t_env **env)
 	lst = *tokens;
 	nb = 0;
 	signals(HERE_DOC);
+	initialise_file_n(tokens);
 	while (lst)
 	{
 		lst->fd = 0;
