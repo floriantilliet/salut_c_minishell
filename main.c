@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:41:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/26 14:42:49 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/27 09:13:16 by ftilliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ t_env	**init_main(char **envp)
 
 void	handle_sig_exit_code(t_env **env)
 {
-	if (g_exit_code == 1)
+	if (g_exit_code == SIGINT)
 	{
 		exit_status(130, *env);
 		g_exit_code = 0;
 	}
-	if (g_exit_code == 2)
+	if (g_exit_code == SIGQUIT)
 	{
 		exit_status(131, *env);
 		g_exit_code = 0;

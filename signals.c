@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:13:24 by florian           #+#    #+#             */
-/*   Updated: 2024/07/25 15:51:21 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/27 09:26:50 by ftilliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,17 @@ void	handle_sigint(int code)
 {
 	(void)code;
 	(void)g_exit_code;
-	g_exit_code = 1;
+	g_exit_code = SIGINT;
 	rl_done = 1;
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 void	ctrl_c_here_doc(int code)
 {
 	(void)code;
-	g_exit_code = 1;
+	g_exit_code = SIGINT;
 	close(STDIN_FILENO);
 	rl_done = 1;
 }
@@ -31,7 +34,7 @@ void	ctrl_c_here_doc(int code)
 void	ctrl_c_child(int code)
 {
 	(void)code;
-	g_exit_code = 1;
+	g_exit_code = SIGINT;
 	ft_printf("\n", STDOUT_FILENO);
 	rl_done = 1;
 }
@@ -39,7 +42,7 @@ void	ctrl_c_child(int code)
 void	sigquit_child(int code)
 {
 	(void)code;
-	g_exit_code = 2;
+	g_exit_code = SIGQUIT;
 	ft_printf("Quit (core dumped)\n", STDOUT_FILENO);
 	rl_done = 1;
 }

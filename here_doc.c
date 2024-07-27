@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 08:56:16 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/25 17:27:36 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/27 09:08:40 by ftilliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	write_in(int fd, char *limit, t_env **env)
 				write(STDOUT_FILENO, "\n", 1);
 			close(fd);
 			free(ret);
-			if (g_exit_code == 1)
+			if (g_exit_code == SIGINT)
 				return (close(fd), exit_status(130, *env), FALSE);
 			return (exit_status(0, *env), TRUE);
 		}
