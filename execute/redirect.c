@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:11:05 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/25 17:09:37 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/27 15:17:29 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_redirect(int type, t_token *lst)
 		lst->fd = open(lst->value, O_RDONLY);
 		if (lst->fd == -1)
 			return (ft_printf(ERROR_OPEN, STDERR_FILENO), FALSE);
-		if (dup2(lst->fd, 0) == -1)
+		if (dup2(lst->fd, STDIN_FILENO) == -1)
 			return (ft_printf(ERROR_DUP, STDERR_FILENO), FALSE);
 	}
 	else
@@ -32,7 +32,7 @@ int	ft_redirect(int type, t_token *lst)
 			lst->fd = open(lst->value, O_CREAT | O_RDWR | O_TRUNC, 0000644);
 		if (lst->fd == -1)
 			return (ft_printf(ERROR_OPEN, STDERR_FILENO), FALSE);
-		if (dup2(lst->fd, 1) == -1)
+		if (dup2(lst->fd, STDOUT_FILENO) == -1)
 			return (ft_printf(ERROR_DUP, STDERR_FILENO), FALSE);
 	}
 	return (TRUE);

@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 16:29:15 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/18 16:08:33 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/27 14:16:59 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@ t_token	*print_word_echo(t_token *lst)
 	i = 0;
 	while (lst && lst->value[i])
 	{
-		if (lst->value[i] != '\\')
-			write(STDOUT_FILENO, lst->value + i, 1);
+		write(STDOUT_FILENO, lst->value + i, 1);
+		if (lst->value[i] == '\\' && lst->value[i + 1] == '\\')
+			i++;
 		if (lst->value[i])
 			i++;
 	}
@@ -29,13 +30,14 @@ t_token	*print_word_echo(t_token *lst)
 	return (lst);
 }
 
-t_token	*skip_redirect(t_token *lst, int flag2)
+t_token	*skip_redirect(t_token *lst, int flag[2])
 {
 	if (lst)
 		lst = lst->next;
 	if (lst)
 		lst = lst->next;
-	flag2--;
+	if (flag)
+		flag[0]--;
 	return (lst);
 }
 
@@ -54,7 +56,7 @@ int	ft_echo(t_token *lst, t_env **env)
 	while (lst && lst->type != PIPE)
 	{
 		if (lst->type > PIPE)
-			lst = skip_redirect(lst, flag[0]);
+			lst = skip_redirect(lst, flag);
 		else
 		{
 			lst = print_word_echo(lst);

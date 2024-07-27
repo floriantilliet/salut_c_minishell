@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/26 15:55:57 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/27 14:13:14 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ typedef enum e_flag_sig
 # define ERR_REDIRECT_2 "minishell: syntax error near unexpected token\n"
 # define ERROR_OPEN "Couldn't open the file\n"
 # define ERROR_PIPE "Some mistakes occures when using pipe\n"
+# define ERR_CMD "minishell: %s: command not found\n"
+# define ERR_IS_DIR "minishell: %s: Is a directory\n"
 # define ERROR_DUP "Some mistakes occures when using dup\n"
 # define ERROR_FORK "Some mistakes occures when using fork\n"
 # define ERROR_EXEC "Some mistakes occures when using execve\n"
@@ -65,6 +67,8 @@ typedef enum e_flag_sig
 # define ERR_NOT_FOUND "minishell: %s: File not found\n"
 # define ERR_COMP_DIR "Error: A component of the path %s is not a directory\n"
 # define ERR_ACCESS "Error: Cannot access %s: %s\n"
+# define ERR_PERM "minishell: %s: Permission denied\n"
+# define ERR_EXIST "minishell: %s: No such file or directory\n"
 
 extern int	g_exit_code;
 
@@ -210,7 +214,7 @@ void				print_env_in_order(t_env **env);
 void				exit_status(int code_exit, t_env *env);
 void				ft_unset(t_token *token, t_env **env);
 void				add_new_env_node(char *key, char *value, t_env **env);
-t_token				*skip_redirect(t_token *lst, int flag2);
+t_token				*skip_redirect(t_token *lst, int flag[2]);
 
 // execute.c
 

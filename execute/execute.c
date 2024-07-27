@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:46:29 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/26 13:45:19 by florian          ###   ########.fr       */
+/*   Updated: 2024/07/27 15:17:05 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+void	free_cmd(t_cmd *cmd)
+{
+	if (cmd->cmd)
+		free_char_tab(cmd->cmd);
+	if (cmd->env)
+		free_char_tab(cmd->env);
+	if (cmd->path)
+		free(cmd->path);
+	free(cmd);
+}
 
 void	get_access(t_cmd *cmd, char *str, t_env *lst_env)
 {
@@ -29,7 +40,7 @@ void	get_access(t_cmd *cmd, char *str, t_env *lst_env)
 		tmp = ft_strjoin(tab[i], "/");
 		cmd->path = ft_strjoin(tmp, str);
 		free(tmp);
-		if (access(cmd->path, F_OK | X_OK) != -1)
+		if (access(cmd->path, F_OK) != -1)
 		{
 			free_char_tab(tab);
 			cmd->free_path = 1;
@@ -43,20 +54,30 @@ void	get_access(t_cmd *cmd, char *str, t_env *lst_env)
 
 void	path_cmd(char *value, t_cmd *cmd, t_env **env, t_token **tokens)
 {
-	if (access(value, F_OK) == -1)
-		get_access(cmd, value, *env);
-	else
+	struct stat	path_stat;
+
+	if (access(value, F_OK) != -1)
 		cmd->path = ft_strdup(value);
-	(void)tokens;
-	/* if (access(cmd->path, X_OK) == -1 && ft_strchr(value, '/') && errno == EACCES)
+	else
+		get_access(cmd, value, *env);
+	if (stat(cmd->path, &path_stat) != 0)
 	{
-		free_char_tab(cmd->cmd);
-		free_char_tab(cmd->env);
-		free(cmd->path);
-		free(cmd);
-		ft_printf(ERROR_PERMISSION, STDERR_FILENO, value);
+		ft_printf(ERR_CMD, STDERR, value);
+		free_cmd(cmd);
+		free_everything(env, tokens, 127);
+	}
+	else if (S_ISDIR(path_stat.st_mode))
+	{
+		ft_printf(ERR_IS_DIR, STDERR, value);
+		free_cmd(cmd);
 		free_everything(env, tokens, 126);
-	} */
+	}
+	else if (!(path_stat.st_mode & S_IXUSR))
+	{
+		ft_printf(ERR_PERM, STDERR, value);
+		free_cmd(cmd);
+		free_everything(env, tokens, 126);
+	}
 }
 
 int	access_cmd(t_token *lst, t_token **tokens, t_env **env)

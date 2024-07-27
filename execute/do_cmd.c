@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:38 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/25 15:30:52 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/07/27 15:14:57 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,10 @@ int	do_cmd(t_token **tokens, t_token *lst, t_env **env)
 	{
 		signals(CHILD);
 		if (!ft_dup(lst, env) || !check_builtins(lst, tokens, env))
+		{
+			close_redirect(tokens);
 			free_everything(env, tokens, (*env)->exit_code);
+		}
 	}
 	else
 	{

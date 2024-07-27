@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 08:56:16 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/27 09:08:40 by ftilliet         ###   ########.fr       */
+/*   Updated: 2024/07/27 14:55:23 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	handle_here_doc(t_token **tokens, t_env **env)
 		}
 		lst = lst->next;
 	}
-	signals(PROMPT);
+	signals(CHILD);
 	return (TRUE);
 }
 
