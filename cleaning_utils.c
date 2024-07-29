@@ -72,7 +72,10 @@ void	free_token_list(t_token **token_list)
 void	free_everything(t_env **env, t_token **tokens, int code_exit)
 {
 	if (tokens)
+	{
+		close_redirect(tokens);
 		free_token_list(tokens);
+	}
 	if (env)
 		free_env(env);
 	exit(code_exit);
