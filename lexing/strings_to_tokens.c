@@ -6,7 +6,7 @@
 /*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:22:38 by florian           #+#    #+#             */
-/*   Updated: 2024/09/01 11:41:51 by florian          ###   ########.fr       */
+/*   Updated: 2024/09/01 11:43:59 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ void check_env_var(char *str, t_env **env)
 			{
 				str[i + j] = '\0';
 				ft_memmove(str + i, str + i + j , len - i - j + 1);
-				str[i + j + 1] = '\0';
 		    	len -= j;
                 i--;
             }
