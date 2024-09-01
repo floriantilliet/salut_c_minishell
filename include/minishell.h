@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/07/27 14:13:14 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:35:05 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ t_token				*create_token_node(char *value);
 void				add_token_to_list(t_token **token_list, t_token *new_node);
 void				update_flags(t_token *new_node, int *cmd_flag,
 						int *redirection_flag);
-t_token				**strings_to_tokens(char **tokens);
+t_token				**strings_to_tokens(char **tokens, t_env **env);
 
 int					check_token_chars(char *token, int len);
 int					get_token_type(char *token);

@@ -6,7 +6,7 @@
 /*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:22:38 by florian           #+#    #+#             */
-/*   Updated: 2024/07/25 14:41:37 by florian          ###   ########.fr       */
+/*   Updated: 2024/09/01 11:41:51 by florian          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,30 +62,77 @@ void	update_flags(t_token *new_node, int *cmd_flag, int *redirection_flag)
 		*cmd_flag = 0;
 }
 
-t_token	**strings_to_tokens(char **tokens)
+void check_env_var(char *str, t_env **env)
 {
-	t_token	**token_list;
-	t_token	*new_node;
-	int		cmd_flag;
-	int		redirection_flag;
-	int		i;
-
-	token_list = malloc(sizeof(t_token *));
-	if (!token_list)
-		return (NULL);
-	*token_list = NULL;
-	cmd_flag = 0;
-	redirection_flag = 0;
-	i = 0;
-	while (tokens[i])
-	{
-		new_node = create_token_node(tokens[i]);
-		if (!new_node)
-			return (NULL);
-		update_flags(new_node, &cmd_flag, &redirection_flag);
-		add_token_to_list(token_list, new_node);
+    int i;
+    int j;
+    t_env *tmp;
+	int len;
+	
+	len = ft_strlen(str);
+    i = 0;
+    tmp = *env;
+	// printf("str in = %s\n", str);
+    while(str[i])
+    {
+		if (str[i] == '\'')
+			break;
+        if(str[i] == '$')
+        {
+            j = 0;
+            while(str[i + j + 1] && !is_space(str[i + j + 1]))
+                j++;
+			// printf("str key= %s\n", str+i+1);
+            while(tmp)
+            {
+                if (ft_strncmp(tmp->key, str+i+1, j - 1) == 0)
+				{
+					// printf("found\n");
+                    break;
+				}
+                tmp = tmp->next;
+            }
+            if (!tmp)
+			{
+				str[i + j] = '\0';
+				ft_memmove(str + i, str + i + j , len - i - j + 1);
+				str[i + j + 1] = '\0';
+		    	len -= j;
+                i--;
+            }
+			else
+                i += j;
+    	}
 		i++;
 	}
-	free_char_tab(tokens);
-	return (token_list);
+	// printf("str out = %s\n", str);
+}
+
+t_token    **strings_to_tokens(char **tokens, t_env **env)
+{
+    t_token    **token_list;
+    t_token    *new_node;
+    int        cmd_flag;
+    int        redirection_flag;
+    int        i;
+    
+    token_list = malloc(sizeof(t_token *));
+    if (!token_list)
+        return (NULL);
+    *token_list = NULL;
+    cmd_flag = 0;
+    redirection_flag = 0;
+    i = 0;
+    while (tokens[i])
+    {
+        check_env_var(tokens[i], env);
+        new_node = create_token_node(tokens[i]);
+        if (!new_node)
+            return (NULL);
+        update_flags(new_node, &cmd_flag, &redirection_flag);
+        add_token_to_list(token_list, new_node);
+        i++;
+    }
+    free_char_tab(tokens);
+    return (token_list);
 }
