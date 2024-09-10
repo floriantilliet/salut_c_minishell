@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/27 05:41:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/09/10 14:11:07 by ftilliet         ###   ########.fr       */
+/*   Created: 2024/09/10 15:05:27 by ochetrit          #+#    #+#             */
+/*   Updated: 2024/09/10 15:05:34 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "include/minishell.h"
 
 int			g_exit_code = 0;
 

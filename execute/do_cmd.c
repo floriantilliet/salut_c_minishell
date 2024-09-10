@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:38 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/27 15:14:57 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/09/04 13:34:36 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_dup(t_token *lst, t_env **env)
 {
 	close(lst->head->fd_pipe[0]);
-	if (dup2(lst->head->fd_pipe[1], 1) == -1)
+	if (dup2(lst->head->fd_pipe[1], STDOUT_FILENO) == -1)
 		return (FALSE);
 	while (lst && lst->type != PIPE)
 	{
