@@ -6,7 +6,7 @@
 /*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:22:38 by florian           #+#    #+#             */
-/*   Updated: 2024/09/10 18:08:06 by ftilliet         ###   ########.fr       */
+/*   Updated: 2024/09/10 18:16:30 by ftilliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,21 +89,16 @@ t_token	**strings_to_tokens(char **tokens, t_env **env)
 	int		redirection_flag;
 	int		i;
 
-	token_list = malloc(sizeof(t_token *));
+	token_list = initialize_token_list();
 	if (!token_list)
 		return (NULL);
-	*token_list = NULL;
 	cmd_flag = 0;
 	redirection_flag = 0;
 	i = 0;
 	while (tokens[i])
 	{
-		check_env_var(tokens[i], env);
-		if (tokens[i][0] == '\0')
-		{
-			i++;
-			continue ;
-		}
+		if (!process_token(tokens, &i, env))
+			break ;
 		new_node = create_token_node(tokens[i]);
 		if (!new_node)
 			return (NULL);
