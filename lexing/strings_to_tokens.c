@@ -6,7 +6,7 @@
 /*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:22:38 by florian           #+#    #+#             */
-/*   Updated: 2024/09/10 13:24:59 by ftilliet         ###   ########.fr       */
+/*   Updated: 2024/09/10 13:42:16 by ftilliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void check_env_var(char *str, t_env **env)
 	len = ft_strlen(str);
     i = 0;
     tmp = *env;
-	printf("str in = %s\n", str);
+	// printf("str in = %s\n", str);
     while(str[i])
     {
 		if (str[i] == '\'')
@@ -80,7 +80,7 @@ void check_env_var(char *str, t_env **env)
 		if (str[i] == '\"')
 		{
 			ft_memmove(str, str + 1, len);
-			printf("%c\n", str[len]);
+			// printf("%c\n", str[len]);
 			str[len-2] = '\0';
 		}
         if(str[i] == '$')
@@ -101,9 +101,9 @@ void check_env_var(char *str, t_env **env)
             }
             if (!tmp)
 			{
-				printf("i, j, lenn = %d, %d, %d\n", i, j, len);
-				printf("str + i = %s\n", str+i);
-				printf("str + i + j + 1= %s\n", str+i+j+1);
+				// printf("i, j, lenn = %d, %d, %d\n", i, j, len);
+				// printf("str + i = %s\n", str+i);
+				// printf("str + i + j + 1= %s\n", str+i+j+1);
 				ft_memmove(str + i, str + i + j + 1 , len - i - j);
 		    	len -= j;
                 i--;
@@ -113,7 +113,7 @@ void check_env_var(char *str, t_env **env)
     	}
 		i++;
 	}
-	printf("str out = %s\n", str);
+	// printf("str out = %s\n", str);
 }
 
 t_token    **strings_to_tokens(char **tokens, t_env **env)
