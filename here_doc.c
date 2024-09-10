@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 08:56:16 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/27 14:55:23 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/09/10 11:36:35 by ftilliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	initialise_file_n(t_token **tokens)
 {
 	t_token	*lst;
 
+	if (!tokens || !*tokens)
+		return ;
 	lst = *tokens;
 	while (lst)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 16:20:48 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/26 13:47:45 by florian          ###   ########.fr       */
+/*   Updated: 2024/09/10 11:38:36 by ftilliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ int	check_pipe(t_token **tokens)
 {
 	t_token	*lst;
 
+
+	if (!tokens || !*tokens)
+		return (FALSE);
 	lst = *tokens;
 	lst->if_pipe = 0;
 	init_head(tokens);

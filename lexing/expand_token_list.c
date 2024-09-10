@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_token_list.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:13:10 by florian           #+#    #+#             */
-/*   Updated: 2024/07/26 15:55:28 by florian          ###   ########.fr       */
+/*   Updated: 2024/09/10 11:35:49 by ftilliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ void	expand_token_list(t_token **token_list, t_env **env)
 	int		flag;
 
 	flag = 0;
+	if (!token_list || !*token_list)
+        return;
 	current = *token_list;
 	while (current)
 	{

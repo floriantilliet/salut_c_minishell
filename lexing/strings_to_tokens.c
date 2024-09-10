@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strings_to_tokens.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:22:38 by florian           #+#    #+#             */
-/*   Updated: 2024/09/01 11:43:59 by florian          ###   ########.fr       */
+/*   Updated: 2024/09/10 13:24:59 by ftilliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,17 +72,24 @@ void check_env_var(char *str, t_env **env)
 	len = ft_strlen(str);
     i = 0;
     tmp = *env;
-	// printf("str in = %s\n", str);
+	printf("str in = %s\n", str);
     while(str[i])
     {
 		if (str[i] == '\'')
 			break;
+		if (str[i] == '\"')
+		{
+			ft_memmove(str, str + 1, len);
+			printf("%c\n", str[len]);
+			str[len-2] = '\0';
+		}
         if(str[i] == '$')
         {
             j = 0;
-            while(str[i + j + 1] && !is_space(str[i + j + 1]))
+            while(str[i + j + 1] && !is_space(str[i + j + 1]) && str[i + j + 1] != '\"')
                 j++;
-			// printf("str key= %s\n", str+i+1);
+			if (str[i + j + 1] == '\"')
+				str[i + j + 1] = '\0';
             while(tmp)
             {
                 if (ft_strncmp(tmp->key, str+i+1, j - 1) == 0)
@@ -94,8 +101,10 @@ void check_env_var(char *str, t_env **env)
             }
             if (!tmp)
 			{
-				str[i + j] = '\0';
-				ft_memmove(str + i, str + i + j , len - i - j + 1);
+				printf("i, j, lenn = %d, %d, %d\n", i, j, len);
+				printf("str + i = %s\n", str+i);
+				printf("str + i + j + 1= %s\n", str+i+j+1);
+				ft_memmove(str + i, str + i + j + 1 , len - i - j);
 		    	len -= j;
                 i--;
             }
@@ -104,7 +113,7 @@ void check_env_var(char *str, t_env **env)
     	}
 		i++;
 	}
-	// printf("str out = %s\n", str);
+	printf("str out = %s\n", str);
 }
 
 t_token    **strings_to_tokens(char **tokens, t_env **env)
@@ -125,6 +134,11 @@ t_token    **strings_to_tokens(char **tokens, t_env **env)
     while (tokens[i])
     {
         check_env_var(tokens[i], env);
+		if (tokens[i][0] == '\0')
+		{
+			i++;
+			continue;
+		}
         new_node = create_token_node(tokens[i]);
         if (!new_node)
             return (NULL);
