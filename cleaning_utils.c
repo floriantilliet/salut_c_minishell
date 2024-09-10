@@ -6,7 +6,7 @@
 /*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:14:26 by florian           #+#    #+#             */
-/*   Updated: 2024/09/10 11:39:18 by ftilliet         ###   ########.fr       */
+/*   Updated: 2024/09/10 17:18:41 by ftilliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	free_token_list(t_token **token_list)
 	t_token	*current;
 	t_token	*next;
 
-	if(!token_list || !*token_list)
+	if (!token_list || !*token_list)
 		return ;
 	current = *token_list;
 	while (current)

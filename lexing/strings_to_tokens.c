@@ -6,7 +6,7 @@
 /*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:22:38 by florian           #+#    #+#             */
-/*   Updated: 2024/09/10 14:36:52 by ftilliet         ###   ########.fr       */
+/*   Updated: 2024/09/10 18:08:06 by ftilliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,85 +62,55 @@ void	update_flags(t_token *new_node, int *cmd_flag, int *redirection_flag)
 		*cmd_flag = 0;
 }
 
-void check_env_var(char *str, t_env **env)
+void	check_env_var(char *str, t_env **env)
 {
-    int i;
-    int j;
-    t_env *tmp;
-	int len;
-	
+	int	i;
+	int	len;
+
 	len = ft_strlen(str);
-    i = 0;
-    tmp = *env;
-	// printf("str in = %s\n", str);
-    while(str[i])
-    {
+	i = 0;
+	while (str[i])
+	{
 		if (str[i] == '\'')
-			break;
+			break ;
 		if (str[i] == '\"')
-		{
-			ft_memmove(str, str + 1, len);
-			str[len-2] = '\0';
-		}
-        if(str[i] == '$')
-        {
-            j = 0;
-            while(str[i + j + 1] && !is_space(str[i + j + 1]) && str[i + j + 1] != '\"')
-                j++;
-            while(tmp)
-            {
-                if (ft_strncmp(tmp->key, str+i+1, j - 1) == 0 && j == (int)ft_strlen(tmp->key))
-				{
-					// printf("found\n");
-                    break;
-				}
-                tmp = tmp->next;
-            }
-            if (!tmp)
-			{
-				ft_memmove(str + i, str + i + j + 1 , len - i - j);
-		    	len -= j;
-                i--;
-            }
-			else
-                i += j;
-    	}
+			remove_quotes(str, len);
+		if (str[i] == '$')
+			handle_env_var(str, &i, &len, env);
 		i++;
 	}
-	// printf("str out = %s\n", str);
 }
 
-t_token    **strings_to_tokens(char **tokens, t_env **env)
+t_token	**strings_to_tokens(char **tokens, t_env **env)
 {
-    t_token    **token_list;
-    t_token    *new_node;
-    int        cmd_flag;
-    int        redirection_flag;
-    int        i;
-    
-    token_list = malloc(sizeof(t_token *));
-    if (!token_list)
-        return (NULL);
-    *token_list = NULL;
-    cmd_flag = 0;
-    redirection_flag = 0;
-    i = 0;
-    while (tokens[i])
-    {
-        check_env_var(tokens[i], env);
+	t_token	**token_list;
+	t_token	*new_node;
+	int		cmd_flag;
+	int		redirection_flag;
+	int		i;
+
+	token_list = malloc(sizeof(t_token *));
+	if (!token_list)
+		return (NULL);
+	*token_list = NULL;
+	cmd_flag = 0;
+	redirection_flag = 0;
+	i = 0;
+	while (tokens[i])
+	{
+		check_env_var(tokens[i], env);
 		if (tokens[i][0] == '\0')
 		{
 			i++;
-			continue;
+			continue ;
 		}
-        new_node = create_token_node(tokens[i]);
-        if (!new_node)
-            return (NULL);
-        update_flags(new_node, &cmd_flag, &redirection_flag);
-        add_token_to_list(token_list, new_node);
-        i++;
-    }
-    free_char_tab(tokens);
-	print_token_list(token_list);
-    return (token_list);
+		new_node = create_token_node(tokens[i]);
+		if (!new_node)
+			return (NULL);
+		update_flags(new_node, &cmd_flag, &redirection_flag);
+		add_token_to_list(token_list, new_node);
+		i++;
+	}
+	free_char_tab(tokens);
+	return (token_list);
 }

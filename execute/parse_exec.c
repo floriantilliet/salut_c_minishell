@@ -6,7 +6,7 @@
 /*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 16:20:48 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/09/10 11:38:36 by ftilliet         ###   ########.fr       */
+/*   Updated: 2024/09/10 17:18:19 by ftilliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	init_head(t_token **tokens)
 int	check_pipe(t_token **tokens)
 {
 	t_token	*lst;
-
 
 	if (!tokens || !*tokens)
 		return (FALSE);

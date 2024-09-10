@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florian <florian@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/08/27 15:35:05 by florian          ###   ########.fr       */
+/*   Updated: 2024/09/10 17:45:22 by ftilliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
+# include <errno.h>
+# include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <errno.h>
-# include <sys/wait.h>
-# include <fcntl.h>
-# include <sys/stat.h>
 # include <signal.h>
+# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
 # include <unistd.h>
-# include <stdbool.h>
 
 # define CMD 0
 # define ARG 1
@@ -40,7 +40,7 @@ typedef enum e_flag_sig
 	PROMPT,
 	HERE_DOC,
 	CHILD
-}	t_flag_sig;
+}					t_flag_sig;
 
 # define FALSE 0
 # define TRUE 1
@@ -70,7 +70,7 @@ typedef enum e_flag_sig
 # define ERR_PERM "minishell: %s: Permission denied\n"
 # define ERR_EXIST "minishell: %s: No such file or directory\n"
 
-extern int	g_exit_code;
+extern int			g_exit_code;
 
 typedef struct s_env
 {
@@ -98,12 +98,12 @@ typedef struct s_token
 
 typedef struct s_cmd
 {
-	char	*path;
-	int		free_path;
-	int		len;
-	char	**cmd;
-	char	**env;
-	int		is_pipe;
+	char			*path;
+	int				free_path;
+	int				len;
+	char			**cmd;
+	char			**env;
+	int				is_pipe;
 }					t_cmd;
 
 typedef struct s_flags
@@ -170,6 +170,11 @@ int					check_redirection_problems(char *line);
 int					check_pipe_problems(char *line);
 int					check_problems(char *line, t_env **env);
 
+void				remove_quotes(char *str, int len);
+int					find_env_var_length(char *str, int i);
+t_env				*find_env_var(t_env *env, char *str, int i, int j);
+void				handle_env_var(char *str, int *i, int *len, t_env **env);
+
 t_token				*create_token_node(char *value);
 void				add_token_to_list(t_token **token_list, t_token *new_node);
 void				update_flags(t_token *new_node, int *cmd_flag,
@@ -209,7 +214,7 @@ int					printenv(t_env **env, t_token *lst);
 void				ft_exit(t_token **tokens, t_token *lst, t_env **env);
 int					ft_echo(t_token *tok, t_env **env);
 int					is_flag(char *str);
-int					skip_flag(char	*str);
+int					skip_flag(char *str);
 void				print_env_in_order(t_env **env);
 void				exit_status(int code_exit, t_env *env);
 void				ft_unset(t_token *token, t_env **env);

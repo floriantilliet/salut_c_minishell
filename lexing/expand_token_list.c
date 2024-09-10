@@ -6,7 +6,7 @@
 /*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:13:10 by florian           #+#    #+#             */
-/*   Updated: 2024/09/10 11:35:49 by ftilliet         ###   ########.fr       */
+/*   Updated: 2024/09/10 17:17:59 by ftilliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	expand_token_list(t_token **token_list, t_env **env)
 
 	flag = 0;
 	if (!token_list || !*token_list)
-        return;
+		return ;
 	current = *token_list;
 	while (current)
 	{
