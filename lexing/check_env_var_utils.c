@@ -6,7 +6,7 @@
 /*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 17:30:13 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/09/10 17:52:29 by ftilliet         ###   ########.fr       */
+/*   Updated: 2024/09/11 21:38:51 by ftilliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,22 @@ void	handle_env_var(char *str, int *i, int *len, t_env **env)
 	}
 	else
 		*i += j;
+}
+
+void	update_str_with_quotes(char *str)
+{
+	char	*new_str;
+	int		len;
+
+	len = ft_strlen(str);
+	new_str = malloc(len + 3);
+	if (new_str)
+	{
+		new_str[0] = '\"';
+		ft_strlcpy(new_str + 1, str, len + 3);
+		new_str[len + 1] = '\"';
+		new_str[len + 2] = '\0';
+		ft_strlcpy(str, new_str, len + 3);
+		free(new_str);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:22:38 by florian           #+#    #+#             */
-/*   Updated: 2024/09/10 18:16:30 by ftilliet         ###   ########.fr       */
+/*   Updated: 2024/09/11 21:37:34 by ftilliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,19 +66,29 @@ void	check_env_var(char *str, t_env **env)
 {
 	int	i;
 	int	len;
+	int	quote_flag;
 
 	len = ft_strlen(str);
 	i = 0;
+	quote_flag = 0;
 	while (str[i])
 	{
 		if (str[i] == '\'')
 			break ;
 		if (str[i] == '\"')
+		{
 			remove_quotes(str, len);
+			quote_flag = 1;
+		}
 		if (str[i] == '$')
-			handle_env_var(str, &i, &len, env);
+		{
+			if (!(is_space(str[i + 1]) || str[i + 1] == '\"' || !str[i + 1]))
+				handle_env_var(str, &i, &len, env);
+		}
 		i++;
 	}
+	if (quote_flag)
+		update_str_with_quotes(str);
 }
 
 t_token	**strings_to_tokens(char **tokens, t_env **env)

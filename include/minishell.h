@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/09/11 20:13:22 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/09/11 21:37:50 by ftilliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,7 @@ void				increment_shlvl(t_env *env);
 
 t_token				**initialize_token_list(void);
 int					process_token(char **tokens, int *i, t_env **env);
+void				update_str_with_quotes(char *str);
 
 t_token				*create_token_node(char *value);
 void				add_token_to_list(t_token **token_list, t_token *new_node);
