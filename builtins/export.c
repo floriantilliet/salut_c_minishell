@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:08:44 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/07/25 15:54:29 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/09/11 19:39:28 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,11 @@ void	concatenate_value(char *tab[2], t_env *lst, t_env **env)
 	if (!lst)
 		add_new_env_node(tab[0], tab[1], env);
 	if (!lst->value || !*lst->value)
+	{
+		if (!*lst->value)
+			free(lst->value);
 		lst->value = ft_strdup(tab[1]);
+	}
 	else
 	{
 		tmp = lst->value;

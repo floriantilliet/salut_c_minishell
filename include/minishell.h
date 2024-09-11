@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/09/11 18:39:25 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/09/11 18:56:32 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ char				*expander(char *line, t_env **env);
 
 int					is_space(char c);
 void				print_strings(char **tokens);
+
 void				print_token_list(t_token **token_list);
 
 void				handle_string_quotes(char *line, char **tokens, int *i,

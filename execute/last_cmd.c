@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:57 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/09/11 18:45:47 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/09/11 19:17:35 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	close_redirect(t_token **tokens)
 				return ;
 			if (lst->type == ARG && lst->fd != -1)
 				close(lst->fd);
-			ft_printf("%d\n", STDERR, lst->fd);
 		}
 		else if (lst->type == HEREDOC)
 			close(lst->fd);
@@ -78,8 +77,10 @@ int	check_builtins_without_pipe(t_token **tokens, t_token *lst, t_env **env)
 	return (FALSE);
 }
 
-void	end_last(int status, int exit_code, t_env **env)
+void	end_last(int status, t_env **env)
 {
+	int		exit_code;
+
 	exit_code = 1;
 	if (WIFEXITED(status))
 		exit_code = WEXITSTATUS(status);
@@ -90,7 +91,6 @@ int	last_cmd(t_token **tokens, t_token *lst, t_env **env)
 {
 	pid_t	pid;
 	int		status;
-	int		exit_code;
 
 	if (!ft_dup_last(lst, env))
 		return (exit_status(1, *env), FALSE);
@@ -109,6 +109,7 @@ int	last_cmd(t_token **tokens, t_token *lst, t_env **env)
 	close(0);
 	while (wait(NULL) > 0)
 		continue ;
+	end_last(status, env);
 	close_redirect(tokens);
 	return (TRUE);
 }
