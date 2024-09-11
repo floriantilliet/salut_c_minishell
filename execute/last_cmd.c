@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:57 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/09/11 19:17:35 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/09/11 19:59:48 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,6 @@ int	last_cmd(t_token **tokens, t_token *lst, t_env **env)
 	while (wait(NULL) > 0)
 		continue ;
 	end_last(status, env);
-	close_redirect(tokens);
+	close_redirect(&lst);
 	return (TRUE);
 }
