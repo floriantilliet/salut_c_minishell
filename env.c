@@ -88,3 +88,22 @@ char	*get_env_value(char *key, t_env **env)
 	}
 	return ("");
 }
+
+void	increment_shlvl(t_env *env)
+{
+	char	*tmp;
+	int		shlvl;
+
+	while (env && ft_strcmp(env->key, "SHLVL"))
+		env = env->next;
+	if (!env)
+		return ;
+	shlvl = ft_atoi(env->value);
+	if (shlvl < 0)
+		shlvl = 0;
+	else
+		shlvl++;
+	tmp = ft_itoa(shlvl);
+	free(env->value);
+	env->value = tmp;
+}

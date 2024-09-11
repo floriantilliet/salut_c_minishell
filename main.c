@@ -32,6 +32,7 @@ t_env	**init_main(char **envp)
 	env = store_env(envp);
 	if (!env)
 		exit(1);
+	increment_shlvl(*env);
 	signals(PROMPT);
 	(*env)->fd_in = dup(STDIN_FILENO);
 	(*env)->fd_out = dup(STDOUT_FILENO);

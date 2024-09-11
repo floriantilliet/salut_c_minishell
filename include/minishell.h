@@ -175,6 +175,7 @@ int					find_env_var_length(char *str, int i);
 t_env				*find_env_var(t_env *env, char *str, int i, int j);
 void				handle_env_var(char *str, int *i, int *len, t_env **env);
 void 				check_env_var(char *str, t_env **env);
+void				increment_shlvl(t_env *env);
 
 t_token				**initialize_token_list(void);
 int					process_token(char **tokens, int *i, t_env **env);
