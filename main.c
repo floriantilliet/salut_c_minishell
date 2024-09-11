@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 15:05:27 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/09/11 18:37:50 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/09/11 20:38:54 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,9 @@ void	tokens_and_exec(char *line, t_env **env)
 	tokens = (merge_tokens(strings_to_tokens(line_to_strings(line), env)));
 	expand_token_list(tokens, env);
 	initialise_file_n(tokens);
-	if (!check_pipe(tokens))
+	if (!tokens || !*tokens)
+		exit_status(0, *env);
+	else if (!check_pipe(tokens))
 		exit_status(2, *env);
 	else if (handle_here_doc(tokens, env))
 		parse_exec(tokens, env);
