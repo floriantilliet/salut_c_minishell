@@ -6,7 +6,7 @@
 /*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:34:38 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/09/04 13:34:36 by ochetrit         ###   ########.fr       */
+/*   Updated: 2024/09/11 17:47:38 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	do_cmd(t_token **tokens, t_token *lst, t_env **env)
 {
 	pid_t	pid;
 
+	ft_printf("Commande : %s\n", STDERR, lst->value);
 	if (pipe(lst->head->fd_pipe) == -1)
 		return (ft_printf(ERROR_PIPE, STDERR_FILENO), FALSE);
 	pid = fork();

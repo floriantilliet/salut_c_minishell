@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/09/10 18:26:27 by ftilliet         ###   ########.fr       */
+/*   Updated: 2024/09/11 18:39:25 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ void				remove_quotes(char *str, int len);
 int					find_env_var_length(char *str, int i);
 t_env				*find_env_var(t_env *env, char *str, int i, int j);
 void				handle_env_var(char *str, int *i, int *len, t_env **env);
-void 				check_env_var(char *str, t_env **env);
+void				check_env_var(char *str, t_env **env);
 void				increment_shlvl(t_env *env);
 
 t_token				**initialize_token_list(void);

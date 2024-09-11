@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 15:05:27 by ochetrit          #+#    #+#             */
-/*   Updated: 2024/09/10 17:18:56 by ftilliet         ###   ########.fr       */
+/*   Updated: 2024/09/11 18:37:50 by ochetrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void	tokens_and_exec(char *line, t_env **env)
 	t_token	**tokens;
 
 	tokens = (merge_tokens(strings_to_tokens(line_to_strings(line), env)));
-	// print_token_list(tokens);
 	expand_token_list(tokens, env);
 	initialise_file_n(tokens);
 	if (!check_pipe(tokens))
