@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochetrit <ochetrit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 15:05:27 by ochetrit          #+#    #+#             */
 /*   Updated: 2024/09/11 20:38:54 by ochetrit         ###   ########.fr       */
