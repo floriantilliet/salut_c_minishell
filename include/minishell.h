@@ -6,7 +6,7 @@
 /*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 05:43:39 by ftilliet          #+#    #+#             */
-/*   Updated: 2024/09/11 21:37:50 by ftilliet         ###   ########.fr       */
+/*   Updated: 2024/09/12 11:11:14 by ftilliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,9 @@ int					find_env_var_length(char *str, int i);
 t_env				*find_env_var(t_env *env, char *str, int i, int j);
 void				handle_env_var(char *str, int *i, int *len, t_env **env);
 void				check_env_var(char *str, t_env **env);
+void				handle_dollar_question(char *str, int *i, t_env **env,
+						int *len);
+void				handle_quotes(char *str, int *len, int *quote_flag);
 void				increment_shlvl(t_env *env);
 
 t_token				**initialize_token_list(void);

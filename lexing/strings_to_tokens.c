@@ -6,7 +6,7 @@
 /*   By: ftilliet <ftilliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:22:38 by florian           #+#    #+#             */
-/*   Updated: 2024/09/11 21:37:34 by ftilliet         ###   ########.fr       */
+/*   Updated: 2024/09/12 11:12:16 by ftilliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,13 @@ void	check_env_var(char *str, t_env **env)
 		if (str[i] == '\'')
 			break ;
 		if (str[i] == '\"')
-		{
-			remove_quotes(str, len);
-			quote_flag = 1;
-		}
+			handle_quotes(str, &len, &quote_flag);
 		if (str[i] == '$')
 		{
-			if (!(is_space(str[i + 1]) || str[i + 1] == '\"' || !str[i + 1]))
+			if (str[i + 1] == '?')
+				handle_dollar_question(str, &i, env, &len);
+			else if (!(is_space(str[i + 1]) || str[i + 1] == '\"' || !str[i
+						+ 1]))
 				handle_env_var(str, &i, &len, env);
 		}
 		i++;
